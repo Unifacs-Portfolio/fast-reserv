@@ -1,0 +1,24 @@
+{
+  "name": "404cafe",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsup backend/src --out-dir backend/build",
+    "start": "node backend/build/app.js",
+    "dev": "tsx watch backend/src/app.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.1",
+    "tsup": "8.4.0",
+    "tsx": "4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
