@@ -1,9 +1,9 @@
-import { configuratedb } from "./Datenbank/configdb";
-import express from "express";
+import { configuratedb } from './Datenbank/configdb'
+import express from 'express'
 
-const app = express();
+const app = express()
 
-app.use(express.json());
+app.use(express.json())
 
-export { app };
-configuratedb();
+export { app }
+configuratedb()
