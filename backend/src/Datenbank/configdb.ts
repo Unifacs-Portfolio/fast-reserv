@@ -22,7 +22,7 @@ export async function createTableReserva() {
 }
 
 // Executar a tabela e banco
-export async function configuratedb() {
-  createTableMesa();
-  createTableReserva();
+export async function  configuratedb() {
+  await createTableMesa();
+  await createTableReserva();
 } 
