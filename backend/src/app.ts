@@ -1,5 +1,5 @@
-import { configuratedb } from './Datenbank/configdb';
-import express from 'express'
+import { configuratedb } from "./Datenbank/configdb";
+import express from "express";
 
 const app = express();
 
