@@ -1,9 +1,12 @@
 import { Database } from "sqlite3";
 import { open } from "sqlite";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export async function openDb() {
 	return open({
-		filename: "./backend/src/BasisData/database.db",
+		filename: process.env.PATH_TO_DB || "./backend/src/BasisData/database.db",
 		driver: Database,
 	});
 }

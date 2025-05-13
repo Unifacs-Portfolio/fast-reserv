@@ -1,8 +1,11 @@
 import { app } from "./app";
+import dotenv from "dotenv";
 
-app.listen(3000, (err) => {
+dotenv.config();
+
+app.listen(process.env.PORT, (err) => {
 	if (err) {
 		console.error(err);
 	}
-	console.log("server running");
+	console.log("Servidor rodando na porta 3000");
 });
