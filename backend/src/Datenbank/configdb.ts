@@ -1,4 +1,3 @@
-import express from 'express'
 import { Database } from 'sqlite3'
 import { open } from 'sqlite'
 
@@ -26,9 +25,6 @@ export async function createTableReserva() {
 
 // Executar a tabela e banco
 export async function configuratedb() {
-  const app = express();
-  app.use(express.json())
-  createTableMesa();
-  createTableReserva();
-
+  await createTableMesa();
+  await createTableReserva();
 } 
