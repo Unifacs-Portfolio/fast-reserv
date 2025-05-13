@@ -1,11 +1,9 @@
 import { Database } from 'sqlite3'
 import { open } from 'sqlite'
 
-// you would have to import / invoke this in another file
-
 export async function openDb () {
   return open({
-    filename: './backend/BasisData/database.db',
+    filename: './backend/src/BasisData/database.db',
     driver: Database
   })
 }
@@ -25,6 +23,6 @@ export async function createTableReserva() {
 
 // Executar a tabela e banco
 export async function configuratedb() {
-  await createTableMesa();
-  await createTableReserva();
+  createTableMesa();
+  createTableReserva();
 } 
