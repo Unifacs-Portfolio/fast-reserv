@@ -1,9 +1,10 @@
 import { Database } from 'sqlite3'
 import { open } from 'sqlite'
+import { env } from '../env'
 
 export async function openDb() {
 	return open({
-		filename: './backend/src/BasisData/database.db',
+		filename: String(env.PATH_TO_DB),
 		driver: Database,
 	})
 }

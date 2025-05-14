@@ -1,6 +1,7 @@
 import { app } from './app'
+import { env } from './env'
 
-app.listen(3000, (err) => {
+app.listen(Number(env.PORT), (err) => {
 	if (err) {
 		console.error(err)
 	}
