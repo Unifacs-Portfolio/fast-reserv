@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsup backend/src --out-dir backend/build",
-    "start": "node backend/build/app.js",
-    "dev": "tsx watch backend/src/app.ts"
+    "start": "node backend/build/server.js",
+    "dev": "tsx watch backend/src/server.ts"
   },
   "author": "",
   "license": "ISC",
