@@ -1,8 +1,8 @@
 import { Database } from 'sqlite3'
 import { open } from 'sqlite'
-import dotenv from "dotenv";
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
 export async function openDb() {
 	return open({

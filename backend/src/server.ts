@@ -1,7 +1,7 @@
 import { app } from './app'
-import dotenv from "dotenv";
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
 app.listen(process.env.PORT, (err) => {
 	if (err) {
