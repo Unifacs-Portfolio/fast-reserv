@@ -4,7 +4,7 @@ import { env } from '../env'
 
 export async function openDb() {
 	return open({
-		filename: String(env.PATH_TO_DB),
+		filename: env.PATH_TO_DB,
 		driver: Database,
 	})
 }
