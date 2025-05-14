@@ -1,9 +1,7 @@
 import { app } from './app'
-import dotenv from 'dotenv'
+import { env } from './env'
 
-dotenv.config()
-
-app.listen(process.env.PORT, (err) => {
+app.listen(Number(env.PORT), (err) => {
 	if (err) {
 		console.error(err)
 	}
