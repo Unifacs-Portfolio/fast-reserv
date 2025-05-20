@@ -1,10 +1,10 @@
-import { Reserva } from '../entities/Reserva'
-import type { ReservaRepository } from '../repositories/ReservaRepository'
-import type { StatusReserva } from '../entities/Reserva'
 import { randomUUID } from 'node:crypto'
+import { Reserva } from '../entities/Reserva'
+import type { StatusReserva } from '../entities/Reserva'
+import type { ReservaRepository } from '../repositories/ReservaRepository'
 
 interface CriarReservaRequest {
-	mesaId: string
+	mesaId: number
 	nomeResponsavel: string
 	data: Date
 	hora: Date
@@ -36,7 +36,7 @@ export class CriarReservaUseCase {
 		if (reservaExistente) {
 			throw new Error('Já existe uma reserva para esta mesa')
 		}
-		const reserva = await this.reservaRepository.create(
+		await this.reservaRepository.create(
 			new Reserva({
 				id: randomUUID(),
 				mesaId,
@@ -47,6 +47,10 @@ export class CriarReservaUseCase {
 				status,
 			}),
 		)
+		const reserva = await this.reservaRepository.findByMesaId(mesaId)
+		if (!reserva) {
+			throw new Error('Erro ao buscar reserva após criação')
+		}
 		return {
 			reserva,
 		}

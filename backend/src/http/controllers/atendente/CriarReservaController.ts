@@ -1,25 +1,30 @@
-import type { Request, Response } from 'express'
+import type { RequestHandler } from 'express'
 import { z } from 'zod'
+import { makeCriarReservaUseCase } from '../../../useCases/factories/makeCriarReservaUseCase'
 
 const bodySchema = z.object({
 	nomeResponsavel: z.string().min(1),
-	data: z.string().datetime(),
-	hora: z.string().datetime(),
+	data: z.string().date(),
+	hora: z.string().time(),
 	quantidadePessoas: z.number().int().positive().min(1),
+	mesaId: z.number(),
 })
 
-export async function criarReservaController(req: Request, res: Response) {
-	const { nomeResponsavel, data, hora, quantidadePessoas } = bodySchema.parse(
-		req.body,
-	)
+export const criarReservaController: RequestHandler = async (req, res) => {
+	const { nomeResponsavel, data, hora, quantidadePessoas, mesaId } =
+		bodySchema.parse(req.body)
+	const criarReservaUseCase = makeCriarReservaUseCase()
 	try {
-		// criarReservaUseCase
-		console.log('Criando reserva...')
-		return res.status(404).json({
-			message: 'Not found',
+		const reserva = await criarReservaUseCase.execute({
+			nomeResponsavel,
+			data: new Date(data),
+			hora: new Date(hora),
+			quantidadePessoas,
+			mesaId,
 		})
+		res.status(201).json(reserva)
 	} catch (error) {
 		console.error(error)
-		return res.status(500).json({ message: 'Erro interno do servidor' })
+		res.status(500).json({ message: 'Erro interno do servidor' })
 	}
 }

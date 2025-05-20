@@ -1,5 +1,5 @@
-import { Database } from 'sqlite3'
 import { open } from 'sqlite'
+import { Database } from 'sqlite3'
 import { env } from '../env'
 
 export async function openDb() {
@@ -13,7 +13,7 @@ export async function openDb() {
 export async function createTableMesa() {
 	openDb().then((db) => {
 		db.exec(
-			'CREATE TABLE IF NOT EXISTS Mesa (numero INTEGER PRIMARY KEY, status TEXT)',
+			'CREATE TABLE IF NOT EXISTS Mesa (id INTEGER PRIMARY KEY, status TEXT)',
 		)
 	})
 }
@@ -21,7 +21,7 @@ export async function createTableMesa() {
 export async function createTableReserva() {
 	openDb().then((db) => {
 		db.exec(
-			'CREATE TABLE IF NOT EXISTS Reserva (id INTEGER PRIMARY KEY AUTOINCREMENT, numeroMesa INTEGER,nomeResponsavel TEXT UNIQUE, qtdPessoas INTEGER, data TEXT, hora TEXT, statusUtilizadas TEXT,garcom TEXT,FOREIGN KEY (numeroMesa) REFERENCES Mesa(numero))',
+			'CREATE TABLE IF NOT EXISTS Reserva (id TEXT PRIMARY KEY NOT NULL , mesaId INTEGER,nomeResponsavel TEXT UNIQUE, quantidadePessoas INTEGER, data TEXT, hora TEXT, status TEXT,FOREIGN KEY (mesaId) REFERENCES Mesa(id))',
 		)
 	})
 }
