@@ -9,7 +9,7 @@ export type StatusReserva = 'aguardando' | 'confirmada' | 'cancelada'
 
 interface ReservaRequest {
 	id: string
-	mesaId: string
+	mesaId: number
 	nomeResponsavel: string
 	data: Date
 	hora: Date
@@ -18,7 +18,7 @@ interface ReservaRequest {
 }
 export class Reserva {
 	private readonly _id: string
-	private readonly _mesaId: string
+	private readonly _mesaId: number
 	private _nomeResponsavel: string
 	private _data: Date
 	private _hora: Date
@@ -56,7 +56,7 @@ export class Reserva {
 		return this._id
 	}
 
-	get mesaId(): string {
+	get mesaId(): number {
 		return this._mesaId
 	}
 
