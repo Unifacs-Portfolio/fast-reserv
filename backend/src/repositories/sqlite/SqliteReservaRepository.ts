@@ -12,19 +12,28 @@ export class SqliteReservaRepository implements ReservaRepository {
 			}
 		})
 	}
-	async create(reserva: Reserva): Promise<void> {
-		this.db.run(
-			'INSERT INTO reservas (id, mesaId, nomeResponsavel, data, hora, quantidadePessoas, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
-			[
-				reserva.id,
-				reserva.mesaId,
-				reserva.nomeResponsavel,
-				reserva.data,
-				reserva.hora,
-				reserva.quantidadePessoas,
-				reserva.status,
-			],
-		)
+	async create(reserva: Reserva): Promise<Reserva> {
+		return new Promise((resolve, reject) => {
+			this.db.run(
+				'INSERT INTO reservas (id, mesaId, nomeResponsavel, data, hora, quantidadePessoas, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+				[
+					reserva.id,
+					reserva.mesaId,
+					reserva.nomeResponsavel,
+					reserva.data,
+					reserva.hora,
+					reserva.quantidadePessoas,
+					reserva.status,
+				],
+				(result: Reserva, err: Error | null) => {
+					if (err) {
+						reject(new Error(`Erro ao criar reserva: ${err.message}`))
+					} else {
+						resolve(result)
+					}
+				},
+			)
+		})
 	}
 
 	async findByMesaId(mesaId: string): Promise<Reserva | null> {

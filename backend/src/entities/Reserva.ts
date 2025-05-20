@@ -5,7 +5,7 @@
  * (uma regra que garante integridade da entidade Reserva)
  */
 
-type StatusReserva = 'aguardando' | 'confirmada' | 'cancelada'
+export type StatusReserva = 'aguardando' | 'confirmada' | 'cancelada'
 
 interface ReservaRequest {
 	id: string
