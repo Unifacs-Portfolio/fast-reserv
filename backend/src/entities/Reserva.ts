@@ -4,6 +4,18 @@
  * Exemplo: quantidade de pessoas não pode ser não positivo
  * (uma regra que garante integridade da entidade Reserva)
  */
+
+type StatusReserva = 'aguardando' | 'confirmada' | 'cancelada'
+
+interface ReservaRequest {
+	id: string
+	mesaId: string
+	nomeResponsavel: string
+	data: Date
+	hora: Date
+	quantidadePessoas: number
+	status?: StatusReserva
+}
 export class Reserva {
 	private readonly _id: string
 	private readonly _mesaId: string
@@ -11,17 +23,25 @@ export class Reserva {
 	private _data: Date
 	private _hora: Date
 	private _quantidadePessoas: number
-	constructor(
-		id: string,
-		mesaId: string,
-		nomeResponsavel: string,
-		data: Date,
-		hora: Date,
-		quantidadePessoas: number,
-	) {
+	private _status: StatusReserva = 'aguardando'
+
+	constructor({
+		id,
+		mesaId,
+		nomeResponsavel,
+		data,
+		hora,
+		quantidadePessoas,
+		status,
+	}: ReservaRequest) {
 		if (quantidadePessoas <= 0) {
 			throw new Error('Quantidade de pessoas deve ser maior que zero')
 		}
+
+		if (status) {
+			this._status = status
+		}
+
 		// Outras validações podem ser adicionadas aqui,
 		// podem ser criados metodos para isso
 		this._id = id
@@ -31,6 +51,7 @@ export class Reserva {
 		this._hora = hora
 		this._quantidadePessoas = quantidadePessoas
 	}
+
 	get id(): string {
 		return this._id
 	}
@@ -53,5 +74,9 @@ export class Reserva {
 
 	get quantidadePessoas(): number {
 		return this._quantidadePessoas
+	}
+
+	get status(): StatusReserva {
+		return this._status
 	}
 }

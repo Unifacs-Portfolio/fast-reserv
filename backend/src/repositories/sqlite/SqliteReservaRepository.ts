@@ -1,7 +1,7 @@
-import type { Reserva } from '../../entities/Reserva'
-import type { ReservaRepository } from '../ReservaRepository'
 import { Database } from 'sqlite3'
+import type { Reserva } from '../../entities/Reserva'
 import { env } from '../../env'
+import type { ReservaRepository } from '../ReservaRepository'
 
 export class SqliteReservaRepository implements ReservaRepository {
 	private db: Database
@@ -14,7 +14,7 @@ export class SqliteReservaRepository implements ReservaRepository {
 	}
 	async create(reserva: Reserva): Promise<void> {
 		this.db.run(
-			'INSERT INTO reservas (id, mesaId, nomeResponsavel, data, hora, quantidadePessoas) VALUES (?, ?, ?, ?, ?, ?)',
+			'INSERT INTO reservas (id, mesaId, nomeResponsavel, data, hora, quantidadePessoas, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
 			[
 				reserva.id,
 				reserva.mesaId,
@@ -22,6 +22,7 @@ export class SqliteReservaRepository implements ReservaRepository {
 				reserva.data,
 				reserva.hora,
 				reserva.quantidadePessoas,
+				reserva.status,
 			],
 		)
 	}
