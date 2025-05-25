@@ -51,4 +51,20 @@ export class SqliteReservaRepository implements ReservaRepository {
 			)
 		})
 	}
+
+	async deleteReservaByMesaId(mesaId: number): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.db.run(
+				'DELETE FROM Reserva WHERE mesaId = ?',
+				[mesaId],
+				(err: Error | null) => {
+					if (err) {
+						reject(new Error(`Erro ao deletar reserva: ${err.message}`))
+					} else {
+						resolve()
+					}
+				},
+			)
+		})
+	}
 }
