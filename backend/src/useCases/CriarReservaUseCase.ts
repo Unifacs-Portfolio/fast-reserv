@@ -6,8 +6,8 @@ import type { ReservaRepository } from '../repositories/ReservaRepository'
 interface CriarReservaRequest {
 	mesaId: number
 	nomeResponsavel: string
-	data: Date
-	hora: Date
+	data: string
+	hora: string
 	quantidadePessoas: number
 	status?: StatusReserva
 }

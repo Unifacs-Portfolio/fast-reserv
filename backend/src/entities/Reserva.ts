@@ -11,8 +11,8 @@ interface ReservaRequest {
 	id: string
 	mesaId: number
 	nomeResponsavel: string
-	data: Date
-	hora: Date
+	data: string
+	hora: string
 	quantidadePessoas: number
 	status?: StatusReserva
 }
@@ -20,8 +20,8 @@ export class Reserva {
 	private readonly _id: string
 	private readonly _mesaId: number
 	private _nomeResponsavel: string
-	private _data: Date
-	private _hora: Date
+	private _data: string
+	private _hora: string
 	private _quantidadePessoas: number
 	private _status: StatusReserva = 'aguardando'
 
@@ -41,15 +41,52 @@ export class Reserva {
 		if (status) {
 			this._status = status
 		}
-
 		// Outras validações podem ser adicionadas aqui,
 		// podem ser criados metodos para isso
 		this._id = id
 		this._mesaId = mesaId
-		this._nomeResponsavel = nomeResponsavel
-		this._data = data
-		this._hora = hora
-		this._quantidadePessoas = quantidadePessoas
+		this._nomeResponsavel = this.validateNome(nomeResponsavel)
+		this._data = this.validateData(data)
+		this._hora = this.validateHora(hora)
+		this._quantidadePessoas = this.validateQuantidadePessoas(quantidadePessoas)
+	}
+
+	private validateData(data: string): string {
+		const regex = /^\d{4}-\d{2}-\d{2}$/
+		if (!regex.test(data)) {
+			throw new Error('Data inválida. O formato deve ser AAAA-MM-DD.')
+		}
+		const formatData = new Date(data)
+		return formatData.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
+	}
+
+	private validateHora(hora: string): string {
+		const regex = /^\d{2}:\d{2}$/
+		if (!regex.test(hora)) {
+			throw new Error('Hora invalidada, o formato deve ser HH:MM')
+		}
+		return hora
+	}
+
+	private validateQuantidadePessoas(quantidadePessoas: number): number {
+		if (quantidadePessoas <= 0) {
+			throw new Error('Quantidade de pessoas invalidas.')
+		}
+
+		if (!Number.isInteger(quantidadePessoas)) {
+			throw new Error('Nao pode numeros decimais.')
+		}
+		return quantidadePessoas
+	}
+
+	private validateNome(nomeResponsavel: string): string {
+		const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ'\-]+(?: [A-Za-zÀ-ÖØ-öø-ÿ'\-]+)*$/
+		if (!regex.test(nomeResponsavel)) {
+			throw new Error(
+				'Nao pode colocar numeros ou caracteres especiais em nomes.',
+			)
+		}
+		return nomeResponsavel
 	}
 
 	get id(): string {
@@ -64,11 +101,11 @@ export class Reserva {
 		return this._nomeResponsavel
 	}
 
-	get data(): Date {
+	get data(): string {
 		return this._data
 	}
 
-	get hora(): Date {
+	get hora(): string {
 		return this._hora
 	}
 
