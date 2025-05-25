@@ -14,17 +14,13 @@ export const criarReservaController: RequestHandler = async (req, res) => {
 	const { nomeResponsavel, data, hora, quantidadePessoas, mesaId } =
 		bodySchema.parse(req.body)
 	const criarReservaUseCase = makeCriarReservaUseCase()
-	try {
-		const reserva = await criarReservaUseCase.execute({
-			nomeResponsavel,
-			data: new Date(data),
-			hora: new Date(hora),
-			quantidadePessoas,
-			mesaId,
-		})
-		res.status(201).json(reserva)
-	} catch (error) {
-		console.error(error)
-		res.status(500).json({ message: 'Erro interno do servidor' })
-	}
+
+	const reserva = await criarReservaUseCase.execute({
+		nomeResponsavel,
+		data,
+		hora,
+		quantidadePessoas,
+		mesaId,
+	})
+	res.status(201).json(reserva)
 }
