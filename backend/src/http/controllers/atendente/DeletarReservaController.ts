@@ -10,8 +10,8 @@ export const deletarReservaController: RequestHandler = async (req, res) => {
 	const { mesaId } = bodySchema.parse(req.body)
 	const deletarReservaUseCase = makeDeletarReservaUseCase()
 
-	const reserva = await deletarReservaUseCase.execute({
+	await deletarReservaUseCase.execute({
 		mesaId,
 	})
-	res.status(201).json(reserva)
+	res.status(204).json()
 }
