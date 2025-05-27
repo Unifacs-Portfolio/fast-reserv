@@ -4,7 +4,7 @@ export default mergeConfig(
 	vitestConfig,
 	defineConfig({
 		test: {
-			include: ['**/src/useCases/*.{test,spec}.ts'],
+			include: ['backend/src/useCases/**/*.{test,spec}.ts'],
 		},
 	}),
 )
