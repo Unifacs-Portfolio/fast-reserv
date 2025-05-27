@@ -1,3 +1,4 @@
 node_modules/
 backend/build/
 .env
+coverage/
