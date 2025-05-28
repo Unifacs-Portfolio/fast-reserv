@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { InmemoryCriarReservaRepository } from '../repositories/inMemory/InMemoryCriarReservaRepository'
+import { InMemoryCriarReservaRepository } from '../repositories/inMemory/InMemoryCriarReservaRepository'
 import { CriarReservaUseCase } from './CriarReservaUseCase'
 
 describe('CriarReservaUseCase', () => {
-	let reservaRepository: InmemoryCriarReservaRepository
+	let reservaRepository: InMemoryCriarReservaRepository
 	let systemUnderTest: CriarReservaUseCase
 	beforeEach(() => {
-		reservaRepository = new InmemoryCriarReservaRepository()
+		reservaRepository = new InMemoryCriarReservaRepository()
 		systemUnderTest = new CriarReservaUseCase(reservaRepository)
 	})
 	it('deve ser possível criar uma reserva', async () => {

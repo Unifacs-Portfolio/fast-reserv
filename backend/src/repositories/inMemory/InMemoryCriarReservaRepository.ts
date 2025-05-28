@@ -1,7 +1,7 @@
 import type { Reserva } from '../../entities/Reserva'
 import type { ReservaRepository } from '../ReservaRepository'
 
-export class InmemoryCriarReservaRepository implements ReservaRepository {
+export class InMemoryCriarReservaRepository implements ReservaRepository {
 	public reservas: Reserva[] = []
 
 	async create(reserva: Reserva): Promise<Reserva> {
