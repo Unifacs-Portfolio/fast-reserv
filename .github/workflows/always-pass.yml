@@ -1,5 +1,7 @@
 # .github/workflows/always-pass.yml
 name: Dummy Check
+permissions:
+  contents: read
 
 on:
   pull_request:
