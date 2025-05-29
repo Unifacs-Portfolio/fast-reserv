@@ -89,6 +89,10 @@ export class Reserva {
 		return nomeResponsavel
 	}
 
+	public confirmarReserva(): void {
+		this._status = 'confirmada'
+	}
+
 	get id(): string {
 		return this._id
 	}
