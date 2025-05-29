@@ -1,10 +1,15 @@
 /* ==================================================
              RESET & CONFIGURAÇÕES GLOBAIS
 ================================================== */
+/* Aplica o "box-sizing: border-box" a todos os elementos, garantindo que padding e border sejam incluídos no cálculo da largura/altura */
 * {
     box-sizing: border-box;
 }
 
+/* Define as configurações globais para o body: 
+   - Remove margens e paddings padrão para evitar espaços indesejados;
+   - Define uma cor de fundo (tom de cinza claro), cor padrão para texto e fonte sans-serif;
+   - Garante que o body ocupe 100% da altura disponível. */
 body {
     margin: 0;
     padding: 0;
@@ -17,6 +22,8 @@ body {
 /* ==================================================
               FONTES PERSONALIZADAS
 ================================================== */
+/* Define uma fonte personalizada chamada "Chatime". Usa o arquivo localizado em "../fonts/Chatime.ttf"
+   e especifica que é uma fonte normal (sem negrito e itálico) */
 @font-face {
     font-family: "Chatime";
     src: url("../fonts/Chatime.ttf") format("truetype");
@@ -24,6 +31,7 @@ body {
     font-style: normal;
 }
 
+/* Aplica a fonte personalizada "Chatime" aos elementos <h1>, define o tamanho do título, cor, centralização e margem superior. */
 h1 {
     font-family: "Chatime", sans-serif;
     font-size: 3rem;
@@ -35,6 +43,11 @@ h1 {
 /* ==================================================
                 ESTILIZAÇÃO DE CARDS 
 ================================================== */
+/* Define a aparência básica dos cards:
+   - Sem borda e com cantos ligeiramente arredondados;
+   - Adiciona uma sombra sutil para dar profundidade;
+   - Define uma transição suave nos efeitos (transform e box-shadow) ao interagir com o mouse;
+   - Espaço inferior para separar os cards. */
 .card {
     border: none;
     border-radius: 0.5rem;
@@ -43,16 +56,34 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
+/* Regula a área que envolve os cards (#card-section):
+   - Adiciona espaçamento vertical (padding);
+   - Limita a largura máxima a 1200px para não esticar demais em telas grandes;
+   - Centraliza a seção horizontalmente com margin auto. */
+#card-section {
+    padding: 2rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Efeito de hover para os cards:
+   - Ao passar o mouse, o card se desloca levemente para cima;
+   - Aumenta a intensidade da sombra, dando um efeito de elevação. */
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
+/* Estiliza o cabeçalho dos cards:
+   - Deixa o texto em negrito e em letras maiúsculas, destacando o título do card. */
 .card-header {
     font-weight: bold;
     text-transform: uppercase;
 }
 
+/* Estiliza o corpo dos cards:
+   - Adiciona espaçamento interno para o conteúdo ficar confortável;
+   - Define um fundo branco e arredonda os cantos para criar um efeito de "card" limpo e moderno. */
 .card-body {
     padding: 1.5rem;
     background-color: #fff;
@@ -62,6 +93,11 @@ h1 {
 /* ==================================================
                   RODAPÉ
 ================================================== */
+/* Estiliza o rodapé:
+   - Fundo escuro com texto branco, centralizado;
+   - Adiciona padding para espaçamento vertical;
+   - Define a largura total, altura fixa e posiciona na parte inferior da página (quando usado com layouts que exigem fixação ou 
+     em conjunto com o container de conteúdo). */
 #footer {
     background-color: #212529;
     color: white;
@@ -72,6 +108,8 @@ h1 {
     bottom: 0;
 }
 
+/* Garante que o conteúdo principal (#content-wrap) tenha altura mínima suficiente para empurrar o rodapé para o final da viewport.
+   Aqui é subtraída a altura do rodapé (40px) da altura total da viewport. */
 #content-wrap {
     min-height: calc(100vh - 40px);
 }
@@ -79,6 +117,10 @@ h1 {
 /* ==================================================
                 ESTILIZAÇÃO DE ALERTAS
 ================================================== */
+/* Define o estilo básico para as notificações:
+   - Padding e margem inferior para espaçamento;
+   - Borda arredondada e transparente inicialmente;
+   - Transição suave para efeitos (como fade out). */
 .alert {
     padding: 15px;
     margin-bottom: 10px;
@@ -88,35 +130,42 @@ h1 {
     transition: opacity 0.5s ease;
 }
 
-/* Tipos de alertas */
+/* Tipos de alertas com cores específicas */
+
+/* Alerta de informação: Fundo azul claro, borda e texto em tom de azul */
 .alert-info {
     background-color: #d9edf7;
     border-color: #bce8f1;
     color: #31708f;
 }
 
+/* Alerta de sucesso: Fundo verde claro, borda e texto em tom de verde */
 .alert-success {
     background-color: #dff0d8;
     border-color: #d6e9c6;
     color: #3c763d;
 }
 
+/* Alerta de aviso: Fundo amarelo claro, borda e texto em tom de amarelo */
 .alert-warning {
     background-color: #fcf8e3;
     border-color: #faebcc;
     color: #e9a838;
 }
 
+/* Alerta de perigo/error: Fundo vermelho claro, borda e texto em tom de vermelho */
 .alert-danger {
     background-color: #f2dede;
     border-color: #ebccd1;
     color: #a94442;
 }
 
+/* Classe para efeito de fade, reduzindo a opacidade para 0 */
 .fade {
     opacity: 0;
 }
 
+/* Estiliza o texto do rodapé adicional, centralizando e aplicando um padding relativo e negrito */
 .footer-text {
     text-align: center;
     padding: 20px;

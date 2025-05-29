@@ -1,49 +1,36 @@
 <!DOCTYPE html>
-<html lang="pt-BR"> <!-- Declaração do tipo de documento e idioma definido como português do Brasil -->
+<html lang="pt-BR">
 
 <head>
-  <title>Dashboard do Gerente</title> <!-- Título exibido na aba do navegador -->
-  <meta charset="UTF-8"> <!-- Configuração de codificação de caracteres UTF-8 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Torna a página responsiva em dispositivos móveis -->
-
-  <!-- Bootstrap CDN: Estilos e scripts -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Estilos Bootstrap -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Script Bootstrap -->
-
-  <!-- Link para o CSS personalizado -->
-  <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <!-- Link para o JavaScript personalizado -->
-  <script src="../assets/js/main.js"></script>
-
-  <!-- Link para a API de relatórios -->
-  <script src="../assets/js/reportApi.js"></script>
+   <title>Painel do Gerente</title><!-- Título da página -->
+   <meta charset="UTF-8"><!-- Configuração do conjunto de caracteres para UTF-8 -->
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Responsividade para dispositivos móveis -->
+   <!-- Bootstrap CDN: Estilos e scripts -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+   <!-- Link para o CSS -->
+   <link rel="stylesheet" href="../frontend/public/assets/css/styles.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
   <!-- Navbar: Barra de navegação -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!-- Estilização da barra de navegação -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="index.html">Menu</a> <!-- Logo do restaurante -->
+      <a class="navbar-brand" href="index.html">Menu</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
-        <!-- Botão para dispositivos móveis -->
-        <span class="navbar-toggler-icon"></span> <!-- Ícone de alternância -->
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav"> <!-- Menu colapsável -->
-        <ul class="navbar-nav ms-auto"> <!-- Lista de links da barra de navegação -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="attendent.html">Atendente</a> <!-- Link para a página do atendente -->
+            <a class="nav-link" href="attendent.html">Atendente</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="waiter.html">Garçom</a> <!-- Link para a página do garçom -->
+            <a class="nav-link" href="waiter.html">Garçom</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria aria-current="page" href="manager.html">Gerente</a>
-            <!-- Link ativo para a página do gerente -->
+            <a class="nav-link active" aria-current="page" href="manager.html">Gerente</a><!-- Link ativo -->
           </li>
         </ul>
       </div>
@@ -51,52 +38,81 @@
   </nav>
 
   <!-- Conteúdo Principal -->
-  <div id="content-wrap" class=" flex-fill container py-4">
-    <main class="container mt-5"> <!-- Main com margem superior para espaçamento -->
-      <h1 class="mb-4">Painel do Gerente</h1> <!-- Título principal da página -->
+  <div id="content-wrap" class="flex-fill container py-4">
+    <main class="container mt-5">
+      <h1 class="mb-4">Painel do Gerente</h1>
 
       <!-- Card para geração de relatórios -->
-      <div class="card mb-4 shadow-sm"> <!-- Card com sombra e margem inferior -->
-        <div class="card-header bg-danger text-white"> <!-- Cabeçalho com fundo vermelha --> 
-          Gerar Relatório </div>
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-danger text-white">
+          Gerar Relatório
+        </div>
         <div class="card-body">
-          <form id="reportForm"> <!-- Formulário para entrada de dados -->
-            <div class="row">
-              <div class="col-md-5 mb-3"> 
-                <label for="startDate" class="form-label">Data Inicial</label>
+          <form id="reportForm">
+            <!-- Seleção do tipo de relatório -->
+            <div class="mb-3">
+              <label for="reportType" class="form-label">Tipo de Relatório</label>
+              <select class="form-select" id="reportType" name="reportType" required>
+                <option value="" disabled selected>Selecione o tipo de relatório</option>
+                <option value="periodo">Reservas por Período</option>
+                <option value="mesaConfirmada">Reservas por Mesa Confirmada</option>
+              </select>
+            </div>
 
-                <!-- Campo para seleção da data inicial -->
-                <input type="date" class="form-control" id="startDate" name="startDate" required>
-              </div>
-              <div class="col-md-5 mb-3">
-                <label for="endDate" class="form-label">Data Final</label> <!-- Campo para seleção da data final -->
-                <input type="date" class="form-control" id="endDate" name="endDate" required>
-              </div>
-              <div class="col-md-2 d-flex align-items-end mb-3">
-                <button type="submit" class="btn btn-success w-100">Gerar</button> <!-- Botão para gerar relatório -->
+            <!-- Campos para relatório de Período -->
+            <div id="commonFields"> 
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="startDate" class="form-label">Data Inicial</label>
+                  <input type="date" class="form-control" id="startDate" name="startDate">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="endDate" class="form-label">Data Final</label>
+                  <input type="date" class="form-control" id="endDate" name="endDate">
+                </div>
               </div>
             </div>
+
+            <!-- Campos para relatório de Mesa Confirmada -->
+            <div id="mesaConfirmadaFields"> 
+              <div class="mb-3">
+                <label for="garcom" class="form-label">Garçom</label>
+                <select class="form-select" id="garcom" name="garcom">
+                  <option value="" disabled selected>Selecione o Garçom</option>
+                  <option value="1">Marcilio</option>
+                  <option value="2">Roan</option>
+                  <option value="3">Marcus</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="mesa" class="form-label">Mesa</label>
+                <input type="text" class="form-control" id="mesa" name="mesa">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <button type="submit" class="btn btn-success">Gerar</button>
+            </div>
           </form>
-          <div id="reportFeedback" class="mt-3"></div> <!-- Div para exibição de mensagens de feedback -->
+          <div id="reportFeedback" class="mt-3"></div>
         </div>
       </div>
 
       <!-- Card para exibir os resultados do relatório -->
-      <div class="card shadow-sm"> <!-- Card estilizado para resultados -->
-        <div class="card-header bg-secondary text-white"> <!-- Cabeçalho com fundo cinza -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
           Resultados do Relatório
         </div>
         <div class="card-body">
           <table class="table table-striped" id="reportTable">
-            <!-- Tabela com estilo listrado para exibição de métricas -->
             <thead>
               <tr>
-                <th>Métrica</th> <!-- Coluna para nome das métricas -->
-                <th>Valor</th> <!-- Coluna para valores das métricas -->
+                <th>Métrica</th>
+                <th>Valor</th>
               </tr>
             </thead>
             <tbody>
-              <!-- Dados do relatório serão inseridos dinamicamente -->
+              <!-- Dados do relatório inseridos dinamicamente -->
             </tbody>
           </table>
         </div>
@@ -105,57 +121,104 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-dark text-white py-4 mt-5" id="footer"> <!-- Rodapé estilizado com fundo escuro -->
+  <footer class="bg-dark text-white py-4 mt-5" id="footer">
     <div class="container text-center">
       <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
-      <!-- Texto de direitos autorais -->
     </div>
   </footer>
 
   <!-- Script para manipulação do Dashboard do Gerente -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Manipulação do formulário para geração de relatório
-      document.getElementById('reportForm').addEventListener('submit', function (e) {
-        e.preventDefault(); // Previne o comportamento padrão do formulário
-
-        const startDate = document.getElementById('startDate').value; // Obtem a data inicial
-        const endDate = document.getElementById('endDate').value; // Obtem a data final
-
-        // Validação simples do intervalo de datas
-        if (new Date(startDate) > new Date(endDate)) {
-          document.getElementById('reportFeedback').innerHTML =
-            '<div class="alert alert-danger" role="alert">A data inicial deve ser anterior à data final.</div>';
-          return;
+      // Exibe e oculta campos adicionais com base no tipo de relatório selecionado
+      document.getElementById('reportType').addEventListener('change', function () {
+        var type = this.value;
+        if (type === 'periodo') {
+          document.getElementById('commonFields').style.display = 'block';
+          document.getElementById('mesaConfirmadaFields').style.display = 'none';
+        } else if (type === 'mesaConfirmada') {
+          document.getElementById('commonFields').style.display = 'none';
+          document.getElementById('mesaConfirmadaFields').style.display = 'block';
+        } else {
+          document.getElementById('commonFields').style.display = 'none';
+          document.getElementById('mesaConfirmadaFields').style.display = 'none';
         }
-
-        // Chamaria uma função da reportApi para buscar dados reais. Aqui simulamos os dados.
-        generateReport(startDate, endDate);
       });
 
-      function generateReport(start, end) {
-        // Simulação dos dados do relatório
-        const reportData = [
-          { metric: 'Total de Reservas', value: 120 },
-          { metric: 'Reservas Concluídas', value: 95 },
-          { metric: 'Mesas Mais Utilizadas', value: 'Mesa A1, Mesa B2' },
-          { metric: 'Reservas Canceladas', value: 5 }
-        ];
+      // Manipulação do formulário para geração do relatório
+      document.getElementById('reportForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const reportType = document.getElementById('reportType').value;
+        let reportData = [];
+        // Para relatório por período, as datas são obrigatórias
+        if (reportType === 'periodo') {
+          const startDate = document.getElementById('startDate').value;
+          const endDate = document.getElementById('endDate').value;
+          if (!startDate || !endDate) {
+            document.getElementById('reportFeedback').innerHTML =
+              '<div class="alert alert-danger" role="alert">Informe as datas inicial e final para o relatório por período.</div>';
+            return;
+          }
+          if (new Date(startDate) > new Date(endDate)) {
+            document.getElementById('reportFeedback').innerHTML =
+              '<div class="alert alert-danger" role="alert">A data inicial deve ser anterior à data final.</div>';
+            return;
+          }
+          reportData = generateReport(reportType, startDate, endDate);
+        }
+        // Para relatório de mesa confirmada, garçom e mesa são obrigatórios
+        else if (reportType === 'mesaConfirmada') {
+          const garcom = document.getElementById('garcom').value;
+          const mesa = document.getElementById('mesa').value;
+          if (!garcom || !mesa) {
+            document.getElementById('reportFeedback').innerHTML =
+          '<div class="alert alert-danger" role="alert">Selecione o garçom e informe a mesa para o relatório por mesa confirmada.</div>';
+            return;
+          }
+          reportData = generateReport(reportType, null, null, mesa, garcom);
+        }
 
-        const tbody = document.querySelector('#reportTable tbody'); // Seleciona o corpo da tabela
-        tbody.innerHTML = ''; // Limpa o conteúdo existente
+        // Exibe os dados ou mensagem de ausência de dados
+        const tbody = document.querySelector('#reportTable tbody');
+        tbody.innerHTML = '';
+        if (reportData.length === 0) {
+          document.getElementById('reportFeedback').innerHTML =
+            '<div class="alert alert-warning" role="alert">Nenhum dado encontrado para os parâmetros informados.</div>';
+        } else {
+          reportData.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${item.metric}</td>
+                <td>${item.value}</td>
+              `;
+            tbody.appendChild(tr);
+          });
+          document.getElementById('reportFeedback').innerHTML =
+            '<div class="alert alert-success" role="alert">Relatório gerado com sucesso!</div>';
+        }
+      });
 
-        reportData.forEach(item => { // Adiciona cada métrica como uma linha na tabela
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${item.metric}</td>
-            <td>${item.value}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-
-        document.getElementById('reportFeedback').innerHTML =
-          '<div class="alert alert-success" role="alert">Relatório gerado com sucesso!</div>'; // Exibe feedback de sucesso
+      // Função para simular a geração de relatórios
+      // Para "periodo", são exibidas as datas e métricas simuladas de reservas registradas e confirmadas
+      // Para "mesaConfirmada", são exibidos os dados do garçom selecionado, número da mesa e uma métrica simulada
+      function generateReport(reportType, start, end, mesa, garcom) {
+        let data = [];
+        if (reportType === 'periodo') {
+          data = [
+            { metric: 'Data Inicial de Análise', value: start },
+            { metric: 'Data Final de Análise', value: end },
+            { metric: 'Mesas Registradas pelo Atendente', value: 25 },
+            { metric: 'Mesas Confirmadas pelo Garçom', value: 20 }
+          ];
+        } else if (reportType === 'mesaConfirmada') {
+          const garcomName = (garcom === '1') ? 'Marcilio' : (garcom === '2') ? 'Roan' : (garcom === '3') ? 'Marcus' : '';
+          data = [
+            { metric: 'Garçom', value: garcomName },
+            { metric: 'Mesa', value: mesa },
+            { metric: 'Reservas Confirmadas', value: 8 }
+          ];
+        }
+        return data;
       }
     });
   </script>
