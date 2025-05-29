@@ -24,30 +24,7 @@
 </head>
 
 <body>
-  <!-- Navbar: Barra de navegação -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!-- Estilização com fundo escuro -->
-    <div class="container">
-      <a class="navbar-brand" href="index.html">Restaurante</a> <!-- Logo do restaurante -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
-        <!-- Botão para dispositivos móveis -->
-        <span class="navbar-toggler-icon"></span> <!-- Ícone de alternância -->
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav"> <!-- Menu colapsável para dispositivos menores -->
-        <ul class="navbar-nav ms-auto"> <!-- Lista de links alinhada à direita -->
-          <li class="nav-item">
-            <a class="nav-link" href="attendent.html">Atendente</a> <!-- Link para a página do atendente -->
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="waiter.html">Garçom</a> <!-- Link para a página do garçom -->
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="manager.html">Gerente</a> <!-- Link para a página do gerente -->
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+
 
   <!-- Conteúdo Principal -->
   <div id="content-wrap"> <!-- Div que encapsula o conteúdo principal -->
@@ -64,35 +41,63 @@
       <!-- Título e Descrição -->
       <div class="text-center my-4"> <!-- Texto centralizado com espaçamento vertical -->
         <h1 style="font-family: 'Chatime', sans-serif;">Bem-vindo ao Sistema de Reservas - 404 Café!</h1>
-        <!-- Título estilizado -->
         <h2 class="lead">Gerencie reservas, controle o atendimento e otimize os relatórios do seu restaurante de forma
-          intuitiva.</h2> <!-- Subtítulo descritivo -->
+          intuitiva.</h2>
       </div>
 
       <!-- Conteúdo Textual e Botões -->
       <div class="row">
-        <div class="col-lg-8 offset-lg-2"> <!-- Centraliza a coluna no layout -->
+        <div class="col-lg-8 offset-lg-2">
           <p class="lead">Inspirado no famoso erro digital "404", quando você pensa que o café “não foi encontrado”,
-            acaba
-            descobrindo um refúgio digital repleto de personalidade e conforto.</p> <!-- Descrição criativa -->
-          <p class="lead">Escolha sua função para começar:</p> <!-- Chamada para ação -->
-          <div class="mt-4 text-center"> <!-- Botões de navegação centralizados -->
-            <a class="btn btn-primary btn-lg me-2" href="attendent.html">Atendente</a> <!-- Botão para atender -->
-            <a class="btn btn-success btn-lg me-2" href="waiter.html">Garçom</a> <!-- Botão para garçom -->
-            <a class="btn btn-info btn-lg" href="manager.html">Gerente</a> <!-- Botão para gerente -->
-          </div>
-        </div>
-      </div>
+            acaba descobrindo um refúgio digital repleto de personalidade e conforto.</p>
+          <p class="lead">Escolha sua função para começar:</p>
+          <!--Card Atendente-->
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <a href="attendent.html" class="text-decoration-none text-dark">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h4 class="card-title">Atendente</h4>
+                    <p class="card-text">Inicia tarefas de atendimento e suporte aos clientes.</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <!--Card Garçom-->
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <a href="attendent.html" class="text-decoration-none text-dark">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h4 class="card-title">Garçom</h4>
+                      <p class="card-text">Responsável pelo serviço de mesa e atendimento no salão.</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <!--Card Gerente-->
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <a href="attendent.html" class="text-decoration-none text-dark">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h4 class="card-title">Gerente</h4>
+                        <p class="card-text">Administra reservas, operações e relatórios do restaurante.</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+
 
     </main>
   </div>
 
   <!-- Footer -->
   <div id="page-container"> <!-- Div para o rodapé -->
-    <footer class="bg-dark text-white py-4 mt-5" id="footer"> <!-- Rodapé estilizado com fundo escuro -->
+    <footer class="bg-dark text-white py-4 mt-5" id="footer">
       <div class="container text-center">
+        <!-- &copy; = © -->
         <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
-        <!-- Texto de direitos autorais -->
     </footer>
 </body>
 
