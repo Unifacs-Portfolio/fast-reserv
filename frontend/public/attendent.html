@@ -21,11 +21,11 @@
     <script src="../assets/js/reservationApi.js"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Restaurante</a> <!-- Logo do restaurante -->
+            <a class="navbar-brand" href="index.html">Menu</a> <!-- Logo do restaurante -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
                 <span class="navbar-toggler-icon"></span> <!-- Ícone de alternância para dispositivos móveis -->
@@ -48,72 +48,77 @@
     </nav>
 
     <!-- Conteúdo Principal -->
-    <main class="container mt-5">
-        <h1 class="mb-4">Painel do Atendente</h1> <!-- Título principal -->
-        <div class="row">
-            <!-- Seção do Formulário para Criar Reserva -->
-            <div class="col-md-6">
-                <div class="card shadow-sm mb-4"> <!-- Card estilizado com sombra -->
-                    <div class="card-header bg-primary text-white"> <!-- Cabeçalho com fundo azul -->
-                        Criar Nova Reserva
-                    </div>
-                    <div class="card-body">
-                        <form id="reservationForm">
-                            <div class="mb-3">
-                                <label for="date" class="form-label">Data</label> <!-- Campo para selecionar data -->
-                                <input type="date" class="form-control" id="date" name="date" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="time" class="form-label">Horário</label>
-                                <!-- Campo para selecionar horário -->
-                                <input type="time" class="form-control" id="time" name="time" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="table" class="form-label">Mesa</label> <!-- Campo para informar a mesa -->
-                                <input type="text" class="form-control" id="table" name="table" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="guests" class="form-label">Número de Pessoas</label>
-                                <!-- Campo para número de pessoas -->
-                                <input type="number" class="form-control" id="guests" name="guests" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Criar Reserva</button> <!-- Botão de envio -->
-                        </form>
-                        <div id="reservationFeedback" class="mt-3"></div> <!-- Div para feedback do usuário -->
+    <div id="content-wrap" class=" flex-fill container py-4">
+        <main class="container mt-5">
+            <h1 class="mb-4">Painel do Atendente</h1> <!-- Título principal -->
+            <div class="row">
+                <!-- Seção do Formulário para Criar Reserva -->
+                <div class="col-md-6">
+                    <div class="card shadow-sm mb-4"> <!-- Card estilizado com sombra -->
+                        <div class="card-header bg-primary text-white"> <!-- Cabeçalho com fundo azul -->
+                            Criar Nova Reserva
+                        </div>
+                        <div class="card-body">
+                            <form id="reservationForm">
+                                <div class="mb-3">
+                                    <label for="date" class="form-label">Data</label>
+                                    <!-- Campo para selecionar data -->
+                                    <input type="date" class="form-control" id="date" name="date" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="time" class="form-label">Horário</label>
+                                    <!-- Campo para selecionar horário -->
+                                    <input type="time" class="form-control" id="time" name="time" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="table" class="form-label">Mesa</label>
+                                    <!-- Campo para informar a mesa -->
+                                    <input type="text" class="form-control" id="table" name="table" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="guests" class="form-label">Número de Pessoas</label>
+                                    <!-- Campo para número de pessoas -->
+                                    <input type="number" class="form-control" id="guests" name="guests" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Criar Reserva</button>
+                                <!-- Botão de envio -->
+                            </form>
+                            <div id="reservationFeedback" class="mt-3"></div> <!-- Div para feedback do usuário -->
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Seção da Tabela de Reservas -->
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-secondary text-white"> <!-- Cabeçalho com fundo cinza -->
-                        Reservas Existentes
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped" id="reservationsTable"> <!-- Tabela estilizada -->
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Data</th>
-                                    <th>Horário</th>
-                                    <th>Mesa</th>
-                                    <th>Número de Pessoas</th>
-                                    <th>Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Linhas dinâmicas serão inseridas aqui -->
-                            </tbody>
-                        </table>
+                <!-- Seção da Tabela de Reservas -->
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-secondary text-white"> <!-- Cabeçalho com fundo cinza -->
+                            Reservas Existentes
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped" id="reservationsTable"> <!-- Tabela estilizada -->
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Data</th>
+                                        <th>Horário</th>
+                                        <th>Mesa</th>
+                                        <th>Número de Pessoas</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Linhas dinâmicas serão inseridas aqui -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5" id="footer">
+    <footer class="bg-dark text-white py-4 mt-auto" id="footer">
         <div class="container text-center">
             <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
         </div>

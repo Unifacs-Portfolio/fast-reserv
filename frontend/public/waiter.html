@@ -23,11 +23,11 @@
     <script src="../assets/js/reservationApi.js"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!-- Navbar: Barra de navegação -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!-- Barra de navegação com fundo escuro -->
         <div class="container">
-            <a class="navbar-brand" href="index.html">Restaurante</a> <!-- Logo do restaurante -->
+            <a class="navbar-brand" href="index.html">Menu</a> <!-- Logo do restaurante -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
                 <!-- Botão de alternância para dispositivos móveis -->
@@ -51,34 +51,36 @@
     </nav>
 
     <!-- Conteúdo Principal -->
-    <main class="container mt-5"> <!-- Main com margem superior para espaçamento -->
-        <h1 class="mb-4">Painel do Garçom</h1> <!-- Título principal da página -->
+    <div id="content-wrap" class=" flex-fill container py-4">
+        <main class="container mt-5"> <!-- Main com margem superior para espaçamento -->
+            <h1 class="mb-4">Painel do Garçom</h1> <!-- Título principal da página -->
 
-        <!-- Card para exibição de reservas pendentes -->
-        <div class="card shadow-sm mb-4"> <!-- Card com sombra e margem inferior -->
-            <div class="card-header bg-success text-white"> <!-- Cabeçalho com fundo verde -->
-                Reservas Pendentes de Confirmação
+            <!-- Card para exibição de reservas pendentes -->
+            <div class="card shadow-sm mb-4"> <!-- Card com sombra e margem inferior -->
+                <div class="card-header bg-success text-white"> <!-- Cabeçalho com fundo verde -->
+                    Reservas Pendentes de Confirmação
+                </div>
+                <div class="card-body">
+                    <div id="waiterFeedback"></div> <!-- Div para exibição de mensagens de feedback -->
+                    <table class="table table-striped" id="reservationsTable"> <!-- Tabela estilizada -->
+                        <thead>
+                            <tr>
+                                <th>ID</th> <!-- Coluna para o ID da reserva -->
+                                <th>Data</th> <!-- Coluna para a data da reserva -->
+                                <th>Horário</th> <!-- Coluna para o horário da reserva -->
+                                <th>Mesa</th> <!-- Coluna para a mesa reservada -->
+                                <th>Nº de Pessoas</th> <!-- Coluna para o número de pessoas -->
+                                <th>Ação</th> <!-- Coluna para ações disponíveis -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- As linhas serão inseridas dinamicamente via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="card-body">
-                <div id="waiterFeedback"></div> <!-- Div para exibição de mensagens de feedback -->
-                <table class="table table-striped" id="reservationsTable"> <!-- Tabela estilizada -->
-                    <thead>
-                        <tr>
-                            <th>ID</th> <!-- Coluna para o ID da reserva -->
-                            <th>Data</th> <!-- Coluna para a data da reserva -->
-                            <th>Horário</th> <!-- Coluna para o horário da reserva -->
-                            <th>Mesa</th> <!-- Coluna para a mesa reservada -->
-                            <th>Nº de Pessoas</th> <!-- Coluna para o número de pessoas -->
-                            <th>Ação</th> <!-- Coluna para ações disponíveis -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- As linhas serão inseridas dinamicamente via JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4 mt-5" id="footer"> <!-- Rodapé estilizado -->
