@@ -1,16 +1,15 @@
 {
 	"name": "404cafe",
 	"version": "1.0.0",
-	"main": "index.js",
+	"main": "backend/build/server.js",
 	"scripts": {
 		"build": "tsup backend/src --out-dir backend/build",
 		"start": "node backend/build/server.js",
 		"dev": "tsx watch backend/src/server.ts",
 		"test:unit": "vitest run --config vitest.units.ts"
 	},
-	"author": "",
 	"license": "ISC",
-	"description": "",
+	"description": "Sistema para reservas de um restaurante",
 	"dependencies": {
 		"dotenv": "16.5.0",
 		"express": "^5.1.0",

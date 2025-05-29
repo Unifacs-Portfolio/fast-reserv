@@ -4,10 +4,12 @@ import { atendenteRouter } from './http/controllers/atendente/atendente.route'
 import type { ErrorRequestHandler } from 'express'
 import { ZodError } from 'zod'
 import { env } from './env'
+import path from 'node:path'
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(express.static(path.join(process.cwd(), 'frontend/public')))
 
 configuratedb()
 app.use('/api', atendenteRouter)
