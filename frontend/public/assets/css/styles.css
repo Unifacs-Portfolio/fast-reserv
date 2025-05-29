@@ -1,24 +1,21 @@
 /* ==================================================
-   RESET & CONFIGURAÇÕES GLOBAIS
+             RESET & CONFIGURAÇÕES GLOBAIS
 ================================================== */
 * {
     box-sizing: border-box;
-    /* Todos os elementos usarão box-sizing: border-box */
 }
 
 body {
     margin: 0;
     padding: 0;
     background-color: #dadcdd;
-    /* Cor de fundo da página */
     color: #333;
-    /* Cor padrão dos textos */
     font-family: sans-serif;
-    /* Fonte padrão */
+
 }
 
 /* ==================================================
-   FONTES PERSONALIZADAS
+              FONTES PERSONALIZADAS
 ================================================== */
 @font-face {
     font-family: 'Chatime';
@@ -29,181 +26,121 @@ body {
 
 h1 {
     font-family: 'Chatime', sans-serif;
-    /* Fonte Chatime com fallback */
     font-size: 3rem;
-    /* Tamanho do título */
     color: #333;
-    /* Cor do texto */
     text-align: center;
-    /* Centraliza o texto */
     margin-top: 1rem;
-    /* Espaçamento superior */
+    
 }
 
 /* ==================================================
-   ESTILIZAÇÃO DE CARDS
+                ESTILIZAÇÃO DE CARDS 
 ================================================== */
-.card {
-    border: none;
-    /* Remove borda */
-    border-radius: 0.5rem;
-    /* Cantos arredondados */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Sombra leve */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    /* Transições suaves */
-    margin-bottom: 1.5rem;
-    /* Espaço inferior */
+	.card {
+	border: none;
+	border-radius: 0.5rem;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	margin-bottom: 1.5rem;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    /* Efeito de elevação ao hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    /* Sombra mais intensa */
+	transform: translateY(-5px);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+	.card-atendente {
+	border: 2px solid #007bff; 
+}
+
+.card-waiter {
+	border: 2px solid #28a745; 
+}
+
+.card-manager {
+	border: 2px solid #dc3545; 
 }
 
 .card-header {
     font-weight: bold;
-    /* Texto em negrito */
     text-transform: uppercase;
-    /* Texto em caixa alta */
+   
 }
 
 .card-body {
     padding: 1.5rem;
-    /* Espaçamento interno */
     background-color: #fff;
-    /* Fundo branco */
     border-radius: 0.5rem;
-    /* Cantos arredondados */
 }
+
 
 /* ==================================================
-   ESTILIZAÇÃO DE BOTÕES
-================================================== */
-.btn {
-    background-color: #007bff;
-    /* Azul padrão */
-    border: none;
-    /* Remove borda */
-    color: #fff;
-    /* Texto branco */
-    border-radius: 0.5rem;
-    /* Bordas arredondadas */
-    padding: 0.5rem 1rem;
-    /* Espaçamento interno */
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    /* Transições suaves */
-}
-
-.btn:hover {
-    background-color: #0056b3;
-    /* Azul mais escuro ao hover */
-    transform: scale(1.03);
-    /* Leve ampliação para feedback visual */
-}
-
-/* ==================================================
-   RODAPÉ
+                  RODAPÉ
 ================================================== */
 #footer {
     background-color: #212529;
-    /* Fundo escuro */
     color: white;
-    /* Texto branco */
     text-align: center;
-    /* Centraliza texto */
     margin-top: 100px;
-    /* Espaçamento superior */
     padding: 10px 0;
-    /* Espaçamento interno */
     width: 100%;
-    /* Largura total */
     height: 100px;
-    /* Altura fixa */
     position: absolute;
-    /* Fixa ao fim da página */
     bottom: 0;
 }
 
 #page-container {
     position: relative;
-    /* Para ajustes relativos */
     min-height: 20vh;
-    /* Altura mínima */
 }
 
 #content-wrap {
     padding-bottom: 2.5rem;
-    /* Altura do rodapé */
 }
 
 /* ==================================================
-   ESTILIZAÇÃO DE ALERTAS
+                ESTILIZAÇÃO DE ALERTAS
 ================================================== */
 .alert {
     padding: 15px;
-    /* Espaçamento interno */
     margin-bottom: 10px;
-    /* Espaçamento inferior */
     border: 1px solid transparent;
-    /* Borda transparente */
     border-radius: 4px;
-    /* Cantos arredondados */
     opacity: 1;
-    /* Opacidade inicial */
     transition: opacity 0.5s ease;
-    /* Efeito de fade */
 }
 
 /* Tipos de alertas */
 .alert-info {
     background-color: #d9edf7;
-    /* Fundo azul claro */
     border-color: #bce8f1;
-    /* Borda azul */
     color: #31708f;
-    /* Texto azul */
 }
 
 .alert-success {
     background-color: #dff0d8;
-    /* Fundo verde claro */
     border-color: #d6e9c6;
-    /* Borda verde */
     color: #3c763d;
-    /* Texto verde */
 }
 
 .alert-warning {
     background-color: #fcf8e3;
-    /* Fundo amarelo claro */
     border-color: #faebcc;
-    /* Borda amarela */
     color: #e9a838;
-    /* Texto amarelo */
 }
 
 .alert-danger {
     background-color: #f2dede;
-    /* Fundo vermelho claro */
     border-color: #ebccd1;
-    /* Borda vermelha */
     color: #a94442;
-    /* Texto vermelho */
 }
 
 .fade {
     opacity: 0;
-    /* Reduz opacidade para efeito fade */
 }
 
 .footer-text {
-    text-align: center;
-    /* Texto centralizado */
+    text-align: center;  
     padding: 20px;
-    /* Espaçamento interno */
     font-weight: bold;
-    /* Texto em negrito */
 }
