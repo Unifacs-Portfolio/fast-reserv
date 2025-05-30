@@ -1,5 +1,6 @@
 import { Database } from 'sqlite3'
-import type { Reserva, StatusReserva } from '../../entities/Reserva'
+// biome-ignore lint/style/useImportType: <explanation>
+import { Reserva, StatusReserva, ReservaRequest } from '../../entities/Reserva'
 import { env } from '../../env'
 import type { GarcomRepository } from '../GarcomRepository'
 
@@ -34,11 +35,12 @@ export class SqliteGarcomRepository implements GarcomRepository {
 			this.db.get(
 				'SELECT * FROM Reserva WHERE mesaId = ?',
 				[mesaId],
-				(err, row: Reserva | null) => {
+				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+				(err, row: any) => {
 					if (err) {
 						reject(new Error(`Erro ao buscar reserva: ${err.message}`))
 					} else {
-						resolve(row)
+						resolve(row ? new Reserva(row as ReservaRequest) : null)
 					}
 				},
 			)

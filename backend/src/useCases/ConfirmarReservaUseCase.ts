@@ -10,16 +10,19 @@ export class ConfirmarUseCase {
 	constructor(garcomRepository: GarcomRepository) {
 		this.garcomRepository = garcomRepository
 	}
-	async execute({ mesaId }: ConfirmarReservaRequest): Promise<void> {
-		const reservaid = await this.garcomRepository.findByMesaId(mesaId)
 
-		if (!reservaid) {
+	async execute({ mesaId }: ConfirmarReservaRequest): Promise<void> {
+		const reservaEncontrada = await this.garcomRepository.findByMesaId(mesaId)
+
+		if (!reservaEncontrada) {
 			throw new Error('Reserva não encontrada')
 		}
-		const reserva = new Reserva(reservaid)
-		reserva.confirmarReserva()
 
-		await this.garcomRepository.confirmar(reserva.mesaId, reserva.status)
-		console.log('terminou')
+		reservaEncontrada.confirmarReserva()
+
+		await this.garcomRepository.confirmar(
+			reservaEncontrada.mesaId,
+			reservaEncontrada.status,
+		)
 	}
 }

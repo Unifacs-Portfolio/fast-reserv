@@ -7,7 +7,7 @@
 
 export type StatusReserva = 'aguardando' | 'confirmada' | 'cancelada'
 
-interface ReservaRequest {
+export interface ReservaRequest {
 	id: string
 	mesaId: number
 	nomeResponsavel: string
@@ -52,8 +52,9 @@ export class Reserva {
 	}
 
 	private validateData(data: string): string {
-		const regex = /^\d{4}-\d{2}-\d{2}$/
-		if (!regex.test(data)) {
+		const regex = /^\d{4}\/\d{2}\/\d{2}$/
+		const regexBanco = /^\d{2}\/\d{2}\/\d{4}$/
+		if (!regex || !regexBanco) {
 			throw new Error('Data inválida. O formato deve ser AAAA-MM-DD.')
 		}
 		const formatData = new Date(data)

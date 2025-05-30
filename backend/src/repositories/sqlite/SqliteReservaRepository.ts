@@ -12,8 +12,8 @@ export class SqliteReservaRepository implements ReservaRepository {
 			}
 		})
 	}
-	async create(reserva: Reserva): Promise<void> {
-		return new Promise<void>((resolve, reject) => {
+	async create(reserva: Reserva): Promise<Reserva> {
+		return new Promise<Reserva>((resolve, reject) => {
 			this.db.run(
 				'INSERT INTO Reserva (id, mesaId, nomeResponsavel, data, hora, quantidadePessoas, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
 				[
@@ -29,7 +29,7 @@ export class SqliteReservaRepository implements ReservaRepository {
 					if (err) {
 						reject(new Error(`Erro ao criar reserva: ${err.message}`))
 					} else {
-						resolve()
+						resolve(reserva)
 					}
 				},
 			)
@@ -46,6 +46,23 @@ export class SqliteReservaRepository implements ReservaRepository {
 						reject(new Error(`Erro ao buscar reserva: ${err.message}`))
 					} else {
 						resolve(row)
+					}
+				},
+			)
+		})
+	}
+
+	async delete(mesaId: number): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.db.run(
+				'DELETE FROM Reserva WHERE mesaId = ?',
+				[mesaId],
+				(err: Error | null) => {
+					if (err) {
+						reject(new Error(`Erro ao deletar reserva: ${err.message}`))
+					} else {
+						console.log('Reserva deletada')
+						resolve()
 					}
 				},
 			)
