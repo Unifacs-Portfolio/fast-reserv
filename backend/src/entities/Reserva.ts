@@ -61,7 +61,7 @@ export class Reserva {
 	private validateData(data: string): string {
 		const regex = /^\d{4}-\d{2}-\d{2}$/
 		if (!regex.test(data)) {
-			throw new Error('Data inválida. O formato deve ser AAAA/MM/DD')
+			throw new Error('Data inválida. O formato deve ser AAAA-MM-DD')
 		}
 		const [ano, mes, dia] = data.split('-').map(Number)
 		const dateObj = new Date(ano, mes - 1, dia)
