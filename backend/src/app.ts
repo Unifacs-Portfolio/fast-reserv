@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }))
 
 configuratedb()
 app.use('/api', atendenteRouter)
+app.use('/api', garcomRouter)
 app.use(<ErrorRequestHandler>((err, _req, res, next) => {
 	if (err instanceof ZodError) {
 		res.status(400).json({ message: 'Validação falhou', issues: err.format() })
@@ -22,5 +23,4 @@ app.use(<ErrorRequestHandler>((err, _req, res, next) => {
 	res.status(500).json({ message: 'Erro interno do servidor' })
 }))
 
-app.use('/api', garcomRouter)
 export { app }

@@ -55,7 +55,9 @@ export class Reserva {
 		const regex = /^\d{4}\/\d{2}\/\d{2}$/
 		const regexBanco = /^\d{2}\/\d{2}\/\d{4}$/
 		if (!regex || !regexBanco) {
-			throw new Error('Data inválida. O formato deve ser AAAA-MM-DD.')
+			throw new Error(
+				'Data inválida. O formato deve ser AAAA/MM/DD ou DD/MM/AAAA.',
+			)
 		}
 		const formatData = new Date(data)
 		return formatData.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
