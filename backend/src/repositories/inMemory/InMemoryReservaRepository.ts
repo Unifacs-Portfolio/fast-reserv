@@ -1,20 +1,16 @@
-import type { Reserva } from '../../entities/Reserva'
 import type { ReservaRepository } from '../ReservaRepository'
+import type { Reserva } from '../../entities/Reserva'
 
-export class InMemoryCriarReservaRepository implements ReservaRepository {
+export class InMemoryReservaRepository implements ReservaRepository {
 	public reservas: Reserva[] = []
-
 	async create(reserva: Reserva): Promise<Reserva> {
 		this.reservas.push(reserva)
 		return reserva
 	}
-
 	async findByMesaId(mesaId: number): Promise<Reserva | null> {
-		const reserva = this.reservas.find((r) => r.mesaId === mesaId)
-		return reserva || null
+		return this.reservas.find((reserva) => reserva.mesaId === mesaId) || null
 	}
-
 	async delete(mesaId: number): Promise<void> {
-		throw new Error('Method not implemented.')
+		this.reservas = this.reservas.filter((reserva) => reserva.mesaId !== mesaId)
 	}
 }

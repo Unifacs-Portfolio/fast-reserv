@@ -5,10 +5,12 @@ import { configuratedb } from './Datenbank/configdb'
 import { env } from './env'
 import { atendenteRouter } from './http/controllers/atendente/atendente.route'
 import { garcomRouter } from './http/controllers/garcom/garcom.route'
+import path from 'node:path'
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(express.static(path.join(process.cwd(), 'frontend/public')))
 
 configuratedb()
 app.use('/api', atendenteRouter)

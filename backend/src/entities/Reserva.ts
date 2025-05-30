@@ -44,30 +44,55 @@ export class Reserva {
 		// Outras validações podem ser adicionadas aqui,
 		// podem ser criados metodos para isso
 		this._id = id
-		this._mesaId = mesaId
+		this._mesaId = this.validateMesaId(mesaId)
 		this._nomeResponsavel = this.validateNome(nomeResponsavel)
 		this._data = this.validateData(data)
 		this._hora = this.validateHora(hora)
 		this._quantidadePessoas = this.validateQuantidadePessoas(quantidadePessoas)
 	}
 
-	private validateData(data: string): string {
-		const regex = /^\d{4}\/\d{2}\/\d{2}$/
-		const regexBanco = /^\d{2}\/\d{2}\/\d{4}$/
-		if (!regex || !regexBanco) {
-			throw new Error(
-				'Data inválida. O formato deve ser AAAA/MM/DD ou DD/MM/AAAA.',
-			)
+	private validateMesaId(mesaId: number): number {
+		if (mesaId > 0 && Number.isInteger(mesaId)) {
+			return mesaId
 		}
+		throw new Error('Numero de Mesa invalido!')
+	}
+
+	private validateData(data: string): string {
+		const regex = /^\d{4}-\d{2}-\d{2}$/
+		if (!regex.test(data)) {
+			throw new Error('Data inválida. O formato deve ser AAAA/MM/DD')
+		}
+		const [ano, mes, dia] = data.split('-').map(Number)
+		const dateObj = new Date(ano, mes - 1, dia)
+
+		// Verifica se a data é válida (por exemplo, não permitir 2025-02-30)
+		if (
+			dateObj.getFullYear() !== ano ||
+			dateObj.getMonth() !== mes - 1 ||
+			dateObj.getDate() !== dia
+		) {
+			throw new Error('Data inválida.')
+		}
+
+		// Retorna no mesmo formato AAAA-MM-DD
 		const formatData = new Date(data)
 		return formatData.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
 	}
 
 	private validateHora(hora: string): string {
 		const regex = /^\d{2}:\d{2}$/
+		const horasString = hora.split(':')
+		const horasNumber = horasString.map(Number)
+
+		if (horasNumber[0] > 23 || horasNumber[1] > 59) {
+			throw new Error('Hora inválida, o horário máximo é 23:59')
+		}
+
 		if (!regex.test(hora)) {
 			throw new Error('Hora invalidada, o formato deve ser HH:MM')
 		}
+
 		return hora
 	}
 
