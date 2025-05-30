@@ -75,9 +75,7 @@ export class Reserva {
 			throw new Error('Data inválida.')
 		}
 
-		// Retorna no mesmo formato AAAA-MM-DD
-		const formatData = new Date(data)
-		return formatData.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
+		return data
 	}
 
 	private validateHora(hora: string): string {
@@ -115,10 +113,6 @@ export class Reserva {
 			)
 		}
 		return nomeResponsavel
-	}
-
-	public confirmarReserva(): void {
-		this._status = 'confirmada'
 	}
 
 	get id(): string {

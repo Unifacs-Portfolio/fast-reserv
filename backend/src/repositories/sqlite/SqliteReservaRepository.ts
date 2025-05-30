@@ -61,7 +61,7 @@ export class SqliteReservaRepository implements ReservaRepository {
 					if (err) {
 						reject(new Error(`Erro ao deletar reserva: ${err.message}`))
 					} else {
-						console.log('Reserva deletada')
+						console.log('Reserva Deletada')
 						resolve()
 					}
 				},

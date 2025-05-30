@@ -1,5 +1,5 @@
-import { Reserva } from '../entities/Reserva'
 import type { GarcomRepository } from '../repositories/GarcomRepository'
+import { confirmarReserva } from '../utils/confirmaReserva'
 
 interface ConfirmarReservaRequest {
 	mesaId: number
@@ -15,14 +15,14 @@ export class ConfirmarUseCase {
 		const reservaEncontrada = await this.garcomRepository.findByMesaId(mesaId)
 
 		if (!reservaEncontrada) {
-			throw new Error('Reserva não encontrada')
+			throw new Error('Reserva não Encontrada')
 		}
 
-		reservaEncontrada.confirmarReserva()
+		const reservaAtualizada = confirmarReserva(reservaEncontrada)
 
-		await this.garcomRepository.confirmar(
-			reservaEncontrada.mesaId,
-			reservaEncontrada.status,
+		await this.garcomRepository.updateByStatus(
+			reservaAtualizada.mesaId,
+			reservaAtualizada.status,
 		)
 	}
 }
