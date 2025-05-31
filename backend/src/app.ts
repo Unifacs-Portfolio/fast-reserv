@@ -1,6 +1,7 @@
 import { configuratedb } from './Datenbank/configdb'
 import express from 'express'
 import { atendenteRouter } from './http/controllers/atendente/atendente.route'
+import { gerenteRouter } from './http/controllers/gerente/gerente.route'
 import type { ErrorRequestHandler } from 'express'
 import { ZodError } from 'zod'
 import { env } from './env'
@@ -13,6 +14,7 @@ app.use(express.static(path.join(process.cwd(), 'frontend/public')))
 
 configuratedb()
 app.use('/api', atendenteRouter)
+app.use('/api', gerenteRouter)
 app.use(<ErrorRequestHandler>((err, _req, res, next) => {
 	if (err instanceof ZodError) {
 		res.status(400).json({ message: 'Validação falhou', issues: err.format() })
