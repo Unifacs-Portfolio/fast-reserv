@@ -15,6 +15,7 @@ export interface ReservaRequest {
 	hora: string
 	quantidadePessoas: number
 	status?: StatusReserva
+	verify_by?: string
 }
 export class Reserva {
 	private readonly _id: string
@@ -24,6 +25,7 @@ export class Reserva {
 	private _hora: string
 	private _quantidadePessoas: number
 	private _status: StatusReserva = 'aguardando'
+	private _verify_by: string | null = null
 
 	constructor({
 		id,
@@ -33,6 +35,7 @@ export class Reserva {
 		hora,
 		quantidadePessoas,
 		status,
+		verify_by,
 	}: ReservaRequest) {
 		if (quantidadePessoas <= 0) {
 			throw new Error('Quantidade de pessoas deve ser maior que zero')
@@ -49,6 +52,7 @@ export class Reserva {
 		this._data = this.validateData(data)
 		this._hora = this.validateHora(hora)
 		this._quantidadePessoas = this.validateQuantidadePessoas(quantidadePessoas)
+		this._verify_by = verify_by ?? null
 	}
 
 	private validateMesaId(mesaId: number): number {
@@ -141,5 +145,8 @@ export class Reserva {
 
 	get status(): StatusReserva {
 		return this._status
+	}
+	get verifyBy(): string | null {
+		return this._verify_by
 	}
 }

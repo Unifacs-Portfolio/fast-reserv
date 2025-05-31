@@ -1,8 +1,8 @@
-import { SqliteGarcomRepository } from '../../repositories/sqlite/SqliteGarcomRepository'
+import { SqliteReservaRepository } from '../../repositories/sqlite/SqliteReservaRepository'
 import { ConfirmarUseCase } from '../ConfirmarReservaUseCase'
 
 export const makeConfirmarReservaUseCase = (): ConfirmarUseCase => {
-	const garcomRepository = new SqliteGarcomRepository()
-	const confirmarReservaUseCase = new ConfirmarUseCase(garcomRepository)
+	const reservaRepository = new SqliteReservaRepository()
+	const confirmarReservaUseCase = new ConfirmarUseCase(reservaRepository)
 	return confirmarReservaUseCase
 }

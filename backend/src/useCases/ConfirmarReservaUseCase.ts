@@ -1,28 +1,39 @@
-import type { GarcomRepository } from '../repositories/GarcomRepository'
-import { confirmarReserva } from '../utils/confirmaReserva'
+import { Reserva } from '../entities/Reserva'
+import type { ReservaRepository } from '../repositories/ReservaRepository'
 
 interface ConfirmarReservaRequest {
-	mesaId: number
+	id: string
+	verify_by: string
 }
 export class ConfirmarUseCase {
-	private garcomRepository: GarcomRepository
+	private reservaRepository: ReservaRepository
 
-	constructor(garcomRepository: GarcomRepository) {
-		this.garcomRepository = garcomRepository
+	constructor(reservaRepository: ReservaRepository) {
+		this.reservaRepository = reservaRepository
 	}
 
-	async execute({ mesaId }: ConfirmarReservaRequest): Promise<void> {
-		const reservaEncontrada = await this.garcomRepository.findByMesaId(mesaId)
-
+	async execute({ id, verify_by }: ConfirmarReservaRequest): Promise<void> {
+		const reservaEncontrada = await this.reservaRepository.findById(id)
 		if (!reservaEncontrada) {
 			throw new Error('Reserva não Encontrada')
 		}
 
-		const reservaAtualizada = confirmarReserva(reservaEncontrada)
+		const reservaConfirmada = new Reserva({
+			id: reservaEncontrada.id,
+			mesaId: reservaEncontrada.mesaId,
+			nomeResponsavel: reservaEncontrada.nomeResponsavel,
+			data: reservaEncontrada.data,
+			hora: reservaEncontrada.hora,
+			quantidadePessoas: reservaEncontrada.quantidadePessoas,
+			verify_by: verify_by,
+			status: 'confirmada', // sobrescreve o status
+		})
 
-		await this.garcomRepository.updateByStatus(
-			reservaAtualizada.mesaId,
-			reservaAtualizada.status,
+		await this.reservaRepository.update(
+			reservaConfirmada.id,
+			reservaConfirmada.status,
 		)
+
+		await this.reservaRepository.verifyBy(verify_by, reservaConfirmada.id)
 	}
 }
