@@ -1,5 +1,5 @@
 /* ==================================================
-             RESET & CONFIGURAÇÕES GLOBAIS
+   RESET & CONFIGURAÇÕES GLOBAIS
 ================================================== */
 /* Aplica o "box-sizing: border-box" a todos os elementos, garantindo que padding e border sejam incluídos no cálculo da largura/altura */
 * {
@@ -20,12 +20,12 @@ body {
 }
 
 /* ==================================================
-              FONTES PERSONALIZADAS
+   FONTES PERSONALIZADAS
 ================================================== */
 /* Define uma fonte personalizada chamada "Chatime". Usa o arquivo localizado em "../fonts/Chatime.ttf"
    e especifica que é uma fonte normal (sem negrito e itálico) */
 @font-face {
-    font-family: "Chatime";
+    font-family: 'Chatime';
     src: url("../fonts/Chatime.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
@@ -33,7 +33,7 @@ body {
 
 /* Aplica a fonte personalizada "Chatime" aos elementos <h1>, define o tamanho do título, cor, centralização e margem superior. */
 h1 {
-    font-family: "Chatime", sans-serif;
+    font-family: 'Chatime', sans-serif;
     font-size: 3rem;
     color: #333;
     text-align: center;
@@ -41,7 +41,7 @@ h1 {
 }
 
 /* ==================================================
-                ESTILIZAÇÃO DE CARDS 
+   ESTILIZAÇÃO DE CARDS
 ================================================== */
 /* Define a aparência básica dos cards:
    - Sem borda e com cantos ligeiramente arredondados;
@@ -71,11 +71,11 @@ h1 {
    - Aumenta a intensidade da sombra, dando um efeito de elevação. */
 .card:hover {
     transform: translateY(-5px);
+    /* Efeito de elevação ao hover */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    /* Sombra mais intensa */
 }
 
-/* Estiliza o cabeçalho dos cards:
-   - Deixa o texto em negrito e em letras maiúsculas, destacando o título do card. */
 .card-header {
     font-weight: bold;
     text-transform: uppercase;
@@ -88,10 +88,17 @@ h1 {
     padding: 1.5rem;
     background-color: #fff;
     border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.03);
 }
 
 /* ==================================================
-                  RODAPÉ
+RODAPÉ
 ================================================== */
 /* Estiliza o rodapé:
    - Fundo escuro com texto branco, centralizado;
@@ -102,20 +109,25 @@ h1 {
     background-color: #212529;
     color: white;
     text-align: center;
+    margin-top: 100px;
     padding: 10px 0;
     width: 100%;
-    height: 40px;
+    height: 100px;
+    position: absolute;
     bottom: 0;
 }
 
-/* Garante que o conteúdo principal (#content-wrap) tenha altura mínima suficiente para empurrar o rodapé para o final da viewport.
-   Aqui é subtraída a altura do rodapé (40px) da altura total da viewport. */
+#page-container {
+    position: relative;
+    min-height: 20vh;
+}
+
 #content-wrap {
-    min-height: calc(100vh - 40px);
+    padding-bottom: 2.5rem;
 }
 
 /* ==================================================
-                ESTILIZAÇÃO DE ALERTAS
+ESTILIZAÇÃO DE ALERTAS
 ================================================== */
 /* Define o estilo básico para as notificações:
    - Padding e margem inferior para espaçamento;
