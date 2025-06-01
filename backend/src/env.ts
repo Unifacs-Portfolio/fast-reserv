@@ -6,6 +6,7 @@ const envSchema = z.object({
 	NODE_ENV: z.enum(['development', 'production', 'test']),
 	PORT: z.coerce.number().default(3000),
 	PATH_TO_DB: z.string(),
+	GARCOM_ID_RANDOM: z.string().uuid()
 })
 
 const { success, data, error } = envSchema.safeParse(process.env)
