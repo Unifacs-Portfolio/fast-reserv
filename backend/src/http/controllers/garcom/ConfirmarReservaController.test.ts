@@ -4,7 +4,7 @@ import supertest from 'supertest'
 import { checkRouteExists } from '../../../utils/checkRouteExists'
 import { env } from '../../../env'
 
-describe('CriarReservaController', () => {
+describe('ConfirmarReservaController', () => {
 	it('deve ser possível criar uma reserva', async () => {
 		const newReserva = await supertest(app)
 			.post('/api/reservas')
