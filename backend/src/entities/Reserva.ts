@@ -50,14 +50,12 @@ export class Reserva {
 		this._hora = this.validateHora(hora)
 		this._quantidadePessoas = this.validateQuantidadePessoas(quantidadePessoas)
 	}
-
 	private validateData(data: string): string {
 		const regex = /^\d{4}-\d{2}-\d{2}$/
 		if (!regex.test(data)) {
 			throw new Error('Data inválida. O formato deve ser AAAA-MM-DD.')
 		}
-		const formatData = new Date(data)
-		return formatData.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
+		return data
 	}
 
 	private validateHora(hora: string): string {

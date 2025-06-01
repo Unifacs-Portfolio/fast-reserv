@@ -68,32 +68,37 @@ export class SqliteReservaRepository implements ReservaRepository {
 			)
 		})
 	}
-	async buscarReservasPorPeriodo(dataComeco: string, dataFim: string ): Promise<any[]>{
-		  return new Promise((resolve, reject) => {
-   			this.db.all(
-				`SELECT * FROM Reserva WHERE data BETWEEN ? AND ? AND status IN ('confirmada', 'cancelada')`,
-				[dataComeco,dataFim],
-				(err,rows)=>{
-						if(err){
-							reject(new Error(`Erro ao buscar reservas: ${err.message}`))
-						}else{
-					resolve(rows)
-        }
-      }) 
-    })
-	}
-
-	async buscarReservasFeitasPorMesa(mesaId: number):Promise <any[]>{
-		return new Promise((resolve, reject)=>{
+	async buscarReservasPorPeriodo(
+		dataComeco: string,
+		dataFim: string,
+	): Promise<Reserva[]> {
+		return new Promise((resolve, reject) => {
 			this.db.all(
-				'SELECT * FROM Reserva WHERE mesaId = ?',[mesaId],
-				(err,rows)=>{
-					if(err){
+				`SELECT * FROM Reserva WHERE data BETWEEN ? AND ? AND status IN ('confirmada' 'cancelada')`,
+				[dataComeco, dataFim],
+				(err, rows: Reserva[]) => {
+					if (err) {
 						reject(new Error(`Erro ao buscar reservas: ${err.message}`))
-					}else{
+					} else {
 						resolve(rows)
 					}
-				}
+				},
+			)
+		})
+	}
+
+	async buscarReservasFeitasPorMesa(mesaId: number): Promise<Reserva[]> {
+		return new Promise((resolve, reject) => {
+			this.db.all(
+				'SELECT * FROM Reserva WHERE mesaId = ?',
+				[mesaId],
+				(err, rows: Reserva[]) => {
+					if (err) {
+						reject(new Error(`Erro ao buscar reservas: ${err.message}`))
+					} else {
+						resolve(rows)
+					}
+				},
 			)
 		})
 	}
