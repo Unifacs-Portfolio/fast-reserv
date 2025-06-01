@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 
 <head>
-   <title>Painel do Gerente</title><!-- Título da página -->
-   <meta charset="UTF-8"><!-- Configuração do conjunto de caracteres para UTF-8 -->
-   <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Responsividade para dispositivos móveis -->
-   <!-- Bootstrap CDN: Estilos e scripts -->
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-   <!-- Link para o CSS -->
-   <link rel="stylesheet" href="../frontend/public/assets/css/styles.css">
+  <title>Painel do Gerente</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CDN: Estilos e scripts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Link para o CSS personalizado -->
+  <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -30,7 +30,7 @@
             <a class="nav-link" href="waiter.html">Garçom</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="manager.html">Gerente</a><!-- Link ativo -->
+            <a class="nav-link active" aria-current="page" href="manager.html">Gerente</a>
           </li>
         </ul>
       </div>
@@ -55,12 +55,13 @@
               <select class="form-select" id="reportType" name="reportType" required>
                 <option value="" disabled selected>Selecione o tipo de relatório</option>
                 <option value="periodo">Reservas por Período</option>
-                <option value="mesaConfirmada">Reservas por Mesa Confirmada</option>
+                <option value="mesaConfirmada">Reservas por Garçom</option>
+                <option value="mesaDeterminada">Reservas por Mesa</option>
               </select>
             </div>
 
             <!-- Campos para relatório de Período -->
-            <div id="commonFields"> 
+            <div id="commonFields" style="display:none;">
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="startDate" class="form-label">Data Inicial</label>
@@ -74,19 +75,23 @@
             </div>
 
             <!-- Campos para relatório de Mesa Confirmada -->
-            <div id="mesaConfirmadaFields"> 
+            <div id="mesaConfirmadaFields" style="display:none;">
               <div class="mb-3">
                 <label for="garcom" class="form-label">Garçom</label>
                 <select class="form-select" id="garcom" name="garcom">
                   <option value="" disabled selected>Selecione o Garçom</option>
-                  <option value="1">Marcilio</option>
-                  <option value="2">Roan</option>
-                  <option value="3">Marcus</option>
+                  <option value="Marcilio">Marcilio</option>
+                  <option value="Roan">Roan</option>
+                  <option value="Marcus">Marcus</option>
                 </select>
               </div>
+            </div>
+
+            <!-- Campos para relatório de Mesa Determinada -->
+            <div id="mesaDeterminadaFields" style="display:none;">
               <div class="mb-3">
-                <label for="mesa" class="form-label">Mesa</label>
-                <input type="text" class="form-control" id="mesa" name="mesa">
+                <label for="mesaDeterminada" class="form-label">Mesa</label>
+                <input type="text" class="form-control" id="mesaDeterminada" name="mesaDeterminada">
               </div>
             </div>
 
@@ -130,19 +135,20 @@
   <!-- Script para manipulação do Dashboard do Gerente -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Exibe e oculta campos adicionais com base no tipo de relatório selecionado
+      // Função para obter o mock de dados (registros do atendente e garçom) armazenados no localStorage
+      function getReservations() {
+        return JSON.parse(localStorage.getItem('reservations')) || [];
+      }
+
+      // Exibe/oculta os campos conforme o tipo de relatório selecionado
       document.getElementById('reportType').addEventListener('change', function () {
-        var type = this.value;
-        if (type === 'periodo') {
-          document.getElementById('commonFields').style.display = 'block';
-          document.getElementById('mesaConfirmadaFields').style.display = 'none';
-        } else if (type === 'mesaConfirmada') {
-          document.getElementById('commonFields').style.display = 'none';
-          document.getElementById('mesaConfirmadaFields').style.display = 'block';
-        } else {
-          document.getElementById('commonFields').style.display = 'none';
-          document.getElementById('mesaConfirmadaFields').style.display = 'none';
-        }
+        const type = this.value;
+        // Para "periodo", exibe apenas os campos de datas
+        document.getElementById('commonFields').style.display = (type === 'periodo') ? 'block' : 'none';
+        // Para "mesaConfirmada", exibe os campos para selecionar garçom e mesa
+        document.getElementById('mesaConfirmadaFields').style.display = (type === 'mesaConfirmada') ? 'block' : 'none';
+        // Para "mesaDeterminada", exibe campo para a mesa
+        document.getElementById('mesaDeterminadaFields').style.display = (type === 'mesaDeterminada') ? 'block' : 'none';
       });
 
       // Manipulação do formulário para geração do relatório
@@ -150,35 +156,44 @@
         e.preventDefault();
         const reportType = document.getElementById('reportType').value;
         let reportData = [];
-        // Para relatório por período, as datas são obrigatórias
+
         if (reportType === 'periodo') {
           const startDate = document.getElementById('startDate').value;
           const endDate = document.getElementById('endDate').value;
           if (!startDate || !endDate) {
             document.getElementById('reportFeedback').innerHTML =
-              '<div class="alert alert-danger" role="alert">Informe as datas inicial e final para o relatório por período.</div>';
+              '<div class="alert alert-danger" role="alert">Erro: Informe as datas inicial e final para o relatório por período.</div>';
             return;
           }
           if (new Date(startDate) > new Date(endDate)) {
             document.getElementById('reportFeedback').innerHTML =
-              '<div class="alert alert-danger" role="alert">A data inicial deve ser anterior à data final.</div>';
+              '<div class="alert alert-danger" role="alert">Erro: A data inicial deve ser anterior à data final.</div>';
             return;
           }
-          reportData = generateReport(reportType, startDate, endDate);
-        }
-        // Para relatório de mesa confirmada, garçom e mesa são obrigatórios
-        else if (reportType === 'mesaConfirmada') {
-          const garcom = document.getElementById('garcom').value;
-          const mesa = document.getElementById('mesa').value;
-          if (!garcom || !mesa) {
+
+          
+          reportData = generatePeriodReport(startDate, endDate);
+        } else if (reportType === 'mesaConfirmada') {
+          const waiter = document.getElementById('garcom').value;
+          if (!waiter) {
             document.getElementById('reportFeedback').innerHTML =
-          '<div class="alert alert-danger" role="alert">Selecione o garçom e informe a mesa para o relatório por mesa confirmada.</div>';
+              '<div class="alert alert-danger" role="alert">Erro: Selecione o garçom para obter o relatório.</div>';
             return;
           }
-          reportData = generateReport(reportType, null, null, mesa, garcom);
+
+
+          reportData = generateMesaConfirmadaReport(waiter, table);
+        } else if (reportType === 'mesaDeterminada') {
+          const table = document.getElementById('mesaDeterminada').value;
+          if (!table) {
+            document.getElementById('reportFeedback').innerHTML =
+              '<div class="alert alert-danger" role="alert">Erro: Informe a mesa para o relatório por mesa.</div>';
+            return;
+          }
+          reportData = generateMesaDeterminadaReport(table);
         }
 
-        // Exibe os dados ou mensagem de ausência de dados
+        // Exibe os dados na tabela de relatório
         const tbody = document.querySelector('#reportTable tbody');
         tbody.innerHTML = '';
         if (reportData.length === 0) {
@@ -187,10 +202,7 @@
         } else {
           reportData.forEach(item => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${item.metric}</td>
-                <td>${item.value}</td>
-              `;
+            tr.innerHTML = `<td>${item.metric}</td><td>${item.value}</td>`;
             tbody.appendChild(tr);
           });
           document.getElementById('reportFeedback').innerHTML =
@@ -198,30 +210,43 @@
         }
       });
 
-      // Função para simular a geração de relatórios
-      // Para "periodo", são exibidas as datas e métricas simuladas de reservas registradas e confirmadas
-      // Para "mesaConfirmada", são exibidos os dados do garçom selecionado, número da mesa e uma métrica simulada
-      function generateReport(reportType, start, end, mesa, garcom) {
-        let data = [];
-        if (reportType === 'periodo') {
-          data = [
-            { metric: 'Data Inicial de Análise', value: start },
-            { metric: 'Data Final de Análise', value: end },
-            { metric: 'Mesas Registradas pelo Atendente', value: 25 },
-            { metric: 'Mesas Confirmadas pelo Garçom', value: 20 }
-          ];
-        } else if (reportType === 'mesaConfirmada') {
-          const garcomName = (garcom === '1') ? 'Marcilio' : (garcom === '2') ? 'Roan' : (garcom === '3') ? 'Marcus' : '';
-          data = [
-            { metric: 'Garçom', value: garcomName },
-            { metric: 'Mesa', value: mesa },
-            { metric: 'Reservas Confirmadas', value: 8 }
-          ];
-        }
-        return data;
+      // Função para gerar relatório por período
+      function generatePeriodReport(start, end) {
+        let reservations = getReservations();
+        // Filtra reservas atendidas (status === 'atendida') e não atendidas ('não atendida')
+        const atendidas = reservations.filter(r => r.status === 'atendida' && new Date(r.date) >= new Date(start) && new Date(r.date) <= new Date(end));
+        const naoAtendidas = reservations.filter(r => r.status === 'não atendida' && new Date(r.date) >= new Date(start) && new Date(r.date) <= new Date(end));
+
+        return [
+          { metric: 'Data Inicial', value: start },
+          { metric: 'Data Final', value: end },
+          { metric: 'Total de Reservas Atendidas', value: atendidas.length },
+          { metric: 'Total de Reservas Não Atendidas', value: naoAtendidas.length }
+        ];
+      }
+
+      // Função para gerar relatório por mesa confirmada (garçom e mesa)
+      function generateMesaConfirmadaReport(waiter, table) {
+        let reservations = getReservations();
+        const confirmadas = reservations.filter(r => r.status === 'confirmada' && r.waiter === waiter );
+
+        return confirmadas.length ? [
+          { metric: 'Garçom', value: waiter },
+          { metric: 'Reservas Confirmadas', value: confirmadas.length }
+        ] : [];
+      }
+
+      // Função para gerar relatório por mesa determinada (todas as reservas feitas para uma mesa)
+      function generateMesaDeterminadaReport(table) {
+        let reservations = getReservations();
+        const feitasNaMesa = reservations.filter(r => r.table.toLowerCase() === table.toLowerCase());
+
+        return feitasNaMesa.length ? [
+          { metric: 'Mesa', value: table },
+          { metric: 'Total de Reservas Feitas', value: feitasNaMesa.length }
+        ] : [];
       }
     });
   </script>
 </body>
-
 </html>

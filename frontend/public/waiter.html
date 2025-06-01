@@ -2,18 +2,18 @@
 <html lang="pt-BR">
 
 <head>
-     <title>Painel do Garçom</title><!-- Título da página -->
-     <meta charset="UTF-8"><!-- Configuração do conjunto de caracteres para UTF-8 -->
-     <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Responsividade para dispositivos móveis -->
-     <!-- Bootstrap CDN: Estilos e scripts -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-     <!-- Link para o CSS -->
-     <link rel="stylesheet" href="../frontend/public/assets/css/styles.css">
+    <title>Painel do Garçom</title><!-- Título da página -->
+    <meta charset="UTF-8"><!-- Conjunto de caracteres -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Responsividade -->
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="../frontend/public/assets/css/styles.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <!-- Navbar: Barra de navegação -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="index.html">Menu</a>
@@ -23,15 +23,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="attendent.html">Atendente</a>
+                    <li class="nav-item"><a class="nav-link" href="attendent.html">Atendente</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="waiter.html">Garçom</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="waiter.html">Garçom</a><!-- Link ativo -->
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="manager.html">Gerente</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="manager.html">Gerente</a></li>
                 </ul>
             </div>
         </div>
@@ -41,7 +36,6 @@
     <div id="content-wrap" class="flex-fill container py-4">
         <main class="container mt-5">
             <h1 class="mb-4">Painel do Garçom</h1>
-
             <!-- Card para exibição de reservas pendentes -->
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-success text-white">
@@ -52,17 +46,17 @@
                     <table class="table table-striped" id="reservationsTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Data</th>
                                 <th>Horário</th>
                                 <th>Mesa</th>
                                 <th>Nº de Pessoas</th>
                                 <th>Responsável</th>
+                                <th>Garçom</th> <!-- Seleção para identificar o garçom que irá confirmar -->
                                 <th>Ação</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- As linhas inseridas dinamicamente -->
+                            <!-- Linhas serão carregadas dinamicamente -->
                         </tbody>
                     </table>
                 </div>
@@ -71,81 +65,99 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5" id="footer">
+    <footer class="bg-dark text-white py-4 mt-auto" id="footer">
         <div class="container text-center">
             <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
         </div>
     </footer>
 
-    <!-- Script para manipulação do Dashboard do Garçom -->
+    <!-- Script para manipulação do Painel do Garçom usando mock de dados com localStorage -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Função para carregar as reservas pendentes (exemplo de dados simulados)
-            const reservations = [
-                { id: 1, date: '2025-05-01', time: '19:00', table: 'A1', guests: 4 },
-                { id: 2, date: '2025-05-02', time: '20:00', table: 'B2', guests: 2 }
-            ];
+            // Função para obter as reservas do localStorage (simula os registros feitos pelo atendente)
+            function getReservations() {
+                return JSON.parse(localStorage.getItem('reservations')) || [];
+            }
 
-            const tbody = document.querySelector('#reservationsTable tbody');
-            tbody.innerHTML = '';
+            // Função para salvar as reservas atualizadas no localStorage
+            function saveReservations(reservations) {
+                localStorage.setItem('reservations', JSON.stringify(reservations));
+            }
 
-            // Adiciona as reservas à tabela com box de seleção para o garçom responsável
-            reservations.forEach(reservation => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-          <td>${reservation.id}</td>
-          <td>${reservation.date}</td>
-          <td>${reservation.time}</td>
-          <td>${reservation.table}</td>
-          <td>${reservation.guests}</td>
-          <td>
-          <select class="form-select form-select-sm" id="waiter-select">
-          <option value="" hidden>Selecione</option>
-          <option value="1">Marcilio</option>
-          <option value="2">Roan</option>
-          <option value="3">Marcus</option>
-          </select>
-          </td>
-          <td>
-            <button class="btn btn-success btn-sm" data-id="${reservation.id}">
-              Confirmar
-            </button>
-            <button class="btn btn-danger btn-sm ms-2" data-id="${reservation.id}">
-              Excluir
-            </button>
-          </td>
-        `;
-                tbody.appendChild(tr);
-            });
+            // Função para carregar as reservas na tabela
+            function loadReservations() {
+                const reservations = getReservations();
+                const tbody = document.querySelector('#reservationsTable tbody');
+                tbody.innerHTML = ''; // Limpa os dados atuais
 
-            // Manipula cliques nos botões de confirmação e deleção
+                // Apenas exibe reservas que estão "reservadas" (ou seja, que não foram confirmadas)
+                reservations.forEach(reservation => {
+                    // Vamos supor que se a reserva existir, ela está pendente
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                    <td>${reservation.date}</td>
+                    <td>${reservation.time}</td>
+                    <td>${reservation.table}</td>
+                    <td>${reservation.guests}</td>
+                    <td>${reservation.name}</td>
+                    <td>
+                      <select class="form-select form-select-sm">
+                        <option value="" hidden>Selecione</option>
+                        <option value="Marcilio">Marcilio</option>
+                        <option value="Roan">Roan</option>
+                        <option value="Marcus">Marcus</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button class="btn btn-success btn-sm" data-id="${reservation.id}">
+                        Confirmar
+                      </button>
+                    </td>
+                  `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Carrega as reservas assim que a página é carregada (para manter dados atualizados)
+            loadReservations();
+
+            // Manipula cliques no tbody para confirmar ou excluir reserva
             document.querySelector('#reservationsTable tbody').addEventListener('click', function (e) {
                 if (e.target.tagName.toLowerCase() === 'button') {
-                    const reservationId = e.target.getAttribute('data-id');
-                    const tr = e.target.closest('tr'); // linha da reserva
+                    const reservationId = parseInt(e.target.getAttribute('data-id'));
                     const feedbackDiv = document.getElementById('waiterFeedback');
+                    let reservations = getReservations();
+                    const index = reservations.findIndex(r => r.id === reservationId);
 
-                    // Se for o botão de confirmação
+                    // Se não encontrou a reserva, exibe erro (por exemplo, a reserva já foi confirmada)
+                    if (index === -1) {
+                        feedbackDiv.innerHTML = `<div class="alert alert-danger" role="alert">Erro: Reserva não encontrada ou já confirmada.</div>`;
+                        return;
+                    }
+
+                    const tr = e.target.closest('tr');
+
+                    // Se o botão for de confirmação
                     if (e.target.classList.contains('btn-success')) {
-                        // Obtém o valor selecionado no box de seleção
-                        const selectElem = tr.querySelector('select');
-                        const selectedWaiter = selectElem.value;
+                        // Pega o valor selecionado no select para o garçom
+                        const selectedWaiter = tr.querySelector('select').value;
                         if (!selectedWaiter) {
                             alert('Selecione um garçom responsável antes de confirmar.');
                             return;
                         }
-                        // Remove a reserva e exibe feedback
+
+                        // Simula a confirmação: remove a reserva do array
+                        reservations.splice(index, 1);
+                        saveReservations(reservations);
                         tr.remove();
-                        feedbackDiv.innerHTML = `<div class="alert alert-info" role="alert">
-              Reserva ${reservationId} confirmada com o garçom de ID ${selectedWaiter}!
-            </div>`;
+                        feedbackDiv.innerHTML = `<div class="alert alert-info" role="alert">Reserva confirmada com sucesso pelo garçom ${selectedWaiter}. A mesa agora está livre para novas reservas.</div>`;
                     }
-                    // Se for o botão de deleção
+                    // Se o botão for de exclusão
                     else if (e.target.classList.contains('btn-danger')) {
+                        reservations.splice(index, 1);
+                        saveReservations(reservations);
                         tr.remove();
-                        feedbackDiv.innerHTML = `<div class="alert alert-warning" role="alert">
-              Reserva ${reservationId} foi excluída.
-            </div>`;
+                        feedbackDiv.innerHTML = `<div class="alert alert-warning" role="alert">Reserva ${reservationId} foi excluída.</div>`;
                     }
                 }
             });
