@@ -16,6 +16,9 @@ describe('ConfirmarReservaController', () => {
 				quantidadePessoas: 4,
 			})
 		const url = `/api/reservas/${newReserva.body.reserva.id}/confirmar`
+		if (!env.GARCOM_ID_RANDOM) {
+			throw new Error('GARCOM_ID_RANDOM não está definido.')
+		}
 		const response = await supertest(app).patch(url).send({
 			garcomId: env.GARCOM_ID_RANDOM,
 		})
