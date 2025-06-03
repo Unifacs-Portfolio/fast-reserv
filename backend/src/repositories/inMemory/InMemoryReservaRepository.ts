@@ -2,9 +2,6 @@ import type { ReservaRepository } from '../ReservaRepository'
 import type { Reserva } from '../../entities/Reserva'
 
 export class InMemoryReservaRepository implements ReservaRepository {
-	cancelar(mesaId: number): Promise<void> {
-		throw new Error('Method not implemented.')
-	}
 	update(
 		id: string,
 		data: Partial<{ status: string; verify_by: string | null }>,
@@ -23,7 +20,7 @@ export class InMemoryReservaRepository implements ReservaRepository {
 		return this.reservas.find((reserva) => reserva.mesaId === mesaId) || null
 	}
 
-	async delete(mesaId: number): Promise<void> {
+	async cancelar(mesaId: number): Promise<void> {
 		this.reservas = this.reservas.filter((reserva) => reserva.mesaId !== mesaId)
 	}
 }

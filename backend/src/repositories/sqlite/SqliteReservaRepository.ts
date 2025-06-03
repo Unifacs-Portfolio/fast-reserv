@@ -96,7 +96,6 @@ export class SqliteReservaRepository implements ReservaRepository {
 					if (err) {
 						reject(new Error(`Erro ao buscar reserva: ${err.message}`))
 					} else {
-						console.log('Reserva Atualizada')
 						resolve(row)
 					}
 				},
