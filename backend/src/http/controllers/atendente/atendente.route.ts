@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import { criarReservaController } from './CriarReservaController'
-import { deletarReservaController } from './DeletarReservaController'
+import { cancelarReservaController } from './CancelarReservaController'
 
 const router = Router()
 router.post('/reserva', criarReservaController)
-router.delete('/reserva', deletarReservaController)
+router.delete('/reserva', cancelarReservaController)
 
 export { router as atendenteRouter }

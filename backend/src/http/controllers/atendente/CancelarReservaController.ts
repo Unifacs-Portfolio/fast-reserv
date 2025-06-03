@@ -1,12 +1,12 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
-import { makeDeletarReservaUseCase } from '../../../useCases/factories/makeDeletarReservaUseCase'
+import { makeDeletarReservaUseCase } from '../../../useCases/factories/makeCancelarReservaUseCase'
 
 const bodySchema = z.object({
 	mesaId: z.number(),
 })
 
-export const deletarReservaController: RequestHandler = async (req, res) => {
+export const cancelarReservaController: RequestHandler = async (req, res) => {
 	const { mesaId } = bodySchema.parse(req.body)
 	const deletarReservaUseCase = makeDeletarReservaUseCase()
 
