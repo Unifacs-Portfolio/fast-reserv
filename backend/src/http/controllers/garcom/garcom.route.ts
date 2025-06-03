@@ -2,6 +2,6 @@ import { Router } from 'express'
 import { confirmarReservaController } from './ConfirmarReservaController'
 
 const router = Router()
-router.patch('/reserva/:id', confirmarReservaController)
+router.patch('/reservas/:id', confirmarReservaController)
 
 export { router as garcomRouter }

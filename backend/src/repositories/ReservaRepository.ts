@@ -1,4 +1,4 @@
-import type { Reserva, StatusReserva } from '../entities/Reserva'
+import type { Reserva } from '../entities/Reserva'
 
 export interface ReservaRepository {
 	findByMesaId(mesaId: number): Promise<Reserva | null>

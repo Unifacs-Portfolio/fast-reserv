@@ -17,7 +17,7 @@ export class SqliteReservaRepository implements ReservaRepository {
 		return new Promise((resolve, reject) => {
 			this.db.serialize(() => {
 				this.db.run(
-					'INSERT INTO Reserva (id, mesaId, nomeResponsavel, data, hora, quantidadePessoas, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+					'INSERT INTO Reserva (id, mesaId, nomeResponsavel, data, hora, quantidadePessoas, status, verify_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
 					[
 						reserva.id,
 						reserva.mesaId,
@@ -26,10 +26,12 @@ export class SqliteReservaRepository implements ReservaRepository {
 						reserva.hora,
 						reserva.quantidadePessoas,
 						reserva.status,
+						reserva.verify_by,
 					],
 					(err) => {
 						if (err) {
 							reject(`Erro ao criar reserva: ${err.message}`)
+							console.log('Erro ao criar reserva')
 						}
 					},
 				)
@@ -59,14 +61,12 @@ export class SqliteReservaRepository implements ReservaRepository {
 			this.db.get(
 				'SELECT * FROM Reserva WHERE mesaId = ?',
 				[mesaId],
-				(err, row) => {
+				(err, row: Reserva | null) => {
 					if (err) {
 						reject(new Error(`Erro ao buscar reserva: ${err.message}`))
-					}
-					if (isReserva(row)) {
+					} else {
 						resolve(row)
 					}
-					reject('Dados da reserva inválidos.')
 				},
 			)
 		})

@@ -146,7 +146,7 @@ export class Reserva {
 	get status(): StatusReserva {
 		return this._status
 	}
-	get verifyBy(): string | null {
+	get verify_by(): string | null {
 		return this._verify_by
 	}
 }
