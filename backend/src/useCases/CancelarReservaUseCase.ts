@@ -1,6 +1,8 @@
 import type { ReservaRepository } from '../repositories/ReservaRepository'
+import { Reserva } from '../entities/Reserva'
 
 interface CancelarReservaRequest {
+	id: string
 	mesaId: number
 }
 
@@ -11,11 +13,21 @@ export class CancelarReservaUseCase {
 		this.reservaRepository = reservaRepository
 	}
 
-	async execute({ mesaId }: CancelarReservaRequest): Promise<void> {
-		const reservaStatus = await this.reservaRepository.findByMesaId(mesaId)
-		if (!reservaStatus) {
+	async execute({ mesaId, id }: CancelarReservaRequest): Promise<void> {
+		const reservaEncontrada = await this.reservaRepository.findByMesaId(mesaId)
+		if (!reservaEncontrada) {
 			throw new Error('Reserva não existe')
 		}
-		await this.reservaRepository.cancelar(mesaId)
+		const reservaAtualizada = new Reserva({
+			id: reservaEncontrada.id,
+			mesaId: reservaEncontrada.mesaId,
+			nomeResponsavel: reservaEncontrada.nomeResponsavel,
+			data: reservaEncontrada.data,
+			hora: reservaEncontrada.hora,
+			quantidadePessoas: reservaEncontrada.quantidadePessoas,
+			status: 'cancelada',
+		})
+
+		await this.reservaRepository.update(id, reservaAtualizada)
 	}
 }

@@ -12,16 +12,23 @@ export class ConfirmarUseCase {
 		this.reservaRepository = reservaRepository
 	}
 
-	async execute({ id, verify_by }: ConfirmarReservaRequest): Promise<void> {
+	async execute({ id, verify_by }: ConfirmarReservaRequest): Promise<Reserva> {
 		const reservaEncontrada = await this.reservaRepository.findById(id)
 
 		if (!reservaEncontrada) {
 			throw new Error('Reserva não Encontrada')
 		}
-
-		await this.reservaRepository.update(reservaEncontrada.id, {
+		const reservaAtualizada = new Reserva({
+			id: reservaEncontrada.id,
+			mesaId: reservaEncontrada.mesaId,
+			nomeResponsavel: reservaEncontrada.nomeResponsavel,
+			data: reservaEncontrada.data,
+			hora: reservaEncontrada.hora,
+			quantidadePessoas: reservaEncontrada.quantidadePessoas,
 			status: 'confirmada',
-			verify_by: verify_by,
+			verify_by: verify_by, // sobrescre
 		})
+
+		return await this.reservaRepository.update(id, reservaAtualizada)
 	}
 }

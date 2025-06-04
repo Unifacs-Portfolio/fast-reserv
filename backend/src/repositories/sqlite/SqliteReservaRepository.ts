@@ -72,21 +72,6 @@ export class SqliteReservaRepository implements ReservaRepository {
 		})
 	}
 
-	async cancelar(mesaId: number): Promise<void> {
-		return new Promise((resolve, reject) => {
-			this.db.run(
-				'UPDATE Reserva SET status = ? WHERE mesaId = ?',
-				['cancelada', mesaId],
-				(err) => {
-					if (err) {
-						reject(new Error(`Erro ao deletar reserva: ${err.message}`))
-					} else {
-						resolve()
-					}
-				},
-			)
-		})
-	}
 	async findById(id: string): Promise<Reserva | null> {
 		return new Promise((resolve, reject) => {
 			this.db.get(
@@ -103,21 +88,18 @@ export class SqliteReservaRepository implements ReservaRepository {
 		})
 	}
 
-	async update(
-		id: string,
-		data: Partial<{ status: string; verify_by: string | null }>,
-	): Promise<void> {
+	async update(id: string, reserva: Reserva): Promise<Reserva> {
 		const updates: string[] = []
 		const values: (string | null)[] = []
 
-		if (data.status !== undefined) {
+		if (reserva.status !== undefined) {
 			updates.push('status = ?')
-			values.push(data.status)
+			values.push(reserva.status)
 		}
 
-		if (data.verify_by !== undefined) {
+		if (reserva.verify_by !== undefined) {
 			updates.push('verify_by = ?')
-			values.push(data.verify_by)
+			values.push(reserva.verify_by)
 		}
 
 		if (updates.length === 0) {
@@ -137,5 +119,6 @@ export class SqliteReservaRepository implements ReservaRepository {
 				}
 			})
 		})
+		return reserva
 	}
 }
