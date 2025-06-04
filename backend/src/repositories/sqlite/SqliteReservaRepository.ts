@@ -1,5 +1,5 @@
 import { Database } from 'sqlite3'
-import type { Reserva, StatusReserva } from '../../entities/Reserva'
+import type { Reserva } from '../../entities/Reserva'
 import { env } from '../../env'
 import { isReserva } from '../../utils/isReserva'
 import type { ReservaRepository } from '../ReservaRepository'
@@ -65,7 +65,7 @@ export class SqliteReservaRepository implements ReservaRepository {
 					if (err) {
 						reject(new Error(`Erro ao buscar reserva: ${err.message}`))
 					} else {
-						resolve(row)
+						resolve((row as Reserva) || null)
 					}
 				},
 			)

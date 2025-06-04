@@ -27,7 +27,6 @@ export class CancelarReservaUseCase {
 			quantidadePessoas: reservaEncontrada.quantidadePessoas,
 			status: 'cancelada',
 		})
-
 		await this.reservaRepository.update(id, reservaAtualizada)
 	}
 }
