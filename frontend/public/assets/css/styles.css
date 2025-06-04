@@ -1,185 +1,137 @@
 /* ==================================================
    RESET & CONFIGURAÇÕES GLOBAIS
-================================================== */
-/* Aplica o "box-sizing: border-box" a todos os elementos, garantindo que padding e border sejam incluídos no cálculo da largura/altura */
+   - Configura o box-sizing e define o comportamento de scroll na área de tabelas.
+   ================================================== */
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-/* Define as configurações globais para o body: 
-   - Remove margens e paddings padrão para evitar espaços indesejados;
-   - Define uma cor de fundo (tom de cinza claro), cor padrão para texto e fonte sans-serif;
-   - Garante que o body ocupe 100% da altura disponível. */
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #dadcdd;
-    color: #333;
-    font-family: sans-serif;
-    height: 100%;
+/* Garante que a tabela tenha largura para não "quebrar" as colunas */
+#reservationsTable {
+  width: 100%;
+  min-width: 500px;  /* ajuste conforme necessário */
 }
 
-/* ==================================================
-   FONTES PERSONALIZADAS
-================================================== */
-/* Define uma fonte personalizada chamada "Chatime". Usa o arquivo localizado em "../fonts/Chatime.ttf"
-   e especifica que é uma fonte normal (sem negrito e itálico) */
-@font-face {
-    font-family: 'Chatime';
-    src: url("../fonts/Chatime.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
-
-/* Aplica a fonte personalizada "Chatime" aos elementos <h1>, define o tamanho do título, cor, centralização e margem superior. */
-h1 {
-    font-family: 'Chatime', sans-serif;
-    font-size: 3rem;
-    color: #333;
-    text-align: center;
-    margin-top: 1rem;
-}
-
-/* ==================================================
-   ESTILIZAÇÃO DE CARDS
-================================================== */
-/* Define a aparência básica dos cards:
-   - Sem borda e com cantos ligeiramente arredondados;
-   - Adiciona uma sombra sutil para dar profundidade;
-   - Define uma transição suave nos efeitos (transform e box-shadow) ao interagir com o mouse;
-   - Espaço inferior para separar os cards. */
+/* ================================================== 
+     ESTILIZAÇÃO DOS CARDS
+     - Define o visual dos cartões, incluindo borda, sombra, transições e cores específicas.
+  ================================================== */
 .card {
-    border: none;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1.5rem;
+  border-top: 5px solid transparent;
 }
 
-/* Regula a área que envolve os cards (#card-section):
-   - Adiciona espaçamento vertical (padding);
-   - Limita a largura máxima a 1200px para não esticar demais em telas grandes;
-   - Centraliza a seção horizontalmente com margin auto. */
-#card-section {
-    padding: 2rem 0;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Efeito de hover para os cards:
-   - Ao passar o mouse, o card se desloca levemente para cima;
-   - Aumenta a intensidade da sombra, dando um efeito de elevação. */
-.card:hover {
-    transform: translateY(-5px);
-    /* Efeito de elevação ao hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    /* Sombra mais intensa */
-}
 
 .card-header {
-    font-weight: bold;
-    text-transform: uppercase;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 
-/* Estiliza o corpo dos cards:
-   - Adiciona espaçamento interno para o conteúdo ficar confortável;
-   - Define um fundo branco e arredonda os cantos para criar um efeito de "card" limpo e moderno. */
 .card-body {
-    padding: 1.5rem;
-    background-color: #fff;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.03);
+.card:hover {
+  transform: translateY(-3px);
+  transition: transform 0.3s ease;
 }
 
-/* ==================================================
-RODAPÉ
-================================================== */
-/* Estiliza o rodapé:
-   - Fundo escuro com texto branco, centralizado;
-   - Adiciona padding para espaçamento vertical;
-   - Define a largura total, altura fixa e posiciona na parte inferior da página (quando usado com layouts que exigem fixação ou 
-     em conjunto com o container de conteúdo). */
-#footer {
-    background-color: #212529;
-    color: white;
-    text-align: center;
-    margin-top: 100px;
-    padding: 10px 0;
-    width: 100%;
-    height: 100px;
-    position: absolute;
-    bottom: 0;
+#card-atendente {
+  border-top-color: #007bff;
 }
 
-#page-container {
-    position: relative;
-    min-height: 20vh;
+#card-garçom {
+  border-top-color: #28a745;
 }
 
-#content-wrap {
-    padding-bottom: 2.5rem;
+#card-gerente {
+  border-top-color: #dc3545;
 }
 
 /* ==================================================
-ESTILIZAÇÃO DE ALERTAS
-================================================== */
-/* Define o estilo básico para as notificações:
-   - Padding e margem inferior para espaçamento;
-   - Borda arredondada e transparente inicialmente;
-   - Transição suave para efeitos (como fade out). */
+     ESTILIZAÇÃO DOS ALERTAS
+     - Exibe mensagens de feedback com fade-out automático.
+     ================================================== */
 .alert {
-    padding: 15px;
-    margin-bottom: 10px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    opacity: 1;
-    transition: opacity 0.5s ease;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  opacity: 1;
+  overflow: hidden;
+  animation: fadeOut 1s ease-out 5s forwards;
 }
 
-/* Tipos de alertas com cores específicas */
-
-/* Alerta de informação: Fundo azul claro, borda e texto em tom de azul */
-.alert-info {
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-    color: #31708f;
-}
-
-/* Alerta de sucesso: Fundo verde claro, borda e texto em tom de verde */
-.alert-success {
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-    color: #3c763d;
-}
-
-/* Alerta de aviso: Fundo amarelo claro, borda e texto em tom de amarelo */
-.alert-warning {
-    background-color: #fcf8e3;
-    border-color: #faebcc;
-    color: #e9a838;
-}
-
-/* Alerta de perigo/error: Fundo vermelho claro, borda e texto em tom de vermelho */
-.alert-danger {
-    background-color: #f2dede;
-    border-color: #ebccd1;
-    color: #a94442;
-}
-
-/* Classe para efeito de fade, reduzindo a opacidade para 0 */
-.fade {
+@keyframes fadeOut {
+  to {
     opacity: 0;
+    transform: translateY(-10px);
+  }
 }
 
-/* Estiliza o texto do rodapé adicional, centralizando e aplicando um padding relativo e negrito */
-.footer-text {
-    text-align: center;
-    padding: 20px;
-    font-weight: bold;
+.alert-info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+}
+
+.alert-success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+
+.alert-warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #e9a838;
+}
+
+.alert-danger {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+
+/* ==================================================
+     SESSÃO DE CARDS
+     - Centraliza a seção de cartões e ajusta o espaçamento.
+     ================================================== */
+#card-section {
+  padding: 2rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ==================================================
+     ANIMAÇÃO DO BANNER
+     - Anima o banner com efeito de descida e fade.
+     ================================================== */
+#content-wrap .row:first-child img {
+  display: block;
+  border-radius: 5px;
+  animation: slideDownFade 2s ease-out;
+}
+
+@keyframes slideDownFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

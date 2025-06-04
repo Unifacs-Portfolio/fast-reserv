@@ -1,233 +1,317 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
+  <head>
     <title>Painel do Atendente</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CDN: Estilos e scripts para layout responsivo -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap CDN: Estilos e scripts -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Link para o CSS -->
-    <link rel="stylesheet" href="../frontend/public/assets/css/styles.css">
-</head>
+    <!-- Link para o CSS personalizado -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
 
-<body class="d-flex flex-column min-vh-100">
+  <body class="d-flex flex-column min-vh-100">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">Menu</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="attendent.html">Atendente</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="waiter.html">Garçom</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="manager.html">Gerente</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Menu</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Alterna navegação"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="attendent.html"
+                >Atendente</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="waiter.html">Garçom</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="manager.html">Gerente</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- Conteúdo Principal -->
     <div id="content-wrap" class="flex-fill container py-4">
-        <main class="container mt-5">
-            <h1 class="mb-4">Painel do Atendente</h1>
-            <div class="row">
-                <!-- Seção do Formulário para Criar Reserva -->
-                <div class="col-md-6">
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white">
-                            Criar Nova Reserva
-                        </div>
-                        <div class="card-body">
-                            <form id="reservationForm">
-                                <div class="mb-3">
-                                    <label for="date" class="form-label">Data</label>
-                                    <input type="date" class="form-control" id="date" name="date" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="time" class="form-label">Horário</label>
-                                    <input type="time" class="form-control" id="time" name="time" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="table" class="form-label">Mesa</label>
-                                    <input type="number" class="form-control" id="table" name="table" min="1" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="guests" class="form-label">Número de Pessoas</label>
-                                    <input type="number" class="form-control" id="guests" name="guests" min="1" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Name" class="form-label">Nome do Corno</label>
-                                    <input type="text" class="form-control" id="name" name="Name" required>
-                                </div>
-                                <!-- Campo "responsible" removido -->
-                                <button type="submit" class="btn btn-primary">Criar Reserva</button>
-                            </form>
-                            <div id="reservationFeedback" class="mt-3"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Seção da Tabela de Reservas -->
-                <div class="col-md-6">
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-secondary text-white">
-                            Reservas Existentes
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-striped" id="reservationsTable">
-                                <thead>
-                                    <tr>
-                                        <th>Data</th>
-                                        <th>Horário</th>
-                                        <th>Mesa</th>
-                                        <th>Nº de Pessoas</th>
-                                        <th>Nome do corno</th>
-                                        <!-- Removido: Responsável -->
-                                        <th>Ação</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Linhas serão inseridas dinamicamente -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+      <main class="container mt-5">
+        <h1 class="mb-4">Painel do Atendente</h1>
+        <div class="row">
+          <!-- Seção do Formulário para Criar Reserva -->
+          <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+              <div class="card-header bg-primary text-white">
+                CRIAR NOVA RESERVA
+              </div>
+              <div class="card-body">
+                <form id="reservationForm">
+                  <div class="mb-3">
+                    <label for="date" class="form-label">Data</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="date"
+                      name="date"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="time" class="form-label">Horário</label>
+                    <input
+                      type="time"
+                      class="form-control"
+                      id="time"
+                      name="time"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="table" class="form-label">Mesa</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="table"
+                      name="table"
+                      min="1"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="guests" class="form-label"
+                      >Número de Pessoas</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="guests"
+                      name="guests"
+                      min="1"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="name" class="form-label"
+                      >Nome do Responsável</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      name="name"
+                      required
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary">
+                    Criar Reserva
+                  </button>
+                </form>
+                <div id="reservationFeedback" class="mt-3"></div>
+              </div>
             </div>
-        </main>
-    </div>
+          </div>
+
+      <!-- Seção da Tabela de Reservas Pendentes -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header bg-secondary text-white">
+            RESERVAS PENDENTES DE CONFIRMAÇÃO
+          </div>
+          <div class="card-body">
+            <div id="tableWrapper">
+              <table class="table table-striped" id="reservationsTable">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Horário</th>
+                    <th>Mesa</th>
+                    <th>Nº de Pessoas</th>
+                    <th>Nome do Responsável</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Linhas serão inseridas dinamicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4 mt-auto" id="footer">
-        <div class="container text-center">
-            <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
-        </div>
+      <div class="container text-center">
+        <p class="mb-0">
+          © 2025 Restaurante - 404 Café. Todos os direitos reservados para a
+          equipe de A3.
+        </p>
+      </div>
     </footer>
 
-    <!-- Script para manipulação do Painel utilizando mock com localStorage -->
+    <!-- Script para manipulação do Painel utilizando localStorage -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Função para obter ou iniciar a lista de reservas do localStorage
-            function getReservations() {
-                // Se não houver reservas salvas, define um array inicial para testes.
-                if (!localStorage.getItem('reservations')) {
-                    const initialReservations = [
-                        { id: 1, date: '2025-05-01', time: '19:00', table: 'A1', guests: 4, name: 'Rodinson' },
-                        { id: 2, date: '2025-05-02', time: '20:00', table: 'B2', guests: 2, name: 'Marcilon' }
-                    ];
-                    localStorage.setItem('reservations', JSON.stringify(initialReservations));
-                }
-                return JSON.parse(localStorage.getItem('reservations'));
+      document.addEventListener("DOMContentLoaded", function () {
+        // Obtém as reservas do localStorage (simulando a comunicação com o servidor)
+        function getReservations() {
+          return JSON.parse(localStorage.getItem("reservations")) || [];
+        }
+
+        // Salva as reservas atualizadas no localStorage
+        function saveReservations(reservations) {
+          localStorage.setItem("reservations", JSON.stringify(reservations));
+        }
+
+        // Exibe feedback ao usuário com alertas estilizados
+        function showFeedback(message, type) {
+          const feedbackDiv = document.getElementById("reservationFeedback");
+          feedbackDiv.innerHTML = `<div class="alert ${type}" role="alert">${message}</div>`;
+        }
+
+        // Valida se a data e o horário da reserva são válidos:
+        // - Não permite datas anteriores.
+        // - Se a reserva for para o dia atual, o horário deve ser posterior ao horário corrente.
+        function isValidReserveDateTime(dateStr, timeStr) {
+          const now = new Date();
+
+          // Cria um objeto Date para a reserva, juntando data e hora
+          const [year, month, day] = dateStr.split("-").map(Number);
+          const [hour, minute] = timeStr.split(":").map(Number);
+          const reservationDateTime = new Date(year, month - 1, day, hour, minute, 0);
+
+          console.log("Agora:", now);
+          console.log("Reserva:", reservationDateTime);
+
+          if (reservationDateTime <= now) {
+            showFeedback(
+              "Não é possível fazer reservas para datas ou horários passados ou iguais ao atual",
+              "alert-danger"
+            );
+            return false;
+          }
+          return true;
+        }
+
+        // Carrega as reservas com status "pendente" e as exibe na tabela
+        function loadReservations() {
+          const reservations = getReservations();
+          const tbody = document.querySelector("#reservationsTable tbody");
+          tbody.innerHTML = ""; // Limpa a tabela
+
+          // Filtra reservas pendentes
+          const pendingReservations = reservations.filter(r => r.status === "pendente");
+          pendingReservations.forEach(r => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                  <td>${r.date}</td>
+                  <td>${r.time}</td>
+                  <td>${r.table}</td>
+                  <td>${r.guests}</td>
+                  <td>${r.name}</td>
+                  <td>
+                    <button class="btn btn-danger btn-sm" data-id="${r.id}">Cancelar</button>
+                  </td>
+                `;
+            tbody.appendChild(tr);
+          });
+        }
+
+        // Verifica se já existe uma reserva para a mesma mesa, data e horário (somente para reservas pendentes)
+        function isTableAlreadyReserved(date, time, table) {
+          const reservations = getReservations();
+          return reservations.some(r =>
+            r.status === "pendente" &&
+            r.date === date &&
+            r.time === time &&
+            r.table === table
+          );
+        }
+
+        // Manipula o envio do formulário para criar nova reserva
+        document
+          .getElementById("reservationForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const date = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+            const table = document.getElementById("table").value;
+            const guests = document.getElementById("guests").value;
+
+            // Valida a data e o horário
+            if (!isValidReserveDateTime(date, time)) {
+              return;
             }
 
-            // Função para salvar reservas no localStorage
-            function saveReservations(reservations) {
-                localStorage.setItem('reservations', JSON.stringify(reservations));
+            // Evita duplicidade: mesa já reservada para o mesmo dia e horário
+            if (isTableAlreadyReserved(date, time, table)) {
+              showFeedback("Erro: A mesa solicitada já está reservada.", "alert-danger");
+              return;
             }
 
-            // Função para carregar e exibir as reservas na tabela
-            function loadReservations() {
-                const reservations = getReservations();
-                const tbody = document.querySelector('#reservationsTable tbody');
-                tbody.innerHTML = ''; // Limpa a tabela
-                reservations.forEach(reservation => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-            <td>${reservation.date}</td>
-            <td>${reservation.time}</td>
-            <td>${reservation.table}</td>
-            <td>${reservation.guests}</td>
-            <td>${reservation.name}</td>
-            <td>
-              <button class="btn btn-danger btn-sm" data-id="${reservation.id}">Cancelar</button>
-            </td>
-          `;
-                    tbody.appendChild(tr);
-                });
-            }
+            // Cria uma nova reserva com status "pendente"
+            const newReservation = {
+              id: Date.now(),
+              date,
+              time,
+              table,
+              guests: parseInt(guests),
+              name,
+              status: "pendente"
+            };
 
-            // Inicializa a tabela no carregamento
+            const reservations = getReservations();
+            reservations.push(newReservation);
+            saveReservations(reservations);
+
+            showFeedback("Reserva registrada com sucesso e aguardando confirmação!", "alert-success");
             loadReservations();
+            e.target.reset();
+          });
 
-            // Função simples para validar se a mesa já está reservada para o mesmo dia e horário
-            function isTableAlreadyReserved(date, time, table) {
-                const reservations = getReservations();
-                return reservations.some(reservation =>
-                    reservation.date === date && reservation.time === time && reservation.table === table
-                );
+        // Manipula o cancelamento da reserva: a ação do atendente (cancelamento) é enviada ao gerente.
+        // Como a mudança de status é simbólica, ao cancelar a reserva ela deixa de ser exibida na tabela.
+        document.querySelector("#reservationsTable tbody").addEventListener("click", function (e) {
+          if (e.target.tagName.toLowerCase() === "button") {
+            const reservationId = parseInt(e.target.getAttribute("data-id"));
+            let reservations = getReservations();
+            const index = reservations.findIndex(r => r.id === reservationId);
+            if (index === -1) {
+              showFeedback("Erro: Reserva não encontrada.", "alert-danger");
+              return;
             }
 
-            // Manipula o envio do formulário para criar uma nova reserva
-            document.getElementById('reservationForm').addEventListener('submit', function (e) {
-                e.preventDefault();
-                const name = document.getElementById('name').value;
-                const date = document.getElementById('date').value;
-                const time = document.getElementById('time').value;
-                const table = document.getElementById('table').value;
-                const guests = document.getElementById('guests').value;
-
-                // Validação: Se a mesa já estiver reservada para o mesmo dia e horário
-                if (isTableAlreadyReserved(date, time, table)) {
-                    document.getElementById('reservationFeedback').innerHTML =
-                        '<div class="alert alert-danger" role="alert">Erro: A mesa solicitada já está reservada.</div>';
-                    return;
-                }
-
-                // Cria um novo objeto de reserva com ID único (usando Date.now())
-                const newReservation = {
-                    id: Date.now(),
-                    date,
-                    time,
-                    table,
-                    guests: parseInt(guests),
-                    name
-                };
-
-                // Adiciona a nova reserva ao array e atualiza o localStorage
-                const reservations = getReservations();
-                reservations.push(newReservation);
-                saveReservations(reservations);
-
-                // Exibe feedback positivo
-                const feedbackDiv = document.getElementById('reservationFeedback');
-                feedbackDiv.innerHTML = '<div class="alert alert-success" role="alert">Reserva criada com sucesso!</div>';
-
-                // Atualiza a tabela e reseta o formulário
-                loadReservations();
-                e.target.reset();
-            });
-
-            // Manipula a cancelamento de reservas
-            document.querySelector('#reservationsTable tbody').addEventListener('click', function (e) {
-                if (e.target.tagName.toLowerCase() === 'button') {
-                    const reservationId = parseInt(e.target.getAttribute('data-id'));
-                    let reservations = getReservations();
-                    const index = reservations.findIndex(r => r.id === reservationId);
-                    const feedbackDiv = document.getElementById('reservationFeedback');
-                    //Se a reserva não for encontrada, mostra alerta de erro
-                    if(índice== -1){feedbackDiv.innerHTML = '<div class="alert alert-danger" role="alert">Erro: Reserva não encontrada.</div>';
-                        return;
-                    }
-                    //Atualiza o status da reserva para "Cancelada"
-                    reserva[índice].status = 'Cancelada';
-                    saveReservations(reservations);
-                    //Atualiza a tabela para refletir a mudança de status
-                    carregarReservas();feedbackDiv.innerHTML = '<div class="alert alert-info" role="alert">Reserva cancelada com sucesso.</div>';
-                }
-            });
+            // Atualiza o status para 'cancelada' simbolicamente para envio ao gerente
+            reservations[index].status = "cancelada";
+            saveReservations(reservations);
+            loadReservations();
+            showFeedback(`Reserva cancelada com sucesso.`, "alert-info");
+          }
         });
-    </script>
-</body>
 
+        // Inicializa a tabela com as reservas pendentes ao carregar a página
+        loadReservations();
+      });
+    </script>
+    
+  </body>
 </html>

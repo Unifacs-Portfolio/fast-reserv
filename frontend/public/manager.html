@@ -9,7 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Link para o CSS personalizado -->
-  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -88,18 +88,20 @@
             </div>
 
             <!-- Campos para relatório de Mesa Determinada -->
-            <div id="mesaDeterminadaFields" style="display:none;">
+            <div id="mesaDeterminaFields" style="display:none;">
               <div class="mb-3">
                 <label for="mesaDeterminada" class="form-label">Mesa</label>
                 <input type="text" class="form-control" id="mesaDeterminada" name="mesaDeterminada">
               </div>
-            </div>
 
             <div class="mb-3">
               <button type="submit" class="btn btn-success">Gerar</button>
             </div>
+
           </form>
+          
           <div id="reportFeedback" class="mt-3"></div>
+
         </div>
       </div>
 
@@ -190,7 +192,6 @@
               '<div class="alert alert-danger" role="alert">Erro: Informe a mesa para o relatório por mesa.</div>';
             return;
           }
-          reportData = generateMesaDeterminadaReport(table);
         }
 
         // Exibe os dados na tabela de relatório

@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- CSS Personalizado -->
-    <link rel="stylesheet" href="../frontend/public/assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -43,22 +43,24 @@
                 </div>
                 <div class="card-body">
                     <div id="waiterFeedback"></div>
-                    <table class="table table-striped" id="reservationsTable">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Horário</th>
-                                <th>Mesa</th>
-                                <th>Nº de Pessoas</th>
-                                <th>Responsável</th>
-                                <th>Garçom</th> <!-- Seleção para identificar o garçom que irá confirmar -->
-                                <th>Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Linhas serão carregadas dinamicamente -->
-                        </tbody>
-                    </table>
+                    <div id="tableWrapper" style="max-height:300px; overflow-y:auto; overflow-x:auto;">
+                        <table class="table table-striped" id="reservationsTable">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Horário</th>
+                                    <th>Mesa</th>
+                                    <th>Nº de Pessoas</th>
+                                    <th>Responsável</th>
+                                    <th>Garçom</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Linhas serão carregadas dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
@@ -67,7 +69,9 @@
     <!-- Footer -->
     <footer class="bg-dark text-white py-4 mt-auto" id="footer">
         <div class="container text-center">
-            <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
+            <p class="mb-0">
+                © 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.
+            </p>
         </div>
     </footer>
 
@@ -84,54 +88,59 @@
                 localStorage.setItem('reservations', JSON.stringify(reservations));
             }
 
-            // Função para carregar as reservas na tabela
+            // Função para exibir feedback no painel do Garçom utilizando alertas estilizados
+            function showWaiterFeedback(message, type) {
+                const feedbackDiv = document.getElementById('waiterFeedback');
+                feedbackDiv.innerHTML = `<div class="alert ${type}" role="alert">${message}</div>`;
+            }
+
+            // Função para carregar somente as reservas com status "pendente" na tabela
             function loadReservations() {
                 const reservations = getReservations();
                 const tbody = document.querySelector('#reservationsTable tbody');
                 tbody.innerHTML = ''; // Limpa os dados atuais
 
-                // Apenas exibe reservas que estão "reservadas" (ou seja, que não foram confirmadas)
-                reservations.forEach(reservation => {
-                    // Vamos supor que se a reserva existir, ela está pendente
+                // Filtra apenas reservas pendentes (exibe somente os registros ativos para confirmação)
+                const pendingReservations = reservations.filter(r => r.status === 'pendente');
+                pendingReservations.forEach(reservation => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                    <td>${reservation.date}</td>
-                    <td>${reservation.time}</td>
-                    <td>${reservation.table}</td>
-                    <td>${reservation.guests}</td>
-                    <td>${reservation.name}</td>
-                    <td>
-                      <select class="form-select form-select-sm">
-                        <option value="" hidden>Selecione</option>
-                        <option value="Marcilio">Marcilio</option>
-                        <option value="Roan">Roan</option>
-                        <option value="Marcus">Marcus</option>
-                      </select>
-                    </td>
-                    <td>
-                      <button class="btn btn-success btn-sm" data-id="${reservation.id}">
-                        Confirmar
-                      </button>
-                    </td>
-                  `;
+            <td>${reservation.date}</td>
+            <td>${reservation.time}</td>
+            <td>${reservation.table}</td>
+            <td>${reservation.guests}</td>
+            <td>${reservation.name}</td>
+            <td>
+              <select class="form-select form-select-sm">
+                <option value="" hidden>Selecione</option>
+                <option value="Marcilio">Marcilio</option>
+                <option value="Roan">Roan</option>
+                <option value="Marcus">Marcus</option>
+              </select>
+            </td>
+            <td>
+              <button class="btn btn-success btn-sm" data-id="${reservation.id}">
+                Confirmar
+              </button>
+            </td>
+          `;
                     tbody.appendChild(tr);
                 });
             }
 
-            // Carrega as reservas assim que a página é carregada (para manter dados atualizados)
+            // Carrega as reservas assim que a página é carregada (mantendo os dados atualizados)
             loadReservations();
 
-            // Manipula cliques no tbody para confirmar ou excluir reserva
+            // Manipula cliques no tbody para confirmar reserva
             document.querySelector('#reservationsTable tbody').addEventListener('click', function (e) {
                 if (e.target.tagName.toLowerCase() === 'button') {
                     const reservationId = parseInt(e.target.getAttribute('data-id'));
-                    const feedbackDiv = document.getElementById('waiterFeedback');
                     let reservations = getReservations();
                     const index = reservations.findIndex(r => r.id === reservationId);
 
-                    // Se não encontrou a reserva, exibe erro (por exemplo, a reserva já foi confirmada)
+                    // Se não encontrou a reserva, exibe erro
                     if (index === -1) {
-                        feedbackDiv.innerHTML = `<div class="alert alert-danger" role="alert">Erro: Reserva não encontrada ou já confirmada.</div>`;
+                        showWaiterFeedback('Erro: Reserva não encontrada ou já confirmada.', 'alert-danger');
                         return;
                     }
 
@@ -142,22 +151,16 @@
                         // Pega o valor selecionado no select para o garçom
                         const selectedWaiter = tr.querySelector('select').value;
                         if (!selectedWaiter) {
-                            alert('Selecione um garçom responsável antes de confirmar.');
+                            showWaiterFeedback('Selecione um garçom responsável antes de confirmar.', 'alert-danger');
                             return;
                         }
 
-                        // Simula a confirmação: remove a reserva do array
-                        reservations.splice(index, 1);
+                        // Atualiza o status para "confirmada" e registra o garçom que confirmou
+                        reservations[index].status = "confirmada";
+                        reservations[index].waiter = selectedWaiter;
                         saveReservations(reservations);
-                        tr.remove();
-                        feedbackDiv.innerHTML = `<div class="alert alert-info" role="alert">Reserva confirmada com sucesso pelo garçom ${selectedWaiter}. A mesa agora está livre para novas reservas.</div>`;
-                    }
-                    // Se o botão for de exclusão
-                    else if (e.target.classList.contains('btn-danger')) {
-                        reservations.splice(index, 1);
-                        saveReservations(reservations);
-                        tr.remove();
-                        feedbackDiv.innerHTML = `<div class="alert alert-warning" role="alert">Reserva ${reservationId} foi excluída.</div>`;
+                        loadReservations();
+                        showWaiterFeedback(`Reserva confirmada com sucesso pelo garçom ${selectedWaiter}.`, 'alert-info');
                     }
                 }
             });
@@ -165,4 +168,4 @@
     </script>
 </body>
 
-</html>
+</html
