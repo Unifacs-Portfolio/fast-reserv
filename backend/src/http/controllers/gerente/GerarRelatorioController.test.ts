@@ -27,7 +27,7 @@ describe('GerarRelatorioController', () => {
 			.send({
 				mesaId: 3,
 				nomeResponsavel: 'Jane Doe',
-				data: new Date().toISOString().split('T')[0], // Formato YYYY-MM-DD
+				data: '2025-07-05',
 				hora: '14:00',
 				quantidadePessoas: 2,
 			})
@@ -36,29 +36,30 @@ describe('GerarRelatorioController', () => {
 			.send({
 				mesaId: 2,
 				nomeResponsavel: 'John Doe',
-				data: new Date().toISOString().split('T')[0], // Formato YYYY-MM-DD
+				data: '2025-07-06',
 				hora: '13:00',
 				quantidadePessoas: 3,
 			})
-		const newReservaToCancel = await supertest(app)
-			.post('/api/reservas')
-			.send({
-				mesaId: 1,
-				nomeResponsavel: 'João Silva',
-				data: new Date().toISOString().split('T')[0], // Formato YYYY-MM-DD
-				hora: '12:00',
-				quantidadePessoas: 4,
-			})
-		const urlToConfirm = `/api/reservas/${newReservaToConfirm.body.reserva.id}/confirmar`
+		const newReservaToCancel = await supertest(app).post('/api/reservas').send({
+			mesaId: 1,
+			nomeResponsavel: 'João Silva',
+			data: '2025-07-07',
+			hora: '12:00',
+			quantidadePessoas: 4,
+		})
+		const urlToConfirm = `/api/reservas/${newReservaToConfirm.body.reserva.id}`
 		const reservaWithStatusConfirmed = await supertest(app)
 			.patch(urlToConfirm)
 			.send({
 				garcomId: env.GARCOM_ID_RANDOM,
+				status: 'confirmada',
 			})
-		const urlToCancel = `/api/reservas/${newReservaToCancel.body.reserva.id}/cancelar`
+		const urlToCancel = `/api/reservas/${newReservaToCancel.body.reserva.id}`
 		const reservaWithStatusCancelled = await supertest(app)
 			.patch(urlToCancel)
-			.send()
+			.send({
+				status: 'cancelada',
+			})
 		const url = '/api/relatorios/reservas-atendidas'
 		const response = await supertest(app)
 			.get(url)
@@ -84,29 +85,26 @@ describe('GerarRelatorioController', () => {
 			)
 		}
 		const mesaIdAlvo = 1
-		const newReserva = await supertest(app)
-			.post('/api/reservas')
-			.send({
-				mesaId: mesaIdAlvo,
-				nomeResponsavel: 'Alice',
-				data: new Date().toISOString().split('T')[0], // Formato YYYY-MM-DD
-				hora: '10:00',
-				quantidadePessoas: 2,
-			})
+		const newReserva = await supertest(app).post('/api/reservas').send({
+			mesaId: mesaIdAlvo,
+			nomeResponsavel: 'Alice',
+			data: '2025-07-05',
+			hora: '10:00',
+			quantidadePessoas: 2,
+		})
 		await supertest(app)
-			.patch(`/api/reservas/${newReserva.body.reserva.id}/confirmar`)
+			.patch(`/api/reservas/${newReserva.body.reserva.id}`)
 			.send({
 				garcomId: env.GARCOM_ID_RANDOM,
+				status: 'confirmada',
 			})
-		const newReserva2 = await supertest(app)
-			.post('/api/reservas')
-			.send({
-				mesaId: mesaIdAlvo,
-				nomeResponsavel: 'Bob',
-				data: new Date().toISOString().split('T')[0], // Formato YYYY-MM-DD
-				hora: '11:00',
-				quantidadePessoas: 4,
-			})
+		const newReserva2 = await supertest(app).post('/api/reservas').send({
+			mesaId: mesaIdAlvo,
+			nomeResponsavel: 'Bob',
+			data: '2025-07-05',
+			hora: '11:00',
+			quantidadePessoas: 4,
+		})
 		const url = `/api/relatorios/reservas-mesa/${mesaIdAlvo}`
 		const response = await supertest(app).get(url).send()
 		expect(checkRouteExists(response, 'GET', url)).toBe(true)
@@ -132,18 +130,17 @@ describe('GerarRelatorioController', () => {
 			)
 		}
 		const mesaIdAlvo = 2
-		const newReserva = await supertest(app)
-			.post('/api/reservas')
-			.send({
-				mesaId: mesaIdAlvo,
-				nomeResponsavel: 'Charlie',
-				data: new Date().toISOString().split('T')[0], // Formato YYYY-MM-DD
-				hora: '12:00',
-				quantidadePessoas: 3,
-			})
-		const urlToConfirm = `/api/reservas/${newReserva.body.reserva.id}/confirmar`
+		const newReserva = await supertest(app).post('/api/reservas').send({
+			mesaId: mesaIdAlvo,
+			nomeResponsavel: 'Charlie',
+			data: '2025-07-06',
+			hora: '12:00',
+			quantidadePessoas: 3,
+		})
+		const urlToConfirm = `/api/reservas/${newReserva.body.reserva.id}`
 		await supertest(app).patch(urlToConfirm).send({
 			garcomId: env.GARCOM_ID_RANDOM,
+			status: 'confirmada',
 		})
 		const url = '/api/relatorios/mesas-confirmadas'
 		const response = await supertest(app)
