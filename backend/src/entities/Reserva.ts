@@ -15,7 +15,7 @@ export interface ReservaRequest {
 	hora: string
 	quantidadePessoas: number
 	status?: StatusReserva
-	verify_by?: string
+	verify_by?: string | null
 }
 export class Reserva {
 	private readonly _id: string
@@ -44,6 +44,9 @@ export class Reserva {
 		if (status) {
 			this._status = status
 		}
+		if (verify_by !== undefined) {
+			this._verify_by = verify_by
+		}
 		// Outras validações podem ser adicionadas aqui,
 		// podem ser criados metodos para isso
 		this._id = id
@@ -67,18 +70,6 @@ export class Reserva {
 		if (!regex.test(data)) {
 			throw new Error('Data inválida. O formato deve ser AAAA-MM-DD')
 		}
-		const [ano, mes, dia] = data.split('-').map(Number)
-		const dateObj = new Date(ano, mes - 1, dia)
-
-		// Verifica se a data é válida (por exemplo, não permitir 2025-02-30)
-		if (
-			dateObj.getFullYear() !== ano ||
-			dateObj.getMonth() !== mes - 1 ||
-			dateObj.getDate() !== dia
-		) {
-			throw new Error('Data inválida.')
-		}
-
 		return data
 	}
 

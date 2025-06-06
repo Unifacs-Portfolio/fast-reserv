@@ -1,5 +1,5 @@
 import { Database } from 'sqlite3'
-import type { Reserva } from '../../entities/Reserva'
+import { Reserva } from '../../entities/Reserva'
 import { env } from '../../env'
 import { isReserva } from '../../utils/isReserva'
 import type { ReservaRepository } from '../ReservaRepository'
@@ -15,44 +15,55 @@ export class SqliteReservaRepository implements ReservaRepository {
 	}
 	async create(reserva: Reserva): Promise<Reserva> {
 		return new Promise((resolve, reject) => {
-			this.db.serialize(() => {
-				this.db.run(
-					'INSERT INTO Reserva (id, mesaId, nomeResponsavel, data, hora, quantidadePessoas, status, verify_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-					[
-						reserva.id,
-						reserva.mesaId,
-						reserva.nomeResponsavel,
-						reserva.data,
-						reserva.hora,
-						reserva.quantidadePessoas,
-						reserva.status,
-						reserva.verify_by,
-					],
-					(err) => {
-						if (err) {
-							reject(`Erro ao criar reserva: ${err.message}`)
-							console.log('Erro ao criar reserva')
-						}
-					},
-				)
-				this.db.get(
-					'SELECT * FROM Reserva WHERE id = ?',
-					[reserva.id],
-					(err, row) => {
-						if (err) {
-							reject(`Erro ao buscar reserva: ${err.message}`)
-						}
-						if (!row) {
-							reject('Reserva não encontrada após inserção.')
-						}
-
-						if (isReserva(row)) {
-							resolve(row)
-						}
-						reject('Dados da reserva inválidos.')
-					},
-				)
-			})
+			this.db.run(
+				'INSERT INTO Reserva (id, mesaId, nomeResponsavel, data, hora, quantidadePessoas, status, verify_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+				[
+					reserva.id,
+					reserva.mesaId,
+					reserva.nomeResponsavel,
+					reserva.data,
+					reserva.hora,
+					reserva.quantidadePessoas,
+					reserva.status,
+					reserva.verify_by,
+				],
+				(err) => {
+					if (err) {
+						reject(new Error(`Erro ao criar reserva: ${err.message}`))
+						return
+					}
+					this.db.get(
+						'SELECT * FROM Reserva WHERE id = ?',
+						[reserva.id],
+						(err, row) => {
+							if (err) {
+								reject(new Error(`Erro ao buscar reserva: ${err.message}`))
+								return
+							}
+							if (!row) {
+								reject(new Error('Reserva não encontrada após inserção.'))
+								return
+							}
+							if (isReserva(row)) {
+								resolve(
+									new Reserva({
+										id: row.id,
+										mesaId: row.mesaId,
+										nomeResponsavel: row.nomeResponsavel,
+										data: row.data,
+										hora: row.hora,
+										quantidadePessoas: row.quantidadePessoas,
+										status: row.status,
+										verify_by: row.verify_by,
+									}),
+								)
+								return
+							}
+							reject(new Error('Dados da reserva inválidos.'))
+						},
+					)
+				},
+			)
 		})
 	}
 
@@ -64,9 +75,28 @@ export class SqliteReservaRepository implements ReservaRepository {
 				(err, row: Reserva | null) => {
 					if (err) {
 						reject(new Error(`Erro ao buscar reserva: ${err.message}`))
-					} else {
-						resolve((row as Reserva) || null)
+						return
 					}
+					if (!row) {
+						resolve(null)
+						return
+					}
+					if (isReserva(row)) {
+						resolve(
+							new Reserva({
+								id: row.id,
+								mesaId: row.mesaId,
+								nomeResponsavel: row.nomeResponsavel,
+								data: row.data,
+								hora: row.hora,
+								quantidadePessoas: row.quantidadePessoas,
+								status: row.status,
+								verify_by: row.verify_by,
+							}),
+						)
+						return
+					}
+					reject(new Error('Dados da reserva inválidos.'))
 				},
 			)
 		})
