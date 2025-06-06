@@ -41,6 +41,11 @@
   transition: transform 0.3s ease;
 }
 
+#card-section {
+  padding: 2rem 0;
+  max-width: 1200px;
+  margin: 0 auto;   }
+
 #card-atendente {
   border-top-color: #007bff;
 }
@@ -98,15 +103,6 @@
   color: #a94442;
 }
 
-/* ==================================================
-     SESSÃO DE CARDS
-     - Centraliza a seção de cartões e ajusta o espaçamento.
-     ================================================== */
-#card-section {
-  padding: 2rem 0;
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
 /* ==================================================
      ANIMAÇÃO DO BANNER
