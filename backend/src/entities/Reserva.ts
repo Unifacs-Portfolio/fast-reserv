@@ -15,6 +15,7 @@ interface ReservaRequest {
 	hora: string
 	quantidadePessoas: number
 	status?: StatusReserva
+	verify_by?: string | null
 }
 export class Reserva {
 	private readonly _id: string
@@ -24,6 +25,7 @@ export class Reserva {
 	private _hora: string
 	private _quantidadePessoas: number
 	private _status: StatusReserva = 'aguardando'
+	private _verify_by: string | null = null
 
 	constructor({
 		id,
@@ -33,6 +35,7 @@ export class Reserva {
 		hora,
 		quantidadePessoas,
 		status,
+		verify_by,
 	}: ReservaRequest) {
 		if (quantidadePessoas <= 0) {
 			throw new Error('Quantidade de pessoas deve ser maior que zero')
@@ -40,6 +43,9 @@ export class Reserva {
 
 		if (status) {
 			this._status = status
+		}
+		if (verify_by !== undefined) {
+			this._verify_by = verify_by
 		}
 		// Outras validações podem ser adicionadas aqui,
 		// podem ser criados metodos para isso
@@ -56,8 +62,7 @@ export class Reserva {
 		if (!regex.test(data)) {
 			throw new Error('Data inválida. O formato deve ser AAAA-MM-DD.')
 		}
-		const formatData = new Date(data)
-		return formatData.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
+		return data
 	}
 
 	private validateHora(hora: string): string {
@@ -115,5 +120,9 @@ export class Reserva {
 
 	get status(): StatusReserva {
 		return this._status
+	}
+
+	get verify_by(): string | null {
+		return this._verify_by
 	}
 }

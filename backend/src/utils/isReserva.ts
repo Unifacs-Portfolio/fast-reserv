@@ -1,6 +1,15 @@
 import type { Reserva } from '../entities/Reserva'
 
-export function isReserva(reserva: unknown): reserva is Reserva {
+export function isReserva(reserva: unknown): reserva is {
+	id: Reserva['id']
+	mesaId: Reserva['mesaId']
+	nomeResponsavel: Reserva['nomeResponsavel']
+	data: Reserva['data']
+	hora: Reserva['hora']
+	quantidadePessoas: Reserva['quantidadePessoas']
+	status: Reserva['status']
+	verify_by: Reserva['verify_by']
+} {
 	return (
 		typeof reserva === 'object' &&
 		reserva !== null &&
@@ -17,6 +26,8 @@ export function isReserva(reserva: unknown): reserva is Reserva {
 		typeof (reserva as Reserva).data === 'string' &&
 		typeof (reserva as Reserva).hora === 'string' &&
 		typeof (reserva as Reserva).quantidadePessoas === 'number' &&
-		typeof (reserva as Reserva).status === 'string'
+		typeof (reserva as Reserva).status === 'string' &&
+		(typeof (reserva as Reserva).verify_by === 'string' ||
+			(reserva as Reserva).verify_by === null)
 	)
 }
