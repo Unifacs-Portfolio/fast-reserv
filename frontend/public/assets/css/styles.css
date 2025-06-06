@@ -112,6 +112,7 @@
   display: block;
   border-radius: 5px;
   animation: slideDownFade 2s ease-out;
+  max-width: 100%;
 }
 
 @keyframes slideDownFade {
