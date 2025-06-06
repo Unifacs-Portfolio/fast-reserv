@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
-import { makeConfirmarReservaUseCase } from '../../../useCases/factories/makeConfirmarReservaUseCase'
+import { makeConfirmarReservaUseCase } from '../../useCases/factories/makeConfirmarReservaUseCase'
 
 const bodySchema = z.object({
 	verify_by: z.string(),

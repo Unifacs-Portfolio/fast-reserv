@@ -6,6 +6,7 @@ import { env } from './env'
 import { atendenteRouter } from './http/controllers/atendente/atendente.route'
 import { garcomRouter } from './http/controllers/garcom/garcom.route'
 import path from 'node:path'
+import { reservasRouter } from './http/controllers/reservas.routes'
 
 const app = express()
 app.use(express.json())
@@ -13,8 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(process.cwd(), 'frontend/public')))
 
 configuratedb()
-app.use('/api', atendenteRouter)
-app.use('/api', garcomRouter)
+app.use('/api', reservasRouter)
 app.use(<ErrorRequestHandler>((err, _req, res, next) => {
 	if (err instanceof ZodError) {
 		res.status(400).json({ message: 'Validação falhou', issues: err.format() })
