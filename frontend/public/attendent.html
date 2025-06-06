@@ -176,8 +176,22 @@
         }
 
         // Salva as reservas atualizadas no localStorage
-        function saveReservations(reservations) {
-          localStorage.setItem("reservations", JSON.stringify(reservations));
+        async function saveReservations(reservations) {
+          const response = await fetch("/api/reservas", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(reservations)
+          })
+          if (!response.ok) {
+            localStorage.setItem("reservations", JSON.stringify(reservations));
+            console.warn("Aviso: Não foi possível salvar reservas no servidor, salvando localmente.");
+            return;
+          }
+          const reservas = await response.json();
+          console.log("Reservas salvas:", reservas);
+          return reservas;
         }
 
         // Exibe feedback ao usuário com alertas estilizados
