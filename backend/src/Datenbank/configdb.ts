@@ -21,7 +21,7 @@ export async function createTableMesa() {
 export async function createTableReserva() {
 	openDb().then((db) => {
 		db.exec(
-			'CREATE TABLE IF NOT EXISTS Reserva (id TEXT PRIMARY KEY NOT NULL , mesaId INTEGER,nomeResponsavel TEXT UNIQUE, quantidadePessoas INTEGER, data TEXT, hora TEXT, status TEXT,FOREIGN KEY (mesaId) REFERENCES Mesa(id))',
+			'CREATE TABLE IF NOT EXISTS Reserva (id TEXT PRIMARY KEY NOT NULL , mesaId INTEGER,nomeResponsavel TEXT UNIQUE, quantidadePessoas INTEGER, data TEXT, hora TEXT, status TEXT,verify_by TEXT,FOREIGN KEY (mesaId) REFERENCES Mesa(id))',
 		)
 	})
 }
