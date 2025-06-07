@@ -19,6 +19,5 @@ export const atualizarStatusReservaController: RequestHandler = async (
 		status,
 		garcomId,
 	})
-	console.log('Reserva Atualizada')
 	res.status(200).json(reserva)
 }
