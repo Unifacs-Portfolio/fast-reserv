@@ -1,248 +1,251 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <title>Painel do Gerente</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CDN: Estilos e scripts -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Link para o CSS personalizado -->
-    <link rel="stylesheet" href="../assets/css/styles.css">
-  </head>
 
-  <body class="d-flex flex-column min-vh-100">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">Menu</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="attendent.html">Atendente</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="waiter.html">Garçom</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="manager.html">Gerente</a>
-            </li>
-          </ul>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Gerente</title>
+  <link rel="icon" href="assets/images/faviconcoffe.jpg" type="image/x-icon" />
+  <!-- Bootstrap CDN: Estilos e scripts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Link para o CSS personalizado -->
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Menu</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="attendent.html">Atendente</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="waiter.html">Garçom</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="manager.html">Gerente</a>
+          </li>
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <!-- Conteúdo Principal -->
-    <div id="content-wrap" class="flex-fill container py-4">
-      <main class="container mt-5">
-        <h1 class="mb-4">Painel do Gerente</h1>
-        <!-- Card para geração de relatórios -->
-        <div class="card mb-4 shadow-sm">
-          <div class="card-header bg-danger text-white">
-            Gerar Relatório
-          </div>
-          <div class="card-body">
-            <form id="reportForm">
-              <!-- Seleção do tipo de relatório -->
+  <!-- Conteúdo Principal -->
+  <div id="content-wrap" class="flex-fill container py-4">
+    <main class="container mt-5">
+      <h1 class="mb-4">Painel do Gerente</h1>
+      <!-- Card para geração de relatórios -->
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-danger text-white">
+          Gerar Relatório
+        </div>
+        <div class="card-body">
+          <form id="reportForm">
+            <!-- Seleção do tipo de relatório -->
+            <div class="mb-3">
+              <label for="reportType" class="form-label">Tipo de Relatório</label>
+              <select class="form-select" id="reportType" name="reportType" required>
+                <option value="" disabled selected>Selecione o tipo de relatório</option>
+                <option value="periodo">Relatório por Período</option>
+                <option value="garçom">Relatório por Garçom</option>
+                <option value="mesa">Relatório por Mesa</option>
+              </select>
+            </div>
+
+            <!-- Campos para relatório de Período -->
+            <div id="commonFields">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="startDate" class="form-label">Data Inicial</label>
+                  <input type="date" class="form-control" id="startDate" name="startDate">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="endDate" class="form-label">Data Final</label>
+                  <input type="date" class="form-control" id="endDate" name="endDate">
+                </div>
+              </div>
+            </div>
+
+            <!-- Campos para relatório por Garçom -->
+            <div id="garcomFields">
               <div class="mb-3">
-                <label for="reportType" class="form-label">Tipo de Relatório</label>
-                <select class="form-select" id="reportType" name="reportType" required>
-                  <option value="" disabled selected>Selecione o tipo de relatório</option>
-                  <option value="periodo">Relatório por Período</option>
-                  <option value="garçom">Relatório por Garçom</option>
-                  <option value="mesa">Relatório por Mesa</option>
+                <label for="garcom" class="form-label">Garçom</label>
+                <select class="form-select" id="garcom" name="garcom">
+                  <option value="" disabled selected>Selecione o Garçom</option>
+                  <option value="Marcilio">Marcilio</option>
+                  <option value="Roan">Roan</option>
+                  <option value="Marcus">Marcus</option>
                 </select>
               </div>
+            </div>
 
-              <!-- Campos para relatório de Período -->
-              <div id="commonFields">
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="startDate" class="form-label">Data Inicial</label>
-                    <input type="date" class="form-control" id="startDate" name="startDate">
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="endDate" class="form-label">Data Final</label>
-                    <input type="date" class="form-control" id="endDate" name="endDate">
-                  </div>
-                </div>
-              </div>
-
-              <!-- Campos para relatório por Garçom -->
-              <div id="garcomFields">
-                <div class="mb-3">
-                  <label for="garcom" class="form-label">Garçom</label>
-                  <select class="form-select" id="garcom" name="garcom">
-                    <option value="" disabled selected>Selecione o Garçom</option>
-                    <option value="Marcilio">Marcilio</option>
-                    <option value="Roan">Roan</option>
-                    <option value="Marcus">Marcus</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Campos para relatório por Mesa -->
-              <div id="mesaFields">
-                <div class="mb-3">
-                  <label for="mesa" class="form-label">Mesa</label>
-                  <input type="text" class="form-control" id="mesa" name="mesa">
-                </div>
-              </div>
-
+            <!-- Campos para relatório por Mesa -->
+            <div id="mesaFields">
               <div class="mb-3">
-                <button type="submit" class="btn btn-success">Gerar</button>
+                <label for="mesa" class="form-label">Mesa</label>
+                <input type="text" class="form-control" id="mesa" name="mesa">
               </div>
-            </form>
-            <div id="reportFeedback" class="mt-3"></div>
-          </div>
-        </div>
+            </div>
 
-        <!-- Card para exibir os resultados do relatório -->
-        <div class="card shadow-sm">
-          <div class="card-header bg-secondary text-white">
-            Resultados do Relatório
-          </div>
-          <div class="card-body">
-            <table class="table table-striped" id="reportTable">
-              <thead>
-                <tr>
-                  <th>Métrica</th>
-                  <th>Valor</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Dados do relatório inseridos dinamicamente -->
-              </tbody>
-            </table>
-          </div>
+            <div class="mb-3">
+              <button type="submit" class="btn btn-success">Gerar</button>
+            </div>
+          </form>
+          <div id="reportFeedback" class="mt-3"></div>
         </div>
-      </main>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5" id="footer">
-      <div class="container text-center">
-        <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
       </div>
-    </footer>
 
-    <!-- Script para manipulação do Dashboard do Gerente -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
+      <!-- Card para exibir os resultados do relatório -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+          Resultados do Relatório
+        </div>
+        <div class="card-body">
+          <table class="table table-striped" id="reportTable">
+            <thead>
+              <tr>
+                <th>Métrica</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dados do relatório inseridos dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
 
-        // Função para obter o mock de dados (registros do atendente e garçom) armazenados no localStorage
-        function getReservations() {
-          return JSON.parse(localStorage.getItem('reservations')) || [];
-        }
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-5" id="footer">
+    <div class="container text-center">
+      <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
+    </div>
+  </footer>
 
-        // Exibe ou oculta os campos conforme o tipo de relatório selecionado
-        document.getElementById('reportType').addEventListener('change', function () {
-          const type = this.value;
-          document.getElementById('commonFields').style.display = (type === 'periodo') ? 'block' : 'none';
-          document.getElementById('garcomFields').style.display = (type === 'garçom') ? 'block' : 'none';
-          document.getElementById('mesaFields').style.display = (type === 'mesa') ? 'block' : 'none';
-        });
+  <!-- Script para manipulação do Dashboard do Gerente -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
 
-        // Manipula a submissão do formulário para geração do relatório
-        document.getElementById('reportForm').addEventListener('submit', function (e) {
-          e.preventDefault();
-          const reportType = document.getElementById('reportType').value;
-          let reportData = [];
+      // Função para obter o mock de dados (registros do atendente e garçom) armazenados no localStorage
+      function getReservations() {
+        return JSON.parse(localStorage.getItem('reservations')) || [];
+      }
 
-          if (reportType === 'periodo') {
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-            if (!startDate || !endDate) {
-              exibeAlerta('Erro: Informe as datas inicial e final para o relatório por período.', 'danger');
-              return;
-            }
-            if (new Date(startDate) > new Date(endDate)) {
-              exibeAlerta('Erro: A data inicial deve ser anterior à data final.', 'danger');
-              return;
-            }
-            reportData = generatePeriodReport(startDate, endDate);
-          } else if (reportType === 'garçom') {
-            const waiter = document.getElementById('garcom').value;
-            if (!waiter) {
-              exibeAlerta('Erro: Selecione o garçom para o relatório por garçom.', 'danger');
-              return;
-            }
-            reportData = generateGarcomReport(waiter);
-          } else if (reportType === 'mesa') {
-            const table = document.getElementById('mesa').value;
-            if (!table) {
-              exibeAlerta('Erro: Informe a mesa para o relatório por mesa.', 'danger');
-              return;
-            }
-            reportData = generateMesaReport(table);
+      // Exibe ou oculta os campos conforme o tipo de relatório selecionado
+      document.getElementById('reportType').addEventListener('change', function () {
+        const type = this.value;
+        document.getElementById('commonFields').style.display = (type === 'periodo') ? 'block' : 'none';
+        document.getElementById('garcomFields').style.display = (type === 'garçom') ? 'block' : 'none';
+        document.getElementById('mesaFields').style.display = (type === 'mesa') ? 'block' : 'none';
+      });
+
+      // Manipula a submissão do formulário para geração do relatório
+      document.getElementById('reportForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const reportType = document.getElementById('reportType').value;
+        let reportData = [];
+
+        if (reportType === 'periodo') {
+          const startDate = document.getElementById('startDate').value;
+          const endDate = document.getElementById('endDate').value;
+          if (!startDate || !endDate) {
+            exibeAlerta('Erro: Informe as datas inicial e final para o relatório por período.', 'danger');
+            return;
           }
-
-          const tbody = document.querySelector('#reportTable tbody');
-          tbody.innerHTML = '';
-          if (reportData.length === 0) {
-            exibeAlerta('Nenhum dado encontrado para os parâmetros informados.', 'warning');
-          } else {
-            reportData.forEach(item => {
-              const tr = document.createElement('tr');
-              tr.innerHTML = `<td>${item.metric}</td><td>${item.value}</td>`;
-              tbody.appendChild(tr);
-            });
-            exibeAlerta('Relatório gerado com sucesso!', 'success');
+          if (new Date(startDate) > new Date(endDate)) {
+            exibeAlerta('Erro: A data inicial deve ser anterior à data final.', 'danger');
+            return;
           }
-        });
-
-        // Função para exibir alertas com timer (3 segundos para desaparecer)
-        function exibeAlerta(mensagem, tipo) {
-          const feedbackDiv = document.getElementById('reportFeedback');
-          const alerta = document.createElement('div');
-          alerta.className = `alert alert-${tipo}`;
-          alerta.setAttribute('role', 'alert');
-          alerta.textContent = mensagem;
-          feedbackDiv.innerHTML = '';
-          feedbackDiv.appendChild(alerta);
-          setTimeout(() => {
-            alerta.classList.add('fade-out');
-            setTimeout(() => alerta.remove(), 1000);
-          }, 3000);
+          reportData = generatePeriodReport(startDate, endDate);
+        } else if (reportType === 'garçom') {
+          const waiter = document.getElementById('garcom').value;
+          if (!waiter) {
+            exibeAlerta('Erro: Selecione o garçom para o relatório por garçom.', 'danger');
+            return;
+          }
+          reportData = generateGarcomReport(waiter);
+        } else if (reportType === 'mesa') {
+          const table = document.getElementById('mesa').value;
+          if (!table) {
+            exibeAlerta('Erro: Informe a mesa para o relatório por mesa.', 'danger');
+            return;
+          }
+          reportData = generateMesaReport(table);
         }
 
-        // Função para gerar relatório por período
-        function generatePeriodReport(start, end) {
-          const reservations = getReservations();
-          const atendidas = reservations.filter(r => r.status === 'atendida' && new Date(r.date) >= new Date(start) && new Date(r.date) <= new Date(end));
-          const naoAtendidas = reservations.filter(r => r.status === 'não atendida' && new Date(r.date) >= new Date(start) && new Date(r.date) <= new Date(end));
-          return [
-            { metric: 'Data Inicial', value: start },
-            { metric: 'Data Final', value: end },
-            { metric: 'Reservas Atendidas', value: atendidas.length },
-            { metric: 'Reservas Não Atendidas', value: naoAtendidas.length }
-          ];
-        }
-
-        // Função para gerar relatório por garçom (mesas confirmadas por garçom)
-        function generateGarcomReport(waiter) {
-          const reservations = getReservations();
-          const confirmadas = reservations.filter(r => r.status === 'confirmada' && r.waiter === waiter);
-          return confirmadas.length ? [
-            { metric: 'Garçom', value: waiter },
-            { metric: 'Reservas Confirmadas', value: confirmadas.length }
-          ] : [];
-        }
-
-        // Função para gerar relatório por mesa (reservas feitas para uma determinada mesa)
-        function generateMesaReport(table) {
-          const reservations = getReservations();
-          const feitas = reservations.filter(r => r.table.toLowerCase() === table.toLowerCase());
-          return feitas.length ? [
-            { metric: 'Mesa', value: table },
-            { metric: 'Reservas Feitas', value: feitas.length }
-          ] : [];
+        const tbody = document.querySelector('#reportTable tbody');
+        tbody.innerHTML = '';
+        if (reportData.length === 0) {
+          exibeAlerta('Nenhum dado encontrado para os parâmetros informados.', 'warning');
+        } else {
+          reportData.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${item.metric}</td><td>${item.value}</td>`;
+            tbody.appendChild(tr);
+          });
+          exibeAlerta('Relatório gerado com sucesso!', 'success');
         }
       });
-    </script>
-  </body>
+
+      // Função para exibir alertas com timer (3 segundos para desaparecer)
+      function exibeAlerta(mensagem, tipo) {
+        const feedbackDiv = document.getElementById('reportFeedback');
+        const alerta = document.createElement('div');
+        alerta.className = `alert alert-${tipo}`;
+        alerta.setAttribute('role', 'alert');
+        alerta.textContent = mensagem;
+        feedbackDiv.innerHTML = '';
+        feedbackDiv.appendChild(alerta);
+        setTimeout(() => {
+          alerta.classList.add('fade-out');
+          setTimeout(() => alerta.remove(), 1000);
+        }, 3000);
+      }
+
+      // Função para gerar relatório por período
+      function generatePeriodReport(start, end) {
+        const reservations = getReservations();
+        const atendidas = reservations.filter(r => r.status === 'atendida' && new Date(r.date) >= new Date(start) && new Date(r.date) <= new Date(end));
+        const naoAtendidas = reservations.filter(r => r.status === 'não atendida' && new Date(r.date) >= new Date(start) && new Date(r.date) <= new Date(end));
+        return [
+          { metric: 'Data Inicial', value: start },
+          { metric: 'Data Final', value: end },
+          { metric: 'Reservas Atendidas', value: atendidas.length },
+          { metric: 'Reservas Não Atendidas', value: naoAtendidas.length }
+        ];
+      }
+
+      // Função para gerar relatório por garçom (mesas confirmadas por garçom)
+      function generateGarcomReport(waiter) {
+        const reservations = getReservations();
+        const confirmadas = reservations.filter(r => r.status === 'confirmada' && r.waiter === waiter);
+        return confirmadas.length ? [
+          { metric: 'Garçom', value: waiter },
+          { metric: 'Reservas Confirmadas', value: confirmadas.length }
+        ] : [];
+      }
+
+      // Função para gerar relatório por mesa (reservas feitas para uma determinada mesa)
+      function generateMesaReport(table) {
+        const reservations = getReservations();
+        const feitas = reservations.filter(r => r.table.toLowerCase() === table.toLowerCase());
+        return feitas.length ? [
+          { metric: 'Mesa', value: table },
+          { metric: 'Reservas Feitas', value: feitas.length }
+        ] : [];
+      }
+    });
+  </script>
+</body>
+
 </html>
