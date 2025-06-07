@@ -1,10 +1,10 @@
-import { describe, it, expect } from 'vitest'
-import { app } from '../../app'
 import supertest from 'supertest'
-import { checkRouteExists } from '../../utils/checkRouteExists'
+import { describe, expect, it } from 'vitest'
+import { app } from '../../app'
 import { env } from '../../env'
+import { checkRouteExists } from '../../utils/checkRouteExists'
 
-describe('ConfirmarReservaController', () => {
+describe('AtualizarReservaController', () => {
 	it('deve ser possível confirmar uma reserva', async () => {
 		const newReserva = await supertest(app).post('/api/reservas').send({
 			mesaId: 1,
@@ -30,5 +30,23 @@ describe('ConfirmarReservaController', () => {
 			env.GARCOM_ID_RANDOM,
 		)
 		expect(response.body.reserva).toHaveProperty('status', 'confirmada')
+	})
+	it('deve ser possível cancelar uma reserva', async () => {
+		const newReserva = await supertest(app).post('/api/reservas').send({
+			mesaId: 2,
+			nomeResponsavel: 'John Doe',
+			data: '2025-07-06',
+			hora: '13:00',
+			quantidadePessoas: 4,
+		})
+		const url = `/api/reservas/${newReserva.body.reserva.id}`
+		const response = await supertest(app).patch(url).send({
+			status: 'cancelada',
+		})
+		expect(checkRouteExists(response, 'PATCH', url)).toBe(true)
+		expect(response.status).toBe(200)
+		expect(response.body).toHaveProperty('reserva')
+		expect(response.body.reserva).toHaveProperty('id')
+		expect(response.body.reserva).toHaveProperty('status', 'cancelada')
 	})
 })

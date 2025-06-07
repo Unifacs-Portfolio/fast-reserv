@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { app } from '../../../app'
+import { app } from '../../app'
 import supertest from 'supertest'
-import { checkRouteExists } from '../../../utils/checkRouteExists'
+import { checkRouteExists } from '../../utils/checkRouteExists'
 
 describe('CriarReservaController', () => {
 	it('deve ser possível criar uma reserva', async () => {
