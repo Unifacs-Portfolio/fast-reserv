@@ -1,9 +1,14 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, afterAll } from 'vitest'
 import { setup } from '../../app'
 import supertest from 'supertest'
 import { checkRouteExists } from '../../utils/checkRouteExists'
+import { getConnection } from '../../Datenbank/configdb'
 
 describe('CriarReservaController', async () => {
+	afterAll(async () => {
+		const connection = getConnection()
+		await connection.close()
+	})
 	const app = await setup()
 	it('deve ser possível criar uma reserva', async () => {
 		const url = '/api/reservas'

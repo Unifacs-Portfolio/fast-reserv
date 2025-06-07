@@ -16,10 +16,7 @@ if (!success) {
 	throw new Error('Invalid environment variables')
 }
 if (data.NODE_ENV === 'test') {
-	if (!data.GARCOM_ID_RANDOM) {
-		throw new Error('GARCOM_ID_RANDOM deve ser definido no ambiente de teste')
-	}
-	data.PATH_TO_DB = generateDatabasePath(data.PATH_TO_DB)
+	data.PATH_TO_DB = generateDatabasePath()
 }
 
 export const env = data

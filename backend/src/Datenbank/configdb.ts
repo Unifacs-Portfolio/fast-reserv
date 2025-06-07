@@ -38,6 +38,9 @@ export async function createTableGarcon() {
 }
 
 export async function insertGarconTest() {
+	if (!env.GARCOM_ID_RANDOM) {
+		throw new Error('GARCOM_ID_RANDOM não está definido no ambiente de teste.')
+	}
 	await getConnection().run(
 		'INSERT OR IGNORE INTO Garcon (id, nome) VALUES (? , ?)',
 		[env.GARCOM_ID_RANDOM, 'Marcilio'],
@@ -50,7 +53,7 @@ export async function configuratedb() {
 	await createTableGarcon()
 	await createTableMesa()
 	await createTableReserva()
-	if (env.GARCOM_ID_RANDOM) {
+	if (env.NODE_ENV === 'test') {
 		await insertGarconTest()
 	}
 }

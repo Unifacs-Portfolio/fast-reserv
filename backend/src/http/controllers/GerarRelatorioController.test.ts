@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, afterAll } from 'vitest'
 import { setup } from '../../app'
 import supertest from 'supertest'
 import { checkRouteExists } from '../../utils/checkRouteExists'
 import { env } from '../../env'
+import { getConnection } from '../../Datenbank/configdb'
 /**
  * Cliente Gerente
 Envia mensagens ao servidor para solicitar relatórios de acompanhamento das
@@ -17,6 +18,10 @@ mensagem informando que não há dados que atendem o relatório solicitado.
 
 describe('GerarRelatorioController', async () => {
 	const app = await setup()
+	afterAll(async () => {
+		const connection = getConnection()
+		await connection.close()
+	})
 	it.skip('deve ser possível gerar um relatório de reservas atendidas ou não em um certo período', async () => {
 		if (!env.GARCOM_ID_RANDOM) {
 			throw new Error(

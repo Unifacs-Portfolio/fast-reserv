@@ -27,5 +27,4 @@ const setup = async () => {
 	}))
 	return app
 }
-
 export { setup }
