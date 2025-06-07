@@ -1,12 +1,9 @@
 import type { Reserva } from '../entities/Reserva'
 
 export interface ReservaRepository {
-	create(reserva: Reserva): Promise<Reserva>
+	buscarReservasPorPeriodo(dataInicio: string, dataFim: string): unknown
 	findByMesaId(mesaId: number): Promise<Reserva | null>
-	delete(mesaId: number): Promise<void>
-	buscarReservasPorPeriodo(
-		dataComeco: string,
-		dataFim: string,
-	): Promise<Reserva[]>
-	buscarReservasFeitasPorMesa(mesaId: number): Promise<Reserva[]>
+	create(reserva: Reserva): Promise<Reserva>
+	findById(id: string): Promise<Reserva | null>
+	update(id: string, reserva: Reserva): Promise<Reserva>
 }

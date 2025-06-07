@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
-import { makeCriarReservaUseCase } from '../../../useCases/factories/makeCriarReservaUseCase'
+import { makeCriarReservaUseCase } from '../../useCases/factories/makeCriarReservaUseCase'
 
 const bodySchema = z.object({
 	nomeResponsavel: z.string().min(1),
@@ -14,7 +14,6 @@ export const criarReservaController: RequestHandler = async (req, res) => {
 	const { nomeResponsavel, data, hora, quantidadePessoas, mesaId } =
 		bodySchema.parse(req.body)
 	const criarReservaUseCase = makeCriarReservaUseCase()
-
 	const reserva = await criarReservaUseCase.execute({
 		nomeResponsavel,
 		data,
