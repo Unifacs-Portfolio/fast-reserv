@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { app } from '../../app'
+import { setup } from '../../app'
 import supertest from 'supertest'
 import { checkRouteExists } from '../../utils/checkRouteExists'
 import { env } from '../../env'
@@ -15,7 +15,8 @@ Ao solicitar um relatório o gerente recebe os dados do relatório ou uma
 mensagem informando que não há dados que atendem o relatório solicitado.
  */
 
-describe('GerarRelatorioController', () => {
+describe('GerarRelatorioController', async () => {
+	const app = await setup()
 	it.skip('deve ser possível gerar um relatório de reservas atendidas ou não em um certo período', async () => {
 		if (!env.GARCOM_ID_RANDOM) {
 			throw new Error(

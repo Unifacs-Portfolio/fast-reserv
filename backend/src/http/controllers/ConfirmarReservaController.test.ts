@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { app } from '../../app'
+import { setup } from '../../app'
 import supertest from 'supertest'
 import { checkRouteExists } from '../../utils/checkRouteExists'
 import { env } from '../../env'
 
-describe('ConfirmarReservaController', () => {
+describe('ConfirmarReservaController', async () => {
+	const app = await setup()
 	it.skip('deve ser possível confirmar uma reserva', async () => {
 		const newReserva = await supertest(app).post('/api/reservas').send({
 			mesaId: 1,

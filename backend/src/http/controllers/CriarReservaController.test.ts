@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { app } from '../../app'
+import { setup } from '../../app'
 import supertest from 'supertest'
 import { checkRouteExists } from '../../utils/checkRouteExists'
 
-describe('CriarReservaController', () => {
+describe('CriarReservaController', async () => {
+	const app = await setup()
 	it('deve ser possível criar uma reserva', async () => {
 		const url = '/api/reservas'
 		const response = await supertest(app).post(url).send({

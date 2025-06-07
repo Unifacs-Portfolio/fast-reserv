@@ -1,10 +1,11 @@
 import supertest from 'supertest'
 import { describe, expect, it } from 'vitest'
-import { app } from '../../app'
+import { setup } from '../../app'
 import { env } from '../../env'
 import { checkRouteExists } from '../../utils/checkRouteExists'
 
-describe('AtualizarReservaController', () => {
+describe('AtualizarReservaController', async () => {
+	const app = await setup()
 	it('deve ser possível confirmar uma reserva', async () => {
 		const newReserva = await supertest(app).post('/api/reservas').send({
 			mesaId: 1,
