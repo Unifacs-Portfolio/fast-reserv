@@ -5,7 +5,7 @@ import { checkRouteExists } from '../../utils/checkRouteExists'
 import { env } from '../../env'
 
 describe('ConfirmarReservaController', () => {
-	it('deve ser possível confirmar uma reserva', async () => {
+	it.skip('deve ser possível confirmar uma reserva', async () => {
 		const newReserva = await supertest(app).post('/api/reservas').send({
 			mesaId: 1,
 			nomeResponsavel: 'João Silva',

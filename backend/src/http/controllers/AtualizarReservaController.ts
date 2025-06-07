@@ -11,12 +11,11 @@ export const atualizarReservaController: RequestHandler = async (req, res) => {
 	const { status, garcomId } = bodySchema.parse(req.body)
 	const id = req.params.id
 	const atualizarReservaUseCase = makeAtualizarReservaUseCase()
-	console.log('POINT 1')
 	const reserva = await atualizarReservaUseCase.execute({
 		id,
 		status,
 		garcomId,
 	})
 	console.log('Reserva Atualizada')
-	res.status(201).json(reserva)
+	res.status(200).json(reserva)
 }

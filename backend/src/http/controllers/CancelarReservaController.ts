@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
-import { makeCancelarReservaUseCase } from '../../../useCases/factories/makeCancelarReservaUseCase'
+import { makeCancelarReservaUseCase } from '../../useCases/factories/makeCancelarReservaUseCase'
 
 const bodySchema = z.object({
 	mesaId: z.number(),

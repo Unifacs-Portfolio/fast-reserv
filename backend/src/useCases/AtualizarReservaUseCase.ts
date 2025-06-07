@@ -39,34 +39,18 @@ export class AtualizarReservaUseCase {
 		garcomId,
 	}: AtualizarReservaRequest): Promise<AtualizarReservaResponse> {
 		const reservaEncontrada = await this.reservaRepository.findById(id)
-		console.log('POINT 2')
+		let verify_by: string | undefined = 'Sistema'
 
 		if (!reservaEncontrada) {
 			throw new Error('Reserva não existe')
 		}
-		console.log('POINT 3')
 		if (
 			reservaEncontrada.status === 'cancelada' ||
 			reservaEncontrada.status === 'confirmada'
 		) {
 			throw new Error('Reserva Indisponivel para mudança de status')
 		}
-		console.log('POINT 4')
-		if (status === 'confirmada' && !garcomId) {
-			throw new Error('Garçom é obrigatório para confirmar reserva')
-		}
-		console.log('POINT 5')
-		if (!garcomId) {
-			throw new Error('Garçom não existe')
-		}
-		const garcomEncontrado = await this.garconRepository.findById(garcomId)
-		console.log('POINT 6')
-		if (!garcomEncontrado) {
-			throw new Error('Garçom não existe')
-		}
-		console.log('POINT 7')
-		let verify_by: string | undefined = undefined
-		verify_by = garcomEncontrado.nome
+
 		if (status === 'cancelada') {
 			const reservaAtualizada = new Reserva({
 				id: reservaEncontrada.id,
@@ -78,6 +62,7 @@ export class AtualizarReservaUseCase {
 				status: 'cancelada',
 			})
 			await this.reservaRepository.update(id, reservaAtualizada)
+			console.log('POINT UPDATE CANCELADA')
 			return {
 				reserva: {
 					id: reservaEncontrada.id,
@@ -91,6 +76,23 @@ export class AtualizarReservaUseCase {
 				},
 			}
 		}
+		if (!garcomId) {
+			throw new Error('Garçom não informada')
+		}
+		if (status === 'confirmada' && !garcomId) {
+			throw new Error('Garçom é obrigatório para confirmar reserva')
+		}
+		console.log(garcomId)
+
+		const garcomEncontrado = await this.garconRepository.findById(garcomId)
+		console.log(garcomEncontrado)
+
+		console.log('POINT 6')
+		if (!garcomEncontrado) {
+			throw new Error('Garçom não existe na tabela')
+		}
+		console.log('POINT 7')
+		verify_by = garcomEncontrado.nome
 
 		if (status === 'confirmada') {
 			const reservaAtualizada = new Reserva({
@@ -100,9 +102,10 @@ export class AtualizarReservaUseCase {
 				data: reservaEncontrada.data,
 				hora: reservaEncontrada.hora,
 				quantidadePessoas: reservaEncontrada.quantidadePessoas,
-				status: 'cancelada',
+				status: 'confirmada',
 			})
 			await this.reservaRepository.update(id, reservaAtualizada)
+			console.log('POINT UPDATE CONFIRMADA')
 			return {
 				reserva: {
 					id: reservaAtualizada.id,

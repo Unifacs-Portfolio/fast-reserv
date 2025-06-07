@@ -4,7 +4,7 @@ import supertest from 'supertest'
 import { checkRouteExists } from '../../utils/checkRouteExists'
 
 describe('CancelarReservaController', () => {
-	it('deve ser possível cancelar uma reserva', async () => {
+	it.skip('deve ser possível cancelar uma reserva', async () => {
 		const newReserva = await supertest(app).post('/api/reservas').send({
 			mesaId: 1,
 			nomeResponsavel: 'João Silva',

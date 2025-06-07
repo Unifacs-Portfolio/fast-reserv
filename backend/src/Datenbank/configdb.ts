@@ -29,14 +29,24 @@ export async function createTableReserva() {
 export async function createTableGarcon() {
 	openDb().then((db) => {
 		db.exec(
-			'CREATE TABLE IF NOT EXISTS Garcon (id INTEGER PRIMARY KEY NOT NULL, nome TEXT UNIQUE)',
+			'CREATE TABLE IF NOT EXISTS Garcon (id TEXT PRIMARY KEY NOT NULL, nome TEXT UNIQUE)',
 		)
+	})
+}
+
+export async function insertGarcon() {
+	openDb().then(async (db) => {
+		await db.run('INSERT OR IGNORE INTO Garcon (id, nome) VALUES (? , ?)', [
+			'690b0b36-0aa9-4b7f-9999-83860251c1d9',
+			'Marcilio',
+		])
 	})
 }
 
 // Executar a tabela e banco
 export async function configuratedb() {
+	await createTableGarcon()
 	await createTableMesa()
 	await createTableReserva()
-	await createTableGarcon()
+	await insertGarcon()
 }
