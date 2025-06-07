@@ -112,12 +112,18 @@ export class SqliteReservaRepository implements ReservaRepository {
 
 		const sql = `UPDATE Reserva SET ${updates.join(', ')} WHERE id = ?`
 
-		const reservaAtualizada = await this.db.run(sql, values)
-		if (reservaAtualizada.changes === 0) {
+		const reservaResultado = await this.db.run(sql, values)
+		if (reservaResultado.changes === 0) {
 			throw new Error(
 				'Erro ao atualizar reserva. Verifique se a reserva existe.',
 			)
 		}
+		if (reservaResultado.changes === 0) {
+			throw new Error(
+				'Erro ao atualizar reserva. Verifique se a reserva existe.',
+			)
+		}
+		const reservaAtualizada = await this.findById(id)
 		if (isReserva(reservaAtualizada)) {
 			return new Reserva({
 				id: reservaAtualizada.id,
@@ -130,6 +136,7 @@ export class SqliteReservaRepository implements ReservaRepository {
 				verify_by: reservaAtualizada.verify_by,
 			})
 		}
+		console.error('Erro ao atualizar reserva:', reservaAtualizada)
 		throw new Error('Dados da reserva inválidos.')
 	}
 }

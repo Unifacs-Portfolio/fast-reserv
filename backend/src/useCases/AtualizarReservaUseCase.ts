@@ -62,7 +62,6 @@ export class AtualizarReservaUseCase {
 				status: 'cancelada',
 			})
 			await this.reservaRepository.update(id, reservaAtualizada)
-			console.log('POINT UPDATE CANCELADA')
 			return {
 				reserva: {
 					id: reservaEncontrada.id,
@@ -87,11 +86,9 @@ export class AtualizarReservaUseCase {
 		const garcomEncontrado = await this.garconRepository.findById(garcomId)
 		console.log(garcomEncontrado)
 
-		console.log('POINT 6')
 		if (!garcomEncontrado) {
 			throw new Error('Garçom não existe na tabela')
 		}
-		console.log('POINT 7')
 		verify_by = garcomEncontrado.nome
 
 		if (status === 'confirmada') {
@@ -105,7 +102,6 @@ export class AtualizarReservaUseCase {
 				status: 'confirmada',
 			})
 			await this.reservaRepository.update(id, reservaAtualizada)
-			console.log('POINT UPDATE CONFIRMADA')
 			return {
 				reserva: {
 					id: reservaAtualizada.id,
@@ -115,7 +111,7 @@ export class AtualizarReservaUseCase {
 					hora: reservaAtualizada.hora,
 					quantidadePessoas: reservaAtualizada.quantidadePessoas,
 					status: reservaAtualizada.status,
-					verify_by,
+					verify_by: garcomId,
 				},
 			}
 		}
