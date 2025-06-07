@@ -2,13 +2,13 @@ import { Reserva, type StatusReserva } from '../entities/Reserva'
 import type { GarconRepository } from '../repositories/GarconRepository'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
 
-interface AtualizarReservaRequest {
+interface AtualizarStatusReservaRequest {
 	id: string
 	status: string
 	garcomId?: string
 }
 
-interface AtualizarReservaResponse {
+interface AtualizarStatusReservaResponse {
 	reserva: {
 		id: string
 		mesaId: number
@@ -21,7 +21,7 @@ interface AtualizarReservaResponse {
 	}
 }
 
-export class AtualizarReservaUseCase {
+export class AtualizarStatusReservaUseCase {
 	private reservaRepository: ReservaRepository
 	private garconRepository: GarconRepository
 
@@ -37,7 +37,7 @@ export class AtualizarReservaUseCase {
 		id,
 		status,
 		garcomId,
-	}: AtualizarReservaRequest): Promise<AtualizarReservaResponse> {
+	}: AtualizarStatusReservaRequest): Promise<AtualizarStatusReservaResponse> {
 		const reservaEncontrada = await this.reservaRepository.findById(id)
 		let verify_by: string | undefined = 'Sistema'
 
@@ -81,10 +81,8 @@ export class AtualizarReservaUseCase {
 		if (status === 'confirmada' && !garcomId) {
 			throw new Error('Garçom é obrigatório para confirmar reserva')
 		}
-		console.log(garcomId)
 
 		const garcomEncontrado = await this.garconRepository.findById(garcomId)
-		console.log(garcomEncontrado)
 
 		if (!garcomEncontrado) {
 			throw new Error('Garçom não existe na tabela')

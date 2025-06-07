@@ -1,13 +1,16 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
-import { makeAtualizarReservaUseCase } from '../../useCases/factories/makeAtualizarReservaUseCase'
+import { makeAtualizarReservaUseCase } from '../../useCases/factories/makeAtulizarStatusReservaUseCase'
 
 const bodySchema = z.object({
 	status: z.string(),
 	garcomId: z.string().optional(),
 })
 
-export const atualizarReservaController: RequestHandler = async (req, res) => {
+export const atualizarStatusReservaController: RequestHandler = async (
+	req,
+	res,
+) => {
 	const { status, garcomId } = bodySchema.parse(req.body)
 	const id = req.params.id
 	const atualizarReservaUseCase = makeAtualizarReservaUseCase()

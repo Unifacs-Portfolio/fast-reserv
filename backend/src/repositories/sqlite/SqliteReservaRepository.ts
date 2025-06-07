@@ -118,11 +118,6 @@ export class SqliteReservaRepository implements ReservaRepository {
 				'Erro ao atualizar reserva. Verifique se a reserva existe.',
 			)
 		}
-		if (reservaResultado.changes === 0) {
-			throw new Error(
-				'Erro ao atualizar reserva. Verifique se a reserva existe.',
-			)
-		}
 		const reservaAtualizada = await this.findById(id)
 		if (isReserva(reservaAtualizada)) {
 			return new Reserva({
