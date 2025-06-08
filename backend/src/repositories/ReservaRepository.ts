@@ -5,4 +5,5 @@ export interface ReservaRepository {
 	create(reserva: Reserva): Promise<Reserva>
 	findById(id: string): Promise<Reserva | null>
 	update(id: string, reserva: Reserva): Promise<Reserva>
+	findAll(): Promise<Reserva[]>
 }
