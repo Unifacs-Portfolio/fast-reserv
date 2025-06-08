@@ -9,6 +9,24 @@ export class SqliteReservaRepository implements ReservaRepository {
 	constructor() {
 		this.db = getConnection()
 	}
+	async findAll(): Promise<Reserva[]> {
+		const reservas = await this.db.all('SELECT * FROM Reserva')
+		return reservas.map((reserva) => {
+			if (isReserva(reserva)) {
+				return new Reserva({
+					id: reserva.id,
+					mesaId: reserva.mesaId,
+					nomeResponsavel: reserva.nomeResponsavel,
+					data: reserva.data,
+					hora: reserva.hora,
+					quantidadePessoas: reserva.quantidadePessoas,
+					status: reserva.status,
+					verify_by: reserva.verify_by,
+				})
+			}
+			throw new Error('Dados da reserva inválidos.')
+		})
+	}
 	async create(reserva: Reserva): Promise<Reserva> {
 		await this.db.run(
 			'INSERT INTO Reserva (id, mesaId, nomeResponsavel, data, hora, quantidadePessoas, status, verify_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
@@ -138,34 +156,70 @@ export class SqliteReservaRepository implements ReservaRepository {
 		dataComeco: string,
 		dataFim: string,
 	): Promise<Reserva[]> {
-		return new Promise((resolve, reject) => {
-			this.db.all(
-				`SELECT * FROM Reserva WHERE data BETWEEN ? AND ? AND status IN ('confirmada' 'cancelada')`,
-				[dataComeco, dataFim],
-				(err, rows: Reserva[]) => {
-					if (err) {
-						reject(new Error(`Erro ao buscar reservas: ${err.message}`))
-					} else {
-						resolve(rows)
-					}
-				},
-			)
+		const rows = await this.db.all(
+			`SELECT * FROM Reserva WHERE data BETWEEN ? AND ? AND status IN ('confirmada','cancelada')`,
+			[dataComeco, dataFim],
+		)
+		return rows.map((reserva) => {
+			if (isReserva(reserva)) {
+				return new Reserva({
+					id: reserva.id,
+					mesaId: reserva.mesaId,
+					nomeResponsavel: reserva.nomeResponsavel,
+					data: reserva.data,
+					hora: reserva.hora,
+					quantidadePessoas: reserva.quantidadePessoas,
+					status: reserva.status,
+					verify_by: reserva.verify_by,
+				})
+			}
+			throw new Error('Dados da reserva inválidos.')
 		})
 	}
 
 	async buscarReservasFeitasPorMesa(mesaId: number): Promise<Reserva[]> {
-		return new Promise((resolve, reject) => {
-			this.db.all(
-				'SELECT * FROM Reserva WHERE mesaId = ?',
-				[mesaId],
-				(err, rows: Reserva[]) => {
-					if (err) {
-						reject(new Error(`Erro ao buscar reservas: ${err.message}`))
-					} else {
-						resolve(rows)
-					}
-				},
-			)
+		const rows = await this.db.all('SELECT * FROM Reserva WHERE mesaId = ?', [
+			mesaId,
+		])
+		return rows.map((reserva) => {
+			if (isReserva(reserva)) {
+				return new Reserva({
+					id: reserva.id,
+					mesaId: reserva.mesaId,
+					nomeResponsavel: reserva.nomeResponsavel,
+					data: reserva.data,
+					hora: reserva.hora,
+					quantidadePessoas: reserva.quantidadePessoas,
+					status: reserva.status,
+					verify_by: reserva.verify_by,
+				})
+			}
+			throw new Error('Dados da reserva inválidos.')
+		})
+	}
+
+	async buscarReservasFeitasPorGarcom(
+		garcomId: string,
+		status: string,
+	): Promise<Reserva[]> {
+		const rows = await this.db.all(
+			'SELECT * FROM Reserva WHERE verify_by = ? AND status = ? ',
+			[garcomId, status],
+		)
+		return rows.map((reserva) => {
+			if (isReserva(reserva)) {
+				return new Reserva({
+					id: reserva.id,
+					mesaId: reserva.mesaId,
+					nomeResponsavel: reserva.nomeResponsavel,
+					data: reserva.data,
+					hora: reserva.hora,
+					quantidadePessoas: reserva.quantidadePessoas,
+					status: reserva.status,
+					verify_by: reserva.verify_by,
+				})
+			}
+			throw new Error('Dados da reserva inválidos.')
 		})
 	}
 }

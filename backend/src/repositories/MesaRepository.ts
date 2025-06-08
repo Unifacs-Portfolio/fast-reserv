@@ -1,4 +1,4 @@
-import { Mesa } from '../entities/Mesa';
+import type { Mesa } from '../entities/Mesa'
 
 export interface MesaRepository {
 	updateConfirmar(id: number): Promise<void>

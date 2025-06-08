@@ -1,7 +1,7 @@
-import { CriarRelatorioDeReservaPorMesaUseCase } from '../../useCases/CriarRelatorioDeReservasPorMesaUseCase'
+import { CriarRelatorioDeReservaPorMesaUseCase } from '../CriarRelatorioReservasPorMesaUseCase'
 import { SqliteReservaRepository } from '../../repositories/sqlite/SqliteReservaRepository'
 
-export const makeCriarRelatorioDeReservaPorMesaUseCase =
+export const makeCriarRelatorioReservaPorMesaUseCase =
 	(): CriarRelatorioDeReservaPorMesaUseCase => {
 		const reservaRepository = new SqliteReservaRepository()
 		const criarRelatorioDeReservaPorMesaUseCase =
