@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { InMemoryCriarReservaRepository } from '../repositories/inMemory/InMemoryCriarReservaRepository'
+import { InMemoryReservaRepository } from '../repositories/inMemory/InMemoryReservaRepository'
 import { CriarReservaUseCase } from './CriarReservaUseCase'
 
 describe('CriarReservaUseCase', () => {
-	let reservaRepository: InMemoryCriarReservaRepository
+	let reservaRepository: InMemoryReservaRepository
 	let systemUnderTest: CriarReservaUseCase
 	beforeEach(() => {
-		reservaRepository = new InMemoryCriarReservaRepository()
+		reservaRepository = new InMemoryReservaRepository()
 		systemUnderTest = new CriarReservaUseCase(reservaRepository)
 	})
 	it('deve ser possível criar uma reserva', async () => {
@@ -22,12 +22,7 @@ describe('CriarReservaUseCase', () => {
 		expect(reserva.id).toEqual(expect.any(String))
 		expect(reserva.mesaId).toEqual(reservaBody.mesaId)
 		expect(reserva.nomeResponsavel).toEqual(reservaBody.nomeResponsavel)
-		expect(reserva.data).toEqual(expect.stringMatching(/\d{2}\/\d{2}\/\d{4}/))
-		expect(reserva.data).toEqual(
-			new Date(reservaBody.data).toLocaleDateString('pt-BR', {
-				timeZone: 'UTC',
-			}),
-		)
+		expect(reserva.data).toEqual(expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/))
 		expect(reserva.hora).toEqual(reservaBody.hora)
 		expect(reserva.quantidadePessoas).toEqual(reservaBody.quantidadePessoas)
 	})

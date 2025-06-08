@@ -10,10 +10,19 @@ interface CriarReservaRequest {
 	hora: string
 	quantidadePessoas: number
 	status?: StatusReserva
+	verify_by?: string
 }
 
 interface CriarReservaResponse {
-	reserva: Reserva
+	reserva: {
+		id: string
+		mesaId: number
+		nomeResponsavel: string
+		data: string
+		hora: string
+		quantidadePessoas: number
+		status: StatusReserva
+	}
 }
 
 export class CriarReservaUseCase {
@@ -30,13 +39,13 @@ export class CriarReservaUseCase {
 		hora,
 		quantidadePessoas,
 		status,
+		verify_by,
 	}: CriarReservaRequest): Promise<CriarReservaResponse> {
 		const reservaExistente = await this.reservaRepository.findByMesaId(mesaId)
-
 		if (reservaExistente) {
 			throw new Error('Já existe uma reserva para esta mesa')
 		}
-		await this.reservaRepository.create(
+		const reservaCriada = await this.reservaRepository.create(
 			new Reserva({
 				id: randomUUID(),
 				mesaId,
@@ -45,14 +54,19 @@ export class CriarReservaUseCase {
 				hora,
 				quantidadePessoas,
 				status,
+				verify_by,
 			}),
 		)
-		const reserva = await this.reservaRepository.findByMesaId(mesaId)
-		if (!reserva) {
-			throw new Error('Erro ao buscar reserva após criação')
-		}
 		return {
-			reserva,
+			reserva: {
+				id: reservaCriada.id,
+				mesaId: reservaCriada.mesaId,
+				nomeResponsavel: reservaCriada.nomeResponsavel,
+				data: reservaCriada.data,
+				hora: reservaCriada.hora,
+				quantidadePessoas: reservaCriada.quantidadePessoas,
+				status: reservaCriada.status,
+			},
 		}
 	}
 }

@@ -1,0 +1,21 @@
+name: Roda Testes E2E
+
+on: [pull_request]
+
+jobs:
+  run-e2e-tests:
+    name: Roda Testes E2E
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run test:e2e
+        env:
+          PATH_TO_DB: "./backend/src/BasisData/database.db"
