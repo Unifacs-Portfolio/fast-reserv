@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { Reserva } from '../entities/Reserva'
 import type { StatusReserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
+import type { MesaRepository } from '../repositories/MesaRepository'
 
 interface CriarReservaRequest {
 	mesaId: number
@@ -27,9 +28,11 @@ interface CriarReservaResponse {
 
 export class CriarReservaUseCase {
 	private reservaRepository: ReservaRepository
+	private mesaRepository: MesaRepository
 
-	constructor(reservaRepository: ReservaRepository) {
+	constructor(reservaRepository: ReservaRepository, mesaRepository: MesaRepository) {
 		this.reservaRepository = reservaRepository
+		this.mesaRepository = mesaRepository
 	}
 
 	async execute({
@@ -57,6 +60,7 @@ export class CriarReservaUseCase {
 				verify_by,
 			}),
 		)
+		await this.mesaRepository.updateConfirmar(reservaCriada.mesaId)
 		return {
 			reserva: {
 				id: reservaCriada.id,

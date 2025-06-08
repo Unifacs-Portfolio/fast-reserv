@@ -47,13 +47,23 @@ export async function insertGarconTest() {
 	)
 }
 
+export async function insertMesas(){
+	for (let id = 1; id <= 10; id++) {
+		await getConnection().run(
+			'INSERT OR IGNORE INTO Mesa (id, status) VALUES (?, ?)',
+			[id, 'Reservavel'],
+		)
+	}
+}
+
 // Executar a tabela e banco
 export async function configuratedb() {
 	await initDb()
 	await createTableGarcon()
 	await createTableMesa()
 	await createTableReserva()
+	await insertGarconTest()
+	await insertMesas()
 	if (env.NODE_ENV === 'test') {
-		await insertGarconTest()
 	}
 }
