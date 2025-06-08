@@ -9,7 +9,7 @@ export function isMesa(mesa: unknown): mesa is {
 		mesa !== null &&
 		'id' in mesa &&
 		'status' in mesa &&
-		typeof mesa.id === 'string' &&
+		typeof mesa.id === 'number' &&
 		typeof mesa.status === 'string'
 	)
 }
