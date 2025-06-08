@@ -6,6 +6,12 @@
   box-sizing: border-box;
 }
 
+#tableWrapper{
+  overflow-y: auto;
+  overflow-x: auto;
+  max-height: 800px; /* Ajuste conforme necessário */
+  width:auto;
+}
 /* ================================================== 
      ESTILIZAÇÃO DOS CARDS
      - Define o visual dos cartões, incluindo borda, sombra, transições e cores específicas.

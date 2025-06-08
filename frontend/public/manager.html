@@ -42,6 +42,7 @@
   <div id="content-wrap" class="flex-fill container py-4">
     <main class="container mt-5">
       <h1 class="mb-4">Painel do Gerente</h1>
+      
       <!-- Card para geração de relatórios -->
       <div class="card mb-4 shadow-sm">
         <div class="card-header bg-danger text-white">
@@ -87,11 +88,23 @@
               </div>
             </div>
 
-            <!-- Campos para relatório por Mesa -->
-            <div id="mesaFields">
+            <!-- Campo para relatório por Mesa -->
+            <div id="mesaFields" >
               <div class="mb-3">
                 <label for="mesa" class="form-label">Mesa</label>
-                <input type="text" class="form-control" id="mesa" name="mesa">
+                <select class="form-select" id="mesa" name="mesa">
+                  <option value="" disabled selected>Selecione a mesa</option>
+                  <option value="1">Mesa 1</option>
+                  <option value="2">Mesa 2</option>
+                  <option value="3">Mesa 3</option>
+                  <option value="4">Mesa 4</option>
+                  <option value="5">Mesa 5</option>
+                  <option value="6">Mesa 6</option>
+                  <option value="7">Mesa 7</option>
+                  <option value="8">Mesa 8</option>
+                  <option value="9">Mesa 9</option>
+                  <option value="10">Mesa 10</option>
+                </select>
               </div>
             </div>
 
@@ -103,21 +116,26 @@
         </div>
       </div>
 
-      <!-- Card para exibir os resultados do relatório -->
+      <!-- Card para exibir os registros do relatório -->
       <div class="card shadow-sm">
         <div class="card-header bg-secondary text-white">
-          Resultados do Relatório
+          Registros do Relatório
         </div>
         <div class="card-body">
+          <!-- Tabela para exibir os detalhes de cada reserva e resumo final -->
           <table class="table table-striped" id="reportTable">
             <thead>
               <tr>
-                <th>Métrica</th>
-                <th>Valor</th>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Mesa</th>
+                <th>Nº de Pessoas</th>
+                <th>Nome do Responsável</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              <!-- Dados do relatório inseridos dinamicamente -->
+              <!-- Linhas serão inseridas dinamicamente -->
             </tbody>
           </table>
         </div>
@@ -132,11 +150,11 @@
     </div>
   </footer>
 
-  <!-- Script para manipulação do Dashboard do Gerente -->
+  <!-- Script para manipulação do Painel do Gerente -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-      // Função para obter o mock de dados (registros do atendente e garçom) armazenados no localStorage
+      // Função para obter as reservas armazenadas no localStorage
       function getReservations() {
         return JSON.parse(localStorage.getItem('reservations')) || [];
       }
@@ -153,7 +171,7 @@
       document.getElementById('reportForm').addEventListener('submit', function (e) {
         e.preventDefault();
         const reportType = document.getElementById('reportType').value;
-        let reportData = [];
+        let filteredReservations = [];
 
         if (reportType === 'periodo') {
           const startDate = document.getElementById('startDate').value;
@@ -166,33 +184,50 @@
             exibeAlerta('Erro: A data inicial deve ser anterior à data final.', 'danger');
             return;
           }
-          reportData = generatePeriodReport(startDate, endDate);
+          filteredReservations = getReservations().filter(r =>
+            new Date(r.date) >= new Date(startDate) &&
+            new Date(r.date) <= new Date(endDate)
+          );
         } else if (reportType === 'garçom') {
           const waiter = document.getElementById('garcom').value;
           if (!waiter) {
             exibeAlerta('Erro: Selecione o garçom para o relatório por garçom.', 'danger');
             return;
           }
-          reportData = generateGarcomReport(waiter);
+          filteredReservations = getReservations().filter(r => r.waiter === waiter);
         } else if (reportType === 'mesa') {
           const table = document.getElementById('mesa').value;
           if (!table) {
-            exibeAlerta('Erro: Informe a mesa para o relatório por mesa.', 'danger');
+            exibeAlerta('Erro: Selecione a mesa para o relatório por mesa.', 'danger');
             return;
           }
-          reportData = generateMesaReport(table);
+          filteredReservations = getReservations().filter(r =>
+            r.table.toLowerCase() === table.toLowerCase()
+          );
         }
 
         const tbody = document.querySelector('#reportTable tbody');
         tbody.innerHTML = '';
-        if (reportData.length === 0) {
+        if (filteredReservations.length === 0) {
           exibeAlerta('Nenhum dado encontrado para os parâmetros informados.', 'warning');
         } else {
-          reportData.forEach(item => {
+          // Para cada reserva filtrada, cria uma linha com seus detalhes.
+          filteredReservations.forEach(r => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${item.metric}</td><td>${item.value}</td>`;
+            tr.innerHTML = `
+              <td>${r.date}</td>
+              <td>${r.time}</td>
+              <td>${r.table}</td>
+              <td>${r.guests}</td>
+              <td>${r.name}</td>
+              <td>${r.status}</td>
+            `;
             tbody.appendChild(tr);
           });
+          // Linha de resumo: total de reservas
+          const summaryTr = document.createElement('tr');
+          summaryTr.innerHTML = `<td colspan="5"><strong>Total de Reservas</strong></td><td><strong>${filteredReservations.length}</strong></td>`;
+          tbody.appendChild(summaryTr);
           exibeAlerta('Relatório gerado com sucesso!', 'success');
         }
       });
@@ -210,39 +245,6 @@
           alerta.classList.add('fade-out');
           setTimeout(() => alerta.remove(), 1000);
         }, 3000);
-      }
-
-      // Função para gerar relatório por período
-      function generatePeriodReport(start, end) {
-        const reservations = getReservations();
-        const atendidas = reservations.filter(r => r.status === 'atendida' && new Date(r.date) >= new Date(start) && new Date(r.date) <= new Date(end));
-        const naoAtendidas = reservations.filter(r => r.status === 'não atendida' && new Date(r.date) >= new Date(start) && new Date(r.date) <= new Date(end));
-        return [
-          { metric: 'Data Inicial', value: start },
-          { metric: 'Data Final', value: end },
-          { metric: 'Reservas Atendidas', value: atendidas.length },
-          { metric: 'Reservas Não Atendidas', value: naoAtendidas.length }
-        ];
-      }
-
-      // Função para gerar relatório por garçom (mesas confirmadas por garçom)
-      function generateGarcomReport(waiter) {
-        const reservations = getReservations();
-        const confirmadas = reservations.filter(r => r.status === 'confirmada' && r.waiter === waiter);
-        return confirmadas.length ? [
-          { metric: 'Garçom', value: waiter },
-          { metric: 'Reservas Confirmadas', value: confirmadas.length }
-        ] : [];
-      }
-
-      // Função para gerar relatório por mesa (reservas feitas para uma determinada mesa)
-      function generateMesaReport(table) {
-        const reservations = getReservations();
-        const feitas = reservations.filter(r => r.table.toLowerCase() === table.toLowerCase());
-        return feitas.length ? [
-          { metric: 'Mesa', value: table },
-          { metric: 'Reservas Feitas', value: feitas.length }
-        ] : [];
       }
     });
   </script>
