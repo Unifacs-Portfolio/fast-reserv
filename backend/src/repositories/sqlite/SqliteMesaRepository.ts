@@ -1,6 +1,7 @@
 import type { Database } from 'sqlite'
 import type { MesaRepository } from '../MesaRepository'
 import { getConnection } from '../../Datenbank/configdb'
+import type { Mesa } from '../../entities/Mesa' 
 
 export class SqliteMesaRepository implements MesaRepository {
 	private db: Database
@@ -13,7 +14,6 @@ export class SqliteMesaRepository implements MesaRepository {
 			'UPDATE Mesa SET status = ? WHERE id = ?',
 			['Ocupada', id],
 		)
-		console.log(result)
 		if (result.changes === 0) {
 			throw new Error('Não foi possível atualizar o status da mesa.')
 		}
@@ -27,4 +27,10 @@ export class SqliteMesaRepository implements MesaRepository {
 			throw new Error('Dados da reserva inválidos.')
 		}
 	}
+	async findById(id: number): Promise<Mesa> {
+			const mesa = await this.db.get('SELECT * FROM Mesa WHERE Id = ?', [
+				id,
+			])
+			return mesa
+}
 }

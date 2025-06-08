@@ -27,7 +27,7 @@ export async function createTableMesa() {
 
 export async function createTableReserva() {
 	await getConnection().exec(
-		'CREATE TABLE IF NOT EXISTS Reserva (id TEXT PRIMARY KEY NOT NULL , mesaId INTEGER,nomeResponsavel TEXT UNIQUE, quantidadePessoas INTEGER, data TEXT, hora TEXT, verify_by TEXT,status TEXT,FOREIGN KEY (mesaId) REFERENCES Mesa(id), FOREIGN KEY(verify_by) REFERENCES Garcon(nome))',
+		'CREATE TABLE IF NOT EXISTS Reserva (id TEXT PRIMARY KEY NOT NULL, mesaId INTEGER,nomeResponsavel TEXT, quantidadePessoas INTEGER, data TEXT, hora TEXT, verify_by TEXT,status TEXT,FOREIGN KEY (mesaId) REFERENCES Mesa(id), FOREIGN KEY(verify_by) REFERENCES Garcon(nome))',
 	)
 }
 

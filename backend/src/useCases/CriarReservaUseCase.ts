@@ -44,9 +44,11 @@ export class CriarReservaUseCase {
 		status,
 		verify_by,
 	}: CriarReservaRequest): Promise<CriarReservaResponse> {
-		const reservaExistente = await this.reservaRepository.findByMesaId(mesaId)
-		if (reservaExistente) {
-			throw new Error('Já existe uma reserva para esta mesa')
+		const mesaExistente = await this.mesaRepository.findById(mesaId)
+
+		if(mesaExistente.status === 'Ocupada') {
+			throw new Error('A mesa não está disponível para reserva')
+
 		}
 		const reservaCriada = await this.reservaRepository.create(
 			new Reserva({
