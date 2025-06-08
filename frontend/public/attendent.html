@@ -62,17 +62,17 @@
                 <div class="mb-3">
                   <label for="table" class="form-label">Mesa</label>
                   <select class="form-select" id="table" name="table" required>
-                  <option value="" disabled selected>Selecione a Mesa</option>
-                  <option value="1">Mesa 1 </option>
-                  <option value="2">Mesa 2 </option>
-                  <option value="3">Mesa 3 </option>
-                  <option value="4">Mesa 4 </option>
-                  <option value="5">Mesa 5 </option>
-                  <option value="6">Mesa 6 </option>
-                  <option value="7">Mesa 7 </option>
-                  <option value="8">Mesa 8 </option>
-                  <option value="9">Mesa 9 </option>
-                  <option value="10">Mesa 10 </option>
+                    <option value="" disabled selected>Selecione a Mesa</option>
+                    <option value="1">Mesa 1 </option>
+                    <option value="2">Mesa 2 </option>
+                    <option value="3">Mesa 3 </option>
+                    <option value="4">Mesa 4 </option>
+                    <option value="5">Mesa 5 </option>
+                    <option value="6">Mesa 6 </option>
+                    <option value="7">Mesa 7 </option>
+                    <option value="8">Mesa 8 </option>
+                    <option value="9">Mesa 9 </option>
+                    <option value="10">Mesa 10 </option>
                   </select>
                 </div>
                 <div class="mb-3">
@@ -131,161 +131,174 @@
   </footer>
 
   <!-- Script para manipulação do Painel do Atendente -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Obtém as reservas do localStorage (simulando a comunicação com o servidor)
-    function getReservations() {
-      return JSON.parse(localStorage.getItem("reservations")) || [];
-    }
-
-    // Salva as reservas atualizadas no localStorage ou no servidor
-  
-    async function saveReservations(reservations) {
-      const response = await fetch("/api/reservas", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(reservations)
-      });
-      if (!response.ok) {
-        localStorage.setItem("reservations", JSON.stringify(reservations));
-        console.warn("Aviso: Não foi possível salvar reservas no servidor, salvando localmente.");
-        return;
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      // Obtém as reservas do localStorage (simulando a comunicação com o servidor)
+      async function getReservations() {
+        const response = await fetch("/api/reservas");
+        return await response.json();
       }
-      const reservas = await response.json();
-      console.log("Reservas salvas:", reservas);
-      return reservas;
-    }
 
-    // Exibe feedback ao usuário com alertas estilizados
-    function showFeedback(message, type) {
-      const feedbackDiv = document.getElementById("reservationFeedback");
-      feedbackDiv.innerHTML = `<div class="alert ${type}" role="alert">${message}</div>`;
-    }
+      // Salva as reservas atualizadas no localStorage ou no servidor
 
-    // Valida se a data e o horário da reserva são válidos:
-    // - Não permite datas anteriores.
-    // - Se a reserva for para o dia atual, o horário deve ser posterior ao horário corrente.
-    function isValidReserveDateTime(dateStr, timeStr) {
-      const now = new Date();
-
-      // Cria um objeto Date para a reserva, juntando data e hora
-      const [year, month, day] = dateStr.split("-").map(Number);
-      const [hour, minute] = timeStr.split(":").map(Number);
-      const reservationDateTime = new Date(year, month - 1, day, hour, minute, 0);
-
-      console.log("Agora:", now);
-      console.log("Reserva:", reservationDateTime);
-
-      if (reservationDateTime <= now) {
-        showFeedback(
-          "Não é possível fazer reservas para datas ou horários passados ou iguais ao atual",
-          "alert-danger"
-        );
-        return false;
+      async function saveReservation(reservation) {
+        const response = await fetch("/api/reservas", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(reservation)
+        });
+        if (!response.ok) {
+          console.error("Erro ao salvar reserva:", response.statusText);
+          console.error("Mensagem de erro:", await response.text());
+          showFeedback(`Status: ${response.status} Erro ao salvar reserva. Tente novamente.`, "alert-danger");
+          return;
+        }
+        showFeedback("Reserva registrada com sucesso e aguardando confirmação!", "alert-success");
+        const reservas = await response.json();
+        console.log("Reservas salvas:", reservas);
+        return reservas;
       }
-      return true;
-    }
 
-    // Carrega as reservas com status "pendente" e as exibe na tabela
-    function loadReservations() {
-      const reservations = getReservations();
-      const tbody = document.querySelector("#reservationsTable tbody");
-      tbody.innerHTML = ""; // Limpa a tabela
+      // Exibe feedback ao usuário com alertas estilizados
+      function showFeedback(message, type) {
+        const feedbackDiv = document.getElementById("reservationFeedback");
+        feedbackDiv.innerHTML = `<div class="alert ${type}" role="alert">${message}</div>`;
+      }
 
-      // Filtra reservas pendentes
-      const pendingReservations = reservations.filter(r => r.status === "pendente");
-      pendingReservations.forEach(r => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${r.date}</td>
-          <td>${r.time}</td>
-          <td>${r.table}</td>
-          <td>${r.guests}</td>
-          <td>${r.name}</td>
+      // Valida se a data e o horário da reserva são válidos:
+      // - Não permite datas anteriores.
+      // - Se a reserva for para o dia atual, o horário deve ser posterior ao horário corrente.
+      function isValidReserveDateTime(dateStr, timeStr) {
+        const now = new Date();
+
+        // Cria um objeto Date para a reserva, juntando data e hora
+        const [year, month, day] = dateStr.split("-").map(Number);
+        const [hour, minute] = timeStr.split(":").map(Number);
+        const reservationDateTime = new Date(year, month - 1, day, hour, minute, 0);
+
+        console.log("Agora:", now);
+        console.log("Reserva:", reservationDateTime);
+
+        if (reservationDateTime <= now) {
+          showFeedback(
+            "Não é possível fazer reservas para datas ou horários passados ou iguais ao atual",
+            "alert-danger"
+          );
+          return false;
+        }
+        return true;
+      }
+
+      // Carrega as reservas com status "pendente" e as exibe na tabela
+      async function loadReservations() {
+        const { reservas } = await getReservations();
+        console.log(reservas)
+        const tbody = document.querySelector("#reservationsTable tbody");
+        tbody.innerHTML = ""; // Limpa a tabela
+        // Filtra reservas pendentes
+        const pendingReservations = reservas.filter(r => r.status === "aguardando");
+        pendingReservations.forEach(r => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+          <td>${r.data}</td>
+          <td>${r.hora}</td>
+          <td>${r.mesaId}</td>
+          <td>${r.quantidadePessoas}</td>
+          <td>${r.nomeResponsavel}</td>
           <td>
             <button class="btn btn-danger btn-sm" data-id="${r.id}">Cancelar</button>
           </td>
         `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    // Verifica se já existe uma reserva para a mesma mesa, data e horário (somente para reservas pendentes)
-    function isTableAlreadyReserved(date, time, table) {
-      const reservations = getReservations();
-      return reservations.some(r =>
-        r.status === "pendente" &&
-        r.date === date &&
-        r.time === time &&
-        r.table === table
-      );
-    }
-
-    // Manipula o envio do formulário para criar nova reserva
-    document.getElementById("reservationForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const name = document.getElementById("name").value;
-      const date = document.getElementById("date").value;
-      const time = document.getElementById("time").value;
-      const table = document.getElementById("table").value; 
-      const guests = document.getElementById("guests").value;
-
-      // Valida a data e o horário
-      if (!isValidReserveDateTime(date, time)) {
-        return;
+          tbody.appendChild(tr);
+        });
       }
 
-      // Evita duplicidade: mesa já reservada para o mesmo dia e horário
-      if (isTableAlreadyReserved(date, time, table)) {
-        showFeedback("Erro: A mesa solicitada já está reservada.", "alert-danger");
-        return;
+      // Verifica se já existe uma reserva para a mesma mesa, data e horário (somente para reservas pendentes)
+      async function isTableAlreadyReserved(date, time, table) {
+        const { reservas } = await getReservations();
+        return reservas.some(r =>
+          r.status === "aguardando" &&
+          r.data === date &&
+          r.hora === time &&
+          r.mesaId === table
+        );
       }
 
-      // Cria uma nova reserva com status "pendente"
-      const newReservation = {
-        id: Date.now(),
-        date,
-        time,
-        table,
-        guests: parseInt(guests),
-        name,
-        status: "pendente"
-      };
+      // Manipula o envio do formulário para criar nova reserva
+      document.getElementById("reservationForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-      const reservations = getReservations();
-      reservations.push(newReservation);
-      saveReservations(reservations);
+        const name = document.getElementById("name").value;
+        const date = document.getElementById("date").value;
+        const time = document.getElementById("time").value;
+        const table = document.getElementById("table").value;
+        const guests = document.getElementById("guests").value;
 
-      showFeedback("Reserva registrada com sucesso e aguardando confirmação!", "alert-success");
-      loadReservations();
-      e.target.reset();
-    });
-
-    // Manipula o cancelamento da reserva: a ação do atendente (cancelamento) é enviada ao gerente.
-    // Ao cancelar a reserva seu status é atualizado para "cancelada" e ela deixa de ser exibida na tabela.
-    document.querySelector("#reservationsTable tbody").addEventListener("click", function (e) {
-      if (e.target.tagName.toLowerCase() === "button") {
-        const reservationId = parseInt(e.target.getAttribute("data-id"));
-        let reservations = getReservations();
-        const index = reservations.findIndex(r => r.id === reservationId);
-        if (index === -1) {
-          showFeedback("Erro: Reserva não encontrada.", "alert-danger");
+        // Valida a data e o horário
+        if (!isValidReserveDateTime(date, time)) {
           return;
         }
-        reservations[index].status = "cancelada";
-        saveReservations(reservations);
-        loadReservations();
-        showFeedback("Reserva cancelada com sucesso.", "alert-info");
-      }
-    });
 
-    // Inicializa a tabela com as reservas pendentes ao carregar a página
-    loadReservations();
-  });
-</script>
+        // Evita duplicidade: mesa já reservada para o mesmo dia e horário
+        /* if (isTableAlreadyReserved(date, time, table)) {
+          showFeedback("Erro: A mesa solicitada já está reservada.", "alert-danger");
+          return;
+        } */
+
+        // Cria uma nova reserva com status "aguardando"
+        const newReservation = {
+          data: date,
+          hora: time,
+          mesaId: parseInt(table),
+          quantidadePessoas: parseInt(guests),
+          nomeResponsavel: name,
+          status: "aguardando"
+        };
+
+        await saveReservation(newReservation);
+        await loadReservations();
+        e.target.reset();
+      });
+
+      // Manipula o cancelamento da reserva: a ação do atendente (cancelamento) é enviada ao gerente.
+      // Ao cancelar a reserva seu status é atualizado para "cancelada" e ela deixa de ser exibida na tabela.
+      document.querySelector("#reservationsTable tbody").addEventListener("click", async function (e) {
+        if (e.target.tagName.toLowerCase() === "button") {
+          const reservationId = e.target.getAttribute("data-id");
+          let { reservas } = await getReservations();
+          const index = reservas.findIndex(r => r.id === reservationId);
+          if (index === -1) {
+            showFeedback("Erro: Reserva não encontrada.", "alert-danger");
+            return;
+          }
+
+          const patchedReserva = await patchReservations({
+            id: reservas[index].id,
+            status: "cancelada"
+          });
+          if (!patchedReserva.ok) {
+            showFeedback("Erro ao cancelar reserva. Tente novamente.", "alert-danger");
+            return;
+          }
+          await loadReservations();
+          showFeedback("Reserva cancelada com sucesso.", "alert-info");
+        }
+      });
+      function patchReservations({ id, status }) {
+        return fetch(`/api/reservas/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ status })
+        });
+      }
+      // Inicializa a tabela com as reservas pendentes ao carregar a página
+      await loadReservations();
+    });
+  </script>
 
 </body>
 
