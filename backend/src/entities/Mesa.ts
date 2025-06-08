@@ -1,24 +1,24 @@
-export type StatusMesa = 'Disponivel' | 'Ocupada'
+export type StatusMesa = 'disponivel' | 'ocupada'
 
 export interface MesaRequest {
-	mesaId: number
+	id: number
 	status?: StatusMesa
 }
 
 export class Mesa {
-	private readonly _mesaId: number
-	private _status: StatusMesa = 'Disponivel'
+	private readonly _id: number
+	private _status: StatusMesa = 'disponivel'
 
-	constructor({ mesaId, status }: MesaRequest) {
-		this._mesaId = mesaId
+	constructor({ id, status }: MesaRequest) {
+		this._id = id
 
 		if (status) {
 			this._status = status
 		}
 	}
 
-	get mesaId(): number {
-		return this._mesaId
+	get id(): number {
+		return this._id
 	}
 
 	get status(): StatusMesa {
