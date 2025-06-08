@@ -14,8 +14,8 @@ export const criarRelatorioReservasPorMesaController: RequestHandler = async (
 	const criarRelatorioReservasPorMesaUseCase =
 		makeCriarRelatorioReservaPorMesaUseCase()
 
-	const reserva = await criarRelatorioReservasPorMesaUseCase.execute({
+	const { reservas } = await criarRelatorioReservasPorMesaUseCase.execute({
 		mesaId,
 	})
-	res.status(201).json(reserva)
+	res.status(200).json({ reservas, mesaId })
 }

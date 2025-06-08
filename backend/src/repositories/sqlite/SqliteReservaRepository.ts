@@ -157,9 +157,10 @@ export class SqliteReservaRepository implements ReservaRepository {
 		dataFim: string,
 	): Promise<Reserva[]> {
 		const rows = await this.db.all(
-			`SELECT * FROM Reserva WHERE data BETWEEN ? AND ? AND status IN ('confirmada','cancelada')`,
+			'SELECT * FROM Reserva WHERE data BETWEEN ? AND ?',
 			[dataComeco, dataFim],
 		)
+
 		return rows.map((reserva) => {
 			if (isReserva(reserva)) {
 				return new Reserva({
@@ -198,13 +199,10 @@ export class SqliteReservaRepository implements ReservaRepository {
 		})
 	}
 
-	async buscarReservasFeitasPorGarcom(
-		garcomId: string,
-		status: string,
-	): Promise<Reserva[]> {
+	async buscarReservasFeitasPorGarcom(garcomId: string): Promise<Reserva[]> {
 		const rows = await this.db.all(
-			'SELECT * FROM Reserva WHERE verify_by = ? AND status = ? ',
-			[garcomId, status],
+			'SELECT * FROM Reserva WHERE verify_by = ? ',
+			[garcomId],
 		)
 		return rows.map((reserva) => {
 			if (isReserva(reserva)) {

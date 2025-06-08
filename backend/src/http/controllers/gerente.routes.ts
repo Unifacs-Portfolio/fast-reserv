@@ -4,10 +4,16 @@ import { criarRelatorioReservasPorMesaController } from './CriarRelatorioReserva
 import { criarRelatorioReservasPorGarcomController } from './CriarRelatorioReservasPorGarcomController'
 
 const router = Router()
-router.get('/relatorioMesa', criarRelatorioReservaPorPeriodoController)
-router.get('/relatorioReserva/:mesaId', criarRelatorioReservasPorMesaController)
 router.get(
-	'/relatorioReservasPorGarcom/:garcomId',
+	'/relatorios/reservas-atendidas',
+	criarRelatorioReservaPorPeriodoController,
+)
+router.get(
+	'/relatorios/reservas-mesa/:mesaId',
+	criarRelatorioReservasPorMesaController,
+)
+router.get(
+	'/relatorios/mesas-confirmadas',
 	criarRelatorioReservasPorGarcomController,
 )
 export { router as gerenteRouter }

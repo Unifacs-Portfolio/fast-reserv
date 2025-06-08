@@ -3,7 +3,18 @@ import type { ReservaRepository } from '../repositories/ReservaRepository'
 
 interface RelatorioReservasPorGarcomRequest {
 	garcomId: string
-	status: string
+}
+interface RelatorioReservasPorGarcomResponse {
+	reservas: {
+		id: Reserva['id']
+		mesaId: Reserva['mesaId']
+		nomeResponsavel: Reserva['nomeResponsavel']
+		data: Reserva['data']
+		hora: Reserva['hora']
+		quantidadePessoas: Reserva['quantidadePessoas']
+		status: Reserva['status']
+		verify_by: Reserva['verify_by']
+	}[]
 }
 
 export class CriarRelatorioReservasPorGarcomUseCase {
@@ -15,13 +26,20 @@ export class CriarRelatorioReservasPorGarcomUseCase {
 
 	async execute({
 		garcomId,
-		status,
-	}: RelatorioReservasPorGarcomRequest): Promise<Reserva[]> {
-		const reservaExistente =
-			await this.reservaRepository.buscarReservasFeitasPorGarcom(
-				garcomId,
-				status,
-			)
-		return reservaExistente
+	}: RelatorioReservasPorGarcomRequest): Promise<RelatorioReservasPorGarcomResponse> {
+		const reservas =
+			await this.reservaRepository.buscarReservasFeitasPorGarcom(garcomId)
+		return {
+			reservas: reservas.map((reserva) => ({
+				id: reserva.id,
+				mesaId: reserva.mesaId,
+				nomeResponsavel: reserva.nomeResponsavel,
+				data: reserva.data,
+				hora: reserva.hora,
+				quantidadePessoas: reserva.quantidadePessoas,
+				status: reserva.status,
+				verify_by: reserva.verify_by,
+			})),
+		}
 	}
 }

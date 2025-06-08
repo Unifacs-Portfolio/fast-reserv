@@ -3,21 +3,19 @@ import { z } from 'zod'
 import { makeCriarRelatorioReservasPorGarcomUseCase } from '../../useCases/factories/makeCriarRelatorioReservasPorGarcomUseCase'
 
 const bodySchema = z.object({
-	status: z.string(),
+	garcomId: z.string(),
 })
 
 export const criarRelatorioReservasPorGarcomController: RequestHandler = async (
 	req,
 	res,
 ) => {
-	const { garcomId } = req.params
-	const { status } = bodySchema.parse(req.body)
+	const { garcomId } = bodySchema.parse(req.query)
 	const criarRelatorioReservasPorGarcomUseCase =
 		makeCriarRelatorioReservasPorGarcomUseCase()
 
-	const reserva = await criarRelatorioReservasPorGarcomUseCase.execute({
+	const { reservas } = await criarRelatorioReservasPorGarcomUseCase.execute({
 		garcomId,
-		status,
 	})
-	res.status(201).json(reserva)
+	res.status(200).json({ reservas, garcomId })
 }

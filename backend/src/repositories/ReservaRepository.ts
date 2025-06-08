@@ -1,10 +1,7 @@
 import type { Reserva } from '../entities/Reserva'
 
 export interface ReservaRepository {
-	buscarReservasFeitasPorGarcom(
-		garcomId: string,
-		status: string,
-	): Promise<Reserva[]>
+	buscarReservasFeitasPorGarcom(garcomId: string): Promise<Reserva[]>
 	buscarReservasPorPeriodo(
 		dataInicio: string,
 		dataFim: string,
