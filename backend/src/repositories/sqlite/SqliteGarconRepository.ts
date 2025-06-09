@@ -1,12 +1,22 @@
 import type { Database } from 'sqlite'
 import type { GarconRepository } from '../GarconRepository'
-import type { Garcon } from '../../entities/Garcon'
+import { Garcon } from '../../entities/Garcon'
+import { isGarcom } from '../../utils/isGarcom'
 import { getConnection } from '../../Datenbank/configdb'
 
 export class SqliteGarconRepository implements GarconRepository {
 	private db: Database
 	constructor() {
 		this.db = getConnection()
+	}
+	async findAll(): Promise<Garcon[]> {
+		const garcons = await this.db.all('SELECT * FROM Garcon')
+		return garcons.map((garcom) => {
+			if (isGarcom(garcom)) {
+				return new Garcon(garcom)
+			}
+			throw new Error('Dados do garçom inválidos.')
+		})
 	}
 	async findById(garcomId: string): Promise<Garcon> {
 		const garcom = await this.db.get('SELECT * FROM Garcon WHERE id = ?', [

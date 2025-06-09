@@ -20,14 +20,14 @@ export function isReserva(reserva: unknown): reserva is {
 		'hora' in reserva &&
 		'quantidadePessoas' in reserva &&
 		'status' in reserva &&
-		typeof (reserva as Reserva).id === 'string' &&
-		typeof (reserva as Reserva).mesaId === 'number' &&
-		typeof (reserva as Reserva).nomeResponsavel === 'string' &&
-		typeof (reserva as Reserva).data === 'string' &&
-		typeof (reserva as Reserva).hora === 'string' &&
-		typeof (reserva as Reserva).quantidadePessoas === 'number' &&
-		typeof (reserva as Reserva).status === 'string' &&
-		(typeof (reserva as Reserva).verify_by === 'string' ||
-			(reserva as Reserva).verify_by === null)
+		'verify_by' in reserva &&
+		typeof reserva.id === 'string' &&
+		typeof reserva.mesaId === 'number' &&
+		typeof reserva.nomeResponsavel === 'string' &&
+		typeof reserva.data === 'string' &&
+		typeof reserva.hora === 'string' &&
+		typeof reserva.quantidadePessoas === 'number' &&
+		typeof reserva.status === 'string' &&
+		(typeof reserva.verify_by === 'string' || reserva.verify_by === null)
 	)
 }
