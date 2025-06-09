@@ -18,7 +18,7 @@ interface AtualizarStatusReservaResponse {
 		hora: string
 		quantidadePessoas: number
 		status: StatusReserva
-		verify_by: string
+		verify_by: string | null
 	}
 }
 
@@ -34,7 +34,7 @@ export class AtualizarStatusReservaUseCase {
 	) {
 		this.reservaRepository = reservaRepository
 		this.garconRepository = garconRepository
-		this.mesaRepository = mesaRepository 
+		this.mesaRepository = mesaRepository
 	}
 
 	async execute({
@@ -43,7 +43,6 @@ export class AtualizarStatusReservaUseCase {
 		garcomId,
 	}: AtualizarStatusReservaRequest): Promise<AtualizarStatusReservaResponse> {
 		const reservaEncontrada = await this.reservaRepository.findById(id)
-		let verify_by: string | undefined = 'Sistema'
 
 		if (!reservaEncontrada) {
 			throw new Error('Reserva não existe')
@@ -76,7 +75,7 @@ export class AtualizarStatusReservaUseCase {
 					hora: reservaEncontrada.hora,
 					quantidadePessoas: reservaEncontrada.quantidadePessoas,
 					status: reservaAtualizada.status,
-					verify_by,
+					verify_by: reservaEncontrada.verify_by,
 				},
 			}
 		}

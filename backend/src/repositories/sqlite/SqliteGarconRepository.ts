@@ -30,25 +30,4 @@ export class SqliteGarconRepository implements GarconRepository {
 		// falta criar um isGarcom para verificar se é garçom
 		return garcom
 	}
-	async buscarReservasPorGarcom(verify_by: string): Promise<Reserva[]> {
-		const reservas = await this.db.all(
-			'SELECT * FROM Reserva WHERE verify_by = ?',
-			[verify_by],
-		)
-		return reservas.map((reserva) => {
-			if (isReserva(reserva)) {
-				return new Reserva({
-					id: reserva.id,
-					mesaId: reserva.mesaId,
-					nomeResponsavel: reserva.nomeResponsavel,
-					data: reserva.data,
-					hora: reserva.hora,
-					quantidadePessoas: reserva.quantidadePessoas,
-					status: reserva.status,
-					verify_by: reserva.verify_by,
-				})
-			}
-			throw new Error('Dados da reserva inválidos.')
-		})
-	}
 }

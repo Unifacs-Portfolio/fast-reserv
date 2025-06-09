@@ -25,7 +25,9 @@ export class SqliteMesaRepository implements MesaRepository {
 			['Reservavel', id],
 		)
 		if (result.changes === 0) {
-			throw new Error('Dados da reserva inválidos.')
+			throw new Error(
+				'Não foi possível atualizar o status da mesa para disponível.',
+			)
 		}
 	}
 	async findById(id: number): Promise<Mesa> {
