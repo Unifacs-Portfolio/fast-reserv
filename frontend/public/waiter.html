@@ -77,15 +77,35 @@
 
     <!-- Script para manipulação do Painel do Garçom -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Função para obter as reservas do localStorage (simula os registros feitos pelo atendente)
-            function getReservations() {
-                return JSON.parse(localStorage.getItem('reservations')) || [];
+        document.addEventListener('DOMContentLoaded', async function () {
+            /**
+             * @typedef {Object} Reservas
+             * @property {string} id - ID único da reserva
+             * @property {string} data - Data da reserva
+             * @property {string} hora - Horário da reserva
+             * @property {string} mesaId - Mesa reservada
+             * @property {number} quantidadePessoas - Número de pessoas na reserva
+             * @property {string} nomeResponsavel - Nome do responsável pela reserva
+             * @property {string} status - Status da reserva (pendente, confirmada, cancelada)
+             * @property {string} [verify_by] - Nome do garçom que confirmou a reserva (opcional)
+             */
+            /**
+             * @return {Promise<Array<Reservas>>}
+             */
+            async function getReservations() {
+                const response = await fetch("/api/reservas");
+                return await response.json();
             }
 
-            // Função para salvar as reservas atualizadas no localStorage
-            function saveReservations(reservations) {
-                localStorage.setItem('reservations', JSON.stringify(reservations));
+            // Função para atualizar o status das reservas
+            function patchReservations({ id, status }) {
+                return fetch(`/api/reservas/${id}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ status })
+                });
             }
 
             // Função para exibir feedback no painel do Garçom utilizando alertas estilizados
@@ -95,21 +115,21 @@
             }
 
             // Função para carregar somente as reservas com status "pendente" na tabela
-            function loadReservations() {
-                const reservations = getReservations();
+            async function loadReservations() {
+                const { reservas } = await getReservations();
                 const tbody = document.querySelector('#reservationsTable tbody');
                 tbody.innerHTML = ''; // Limpa os dados atuais
 
                 // Filtra apenas reservas pendentes (exibe somente os registros ativos para confirmação)
-                const pendingReservations = reservations.filter(r => r.status === 'pendente');
+                const pendingReservations = reservas.filter(r => r.status === 'aguardando');
                 pendingReservations.forEach(reservation => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-            <td>${reservation.date}</td>
-            <td>${reservation.time}</td>
-            <td>${reservation.table}</td>
-            <td>${reservation.guests}</td>
-            <td>${reservation.name}</td>
+            <td>${reservation.data}</td>
+            <td>${reservation.hora}</td>
+            <td>${reservation.mesaId}</td>
+            <td>${reservation.quantidadePessoas}</td>
+            <td>${reservation.nomeResponsavel}</td>
             <td>
               <select class="form-select form-select-sm">
                 <option value="" hidden>Selecione</option>
@@ -129,14 +149,14 @@
             }
 
             // Carrega as reservas assim que a página é carregada (mantendo os dados atualizados)
-            loadReservations();
+            await loadReservations();
 
             // Manipula cliques no tbody para confirmar reserva
-            document.querySelector('#reservationsTable tbody').addEventListener('click', function (e) {
+            document.querySelector('#reservationsTable tbody').addEventListener('click', async function (e) {
                 if (e.target.tagName.toLowerCase() === 'button') {
-                    const reservationId = parseInt(e.target.getAttribute('data-id'));
-                    let reservations = getReservations();
-                    const index = reservations.findIndex(r => r.id === reservationId);
+                    const reservationId = e.target.getAttribute('data-id');
+                    let { reservas } = await getReservations();
+                    const index = reservas.findIndex(r => r.id === reservationId);
 
                     // Se não encontrou a reserva, exibe erro
                     if (index === -1) {
@@ -156,10 +176,20 @@
                         }
 
                         // Atualiza o status para "confirmada" e registra o garçom que confirmou
-                        reservations[index].status = "confirmada";
+                        /* reservations[index].status = "confirmada";
                         reservations[index].waiter = selectedWaiter;
-                        saveReservations(reservations);
-                        loadReservations();
+                        saveReservations(reservas); */
+                        const reservaStatusAtualizada = await patchReservations({
+                            id: reservas[index].id,
+                            // Aviso: irei criar a rota GET /api/garcons para pegar os garcons
+                            // verify_by: selectedWaiter,(Precisa passar garcomId (random string))
+                            status: "confirmada"
+                        });
+                        if (!reservaStatusAtualizada.ok) {
+                            showWaiterFeedback('Erro ao confirmar reserva. Tente novamente.', 'alert-danger');
+                            return;
+                        }
+                        await loadReservations();
                         showWaiterFeedback(`Reserva confirmada com sucesso pelo garçom ${selectedWaiter}.`, 'alert-info');
                     }
                 }
