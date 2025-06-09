@@ -5,6 +5,7 @@ import { configuratedb } from './Datenbank/configdb'
 import { env } from './env'
 import path from 'node:path'
 import { reservasRouter } from './http/controllers/reservas.routes'
+import { gerenteRouter } from './http/controllers/gerente.routes'
 import { garconsRouter } from './http/controllers/garcons.routes'
 import { mesasRouter } from './http/controllers/mesas.routes'
 
@@ -16,6 +17,7 @@ const setup = async () => {
 
 	await configuratedb()
 	app.use('/api', reservasRouter)
+	app.use('/api', gerenteRouter)
 	app.use('/api', garconsRouter)
 	app.use('/api', mesasRouter)
 	app.use(<ErrorRequestHandler>((err, _req, res, next) => {
@@ -23,6 +25,7 @@ const setup = async () => {
 			res
 				.status(400)
 				.json({ message: 'Validação falhou', issues: err.format() })
+			return
 		}
 		if (env.NODE_ENV !== 'production') {
 			console.error(err)

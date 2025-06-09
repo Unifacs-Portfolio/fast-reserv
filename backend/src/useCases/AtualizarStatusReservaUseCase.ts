@@ -1,6 +1,7 @@
 import { Reserva, type StatusReserva } from '../entities/Reserva'
 import type { GarconRepository } from '../repositories/GarconRepository'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
+import type { MesaRepository } from '../repositories/MesaRepository'
 
 interface AtualizarStatusReservaRequest {
 	id: string
@@ -17,20 +18,23 @@ interface AtualizarStatusReservaResponse {
 		hora: string
 		quantidadePessoas: number
 		status: StatusReserva
-		verify_by: string
+		verify_by: string | null
 	}
 }
 
 export class AtualizarStatusReservaUseCase {
 	private reservaRepository: ReservaRepository
 	private garconRepository: GarconRepository
+	private mesaRepository: MesaRepository
 
 	constructor(
 		reservaRepository: ReservaRepository,
 		garconRepository: GarconRepository,
+		mesaRepository: MesaRepository,
 	) {
 		this.reservaRepository = reservaRepository
 		this.garconRepository = garconRepository
+		this.mesaRepository = mesaRepository
 	}
 
 	async execute({
@@ -39,7 +43,6 @@ export class AtualizarStatusReservaUseCase {
 		garcomId,
 	}: AtualizarStatusReservaRequest): Promise<AtualizarStatusReservaResponse> {
 		const reservaEncontrada = await this.reservaRepository.findById(id)
-		let verify_by: string | undefined = 'Sistema'
 
 		if (!reservaEncontrada) {
 			throw new Error('Reserva não existe')
@@ -62,6 +65,7 @@ export class AtualizarStatusReservaUseCase {
 				status: 'cancelada',
 			})
 			await this.reservaRepository.update(id, reservaAtualizada)
+			await this.mesaRepository.updateDisponibilizar(reservaEncontrada.mesaId)
 			return {
 				reserva: {
 					id: reservaEncontrada.id,
@@ -71,7 +75,7 @@ export class AtualizarStatusReservaUseCase {
 					hora: reservaEncontrada.hora,
 					quantidadePessoas: reservaEncontrada.quantidadePessoas,
 					status: reservaAtualizada.status,
-					verify_by,
+					verify_by: reservaEncontrada.verify_by,
 				},
 			}
 		}
@@ -87,7 +91,6 @@ export class AtualizarStatusReservaUseCase {
 		if (!garcomEncontrado) {
 			throw new Error('Garçom não existe na tabela')
 		}
-		verify_by = garcomEncontrado.nome
 
 		if (status === 'confirmada') {
 			const reservaAtualizada = new Reserva({
@@ -98,8 +101,10 @@ export class AtualizarStatusReservaUseCase {
 				hora: reservaEncontrada.hora,
 				quantidadePessoas: reservaEncontrada.quantidadePessoas,
 				status: 'confirmada',
+				verify_by: garcomId,
 			})
 			await this.reservaRepository.update(id, reservaAtualizada)
+			await this.mesaRepository.updateDisponibilizar(reservaEncontrada.mesaId)
 			return {
 				reserva: {
 					id: reservaAtualizada.id,

@@ -3,6 +3,8 @@ import type { GarconRepository } from '../GarconRepository'
 import { Garcon } from '../../entities/Garcon'
 import { isGarcom } from '../../utils/isGarcom'
 import { getConnection } from '../../Datenbank/configdb'
+import { isReserva } from '../../utils/isReserva'
+import { Reserva } from '../../entities/Reserva'
 
 export class SqliteGarconRepository implements GarconRepository {
 	private db: Database

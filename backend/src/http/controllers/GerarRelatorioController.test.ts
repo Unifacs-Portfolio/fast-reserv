@@ -22,7 +22,7 @@ describe('GerarRelatorioController', async () => {
 		const connection = getConnection()
 		await connection.close()
 	})
-	it.skip('deve ser possível gerar um relatório de reservas atendidas ou não em um certo período', async () => {
+	it('deve ser possível gerar um relatório de reservas atendidas ou não em um certo período', async () => {
 		if (!env.GARCOM_ID_RANDOM) {
 			throw new Error(
 				'GARCOM_ID_RANDOM não está definido no ambiente de teste.',
@@ -67,13 +67,14 @@ describe('GerarRelatorioController', async () => {
 				status: 'cancelada',
 			})
 		const url = '/api/relatorios/reservas-atendidas'
+		const dataInicio = '2025-07-05' // Formato YYYY-MM-DD
+		const dataFim = '2025-07-07'
 		const response = await supertest(app)
+
 			.get(url)
 			.query({
-				dataInicio: new Date().toISOString().split('T')[0], // Formato YYYY-MM-DD
-				dataFim: new Date(Date.now() + 1000 * 60 * 60 * 24)
-					.toISOString()
-					.split('T')[0], // Formato YYYY-MM-DD
+				dataInicio, // Formato YYYY-MM-DD
+				dataFim, // Formato YYYY-MM-DD
 			})
 			.send()
 		expect(checkRouteExists(response, 'GET', url)).toBe(true)
@@ -83,8 +84,9 @@ describe('GerarRelatorioController', async () => {
 		expect(response.body.metricas).toHaveProperty('pendentes', 1)
 		expect(response.body.metricas).toHaveProperty('canceladas', 1)
 		expect(response.body.metricas).toHaveProperty('total', 3)
+		expect(response.body.metricas).toHaveProperty('reservas')
 	})
-	it.skip('deve ser possível gerar um relatório de reservas feitas para determinada mesa', async () => {
+	it('deve ser possível gerar um relatório de reservas feitas para determinada mesa', async () => {
 		if (!env.GARCOM_ID_RANDOM) {
 			throw new Error(
 				'GARCOM_ID_RANDOM não está definido no ambiente de teste.',
@@ -117,6 +119,7 @@ describe('GerarRelatorioController', async () => {
 		expect(response.status).toBe(200)
 		expect(response.body).toHaveProperty('mesaId', mesaIdAlvo)
 		expect(response.body).toHaveProperty('reservas')
+
 		expect(Array.isArray(response.body.reservas)).toBe(true)
 
 		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -129,7 +132,7 @@ describe('GerarRelatorioController', async () => {
 			response.body.reservas.every((r: any) => r.mesaId === mesaIdAlvo),
 		).toBe(true)
 	})
-	it.skip('deve ser possível gerar um relatório de mesas confirmadas por garçom', async () => {
+	it('deve ser possível gerar um relatório de mesas confirmadas por garçom', async () => {
 		if (!env.GARCOM_ID_RANDOM) {
 			throw new Error(
 				'GARCOM_ID_RANDOM não está definido no ambiente de teste.',
@@ -158,9 +161,6 @@ describe('GerarRelatorioController', async () => {
 		expect(response.body).toHaveProperty('garcomId', env.GARCOM_ID_RANDOM)
 		expect(response.body).toHaveProperty('reservas')
 		expect(Array.isArray(response.body.reservas)).toBe(true)
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-		const reservas = response.body.reservas.map((r: any) => r.id)
-		expect(reservas).toContain(mesaIdAlvo)
 		expect(
 			response.body.reservas.every(
 				// biome-ignore lint/suspicious/noExplicitAny: <explanation>
