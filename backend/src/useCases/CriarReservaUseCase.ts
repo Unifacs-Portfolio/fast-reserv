@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { Reserva } from '../entities/Reserva'
 import type { StatusReserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
+import type { MesaRepository } from '../repositories/MesaRepository'
 
 interface CriarReservaRequest {
 	mesaId: number
@@ -27,9 +28,11 @@ interface CriarReservaResponse {
 
 export class CriarReservaUseCase {
 	private reservaRepository: ReservaRepository
+	private mesaRepository: MesaRepository
 
-	constructor(reservaRepository: ReservaRepository) {
+	constructor(reservaRepository: ReservaRepository, mesaRepository: MesaRepository) {
 		this.reservaRepository = reservaRepository
+		this.mesaRepository = mesaRepository
 	}
 
 	async execute({
@@ -41,9 +44,11 @@ export class CriarReservaUseCase {
 		status,
 		verify_by,
 	}: CriarReservaRequest): Promise<CriarReservaResponse> {
-		const reservaExistente = await this.reservaRepository.findByMesaId(mesaId)
-		if (reservaExistente) {
-			throw new Error('Já existe uma reserva para esta mesa')
+		const mesaExistente = await this.mesaRepository.findById(mesaId)
+
+		if(mesaExistente.status === 'Ocupada') {
+			throw new Error('A mesa não está disponível para reserva')
+
 		}
 		const reservaCriada = await this.reservaRepository.create(
 			new Reserva({
@@ -57,6 +62,7 @@ export class CriarReservaUseCase {
 				verify_by,
 			}),
 		)
+		await this.mesaRepository.updateConfirmar(reservaCriada.mesaId)
 		return {
 			reserva: {
 				id: reservaCriada.id,

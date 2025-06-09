@@ -27,7 +27,7 @@ export async function createTableMesa() {
 
 export async function createTableReserva() {
 	await getConnection().exec(
-		'CREATE TABLE IF NOT EXISTS Reserva (id TEXT PRIMARY KEY NOT NULL , mesaId INTEGER,nomeResponsavel TEXT UNIQUE, quantidadePessoas INTEGER, data TEXT, hora TEXT, verify_by TEXT,status TEXT,FOREIGN KEY (mesaId) REFERENCES Mesa(id), FOREIGN KEY(verify_by) REFERENCES Garcon(nome))',
+		'CREATE TABLE IF NOT EXISTS Reserva (id TEXT PRIMARY KEY NOT NULL, mesaId INTEGER,nomeResponsavel TEXT, quantidadePessoas INTEGER, data TEXT, hora TEXT, verify_by TEXT,status TEXT,FOREIGN KEY (mesaId) REFERENCES Mesa(id), FOREIGN KEY(verify_by) REFERENCES Garcon(id))',
 	)
 }
 
@@ -47,12 +47,33 @@ export async function insertGarconTest() {
 	)
 }
 
+export async function insertGarcom() {
+	const funcionarios: string[] = ['Marcilio', 'Roan', 'Marcus']
+	for (let id = 0; id < 3; id++) {
+		await getConnection().run(
+			'INSERT OR IGNORE INTO Garcon (id, nome) VALUES (? , ?)',
+			[crypto.randomUUID(), funcionarios[id]],
+		)
+	}
+}
+
+export async function insertMesas() {
+	for (let id = 1; id <= 10; id++) {
+		await getConnection().run(
+			'INSERT OR IGNORE INTO Mesa (id, status) VALUES (?, ?)',
+			[id, 'Reservavel'],
+		)
+	}
+}
+
 // Executar a tabela e banco
 export async function configuratedb() {
 	await initDb()
 	await createTableGarcon()
 	await createTableMesa()
 	await createTableReserva()
+	await insertMesas()
+	await insertGarcom()
 	if (env.NODE_ENV === 'test') {
 		await insertGarconTest()
 	}

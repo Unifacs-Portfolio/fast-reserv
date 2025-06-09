@@ -152,4 +152,72 @@ export class SqliteReservaRepository implements ReservaRepository {
 		console.error('Erro ao atualizar reserva:', reservaAtualizada)
 		throw new Error('Dados da reserva inválidos.')
 	}
+	async buscarReservasPorPeriodo(
+		dataComeco: string,
+		dataFim: string,
+	): Promise<Reserva[]> {
+		const rows = await this.db.all(
+			'SELECT * FROM Reserva WHERE data BETWEEN ? AND ?',
+			[dataComeco, dataFim],
+		)
+
+		return rows.map((reserva) => {
+			if (isReserva(reserva)) {
+				return new Reserva({
+					id: reserva.id,
+					mesaId: reserva.mesaId,
+					nomeResponsavel: reserva.nomeResponsavel,
+					data: reserva.data,
+					hora: reserva.hora,
+					quantidadePessoas: reserva.quantidadePessoas,
+					status: reserva.status,
+					verify_by: reserva.verify_by,
+				})
+			}
+			throw new Error('Dados da reserva inválidos.')
+		})
+	}
+
+	async buscarReservasFeitasPorMesa(mesaId: number): Promise<Reserva[]> {
+		const rows = await this.db.all('SELECT * FROM Reserva WHERE mesaId = ?', [
+			mesaId,
+		])
+		return rows.map((reserva) => {
+			if (isReserva(reserva)) {
+				return new Reserva({
+					id: reserva.id,
+					mesaId: reserva.mesaId,
+					nomeResponsavel: reserva.nomeResponsavel,
+					data: reserva.data,
+					hora: reserva.hora,
+					quantidadePessoas: reserva.quantidadePessoas,
+					status: reserva.status,
+					verify_by: reserva.verify_by,
+				})
+			}
+			throw new Error('Dados da reserva inválidos.')
+		})
+	}
+
+	async buscarReservasFeitasPorGarcom(garcomId: string): Promise<Reserva[]> {
+		const rows = await this.db.all(
+			'SELECT * FROM Reserva WHERE verify_by = ? ',
+			[garcomId],
+		)
+		return rows.map((reserva) => {
+			if (isReserva(reserva)) {
+				return new Reserva({
+					id: reserva.id,
+					mesaId: reserva.mesaId,
+					nomeResponsavel: reserva.nomeResponsavel,
+					data: reserva.data,
+					hora: reserva.hora,
+					quantidadePessoas: reserva.quantidadePessoas,
+					status: reserva.status,
+					verify_by: reserva.verify_by,
+				})
+			}
+			throw new Error('Dados da reserva inválidos.')
+		})
+	}
 }
