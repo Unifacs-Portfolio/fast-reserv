@@ -1,7 +1,8 @@
 import type { Database } from 'sqlite'
 import type { MesaRepository } from '../MesaRepository'
 import { getConnection } from '../../Datenbank/configdb'
-import type { Mesa } from '../../entities/Mesa' 
+import { Mesa } from '../../entities/Mesa'
+import { isMesa } from '../../utils/isMesa'
 
 export class SqliteMesaRepository implements MesaRepository {
 	private db: Database
@@ -28,9 +29,16 @@ export class SqliteMesaRepository implements MesaRepository {
 		}
 	}
 	async findById(id: number): Promise<Mesa> {
-			const mesa = await this.db.get('SELECT * FROM Mesa WHERE Id = ?', [
-				id,
-			])
-			return mesa
-}
+		const mesa = await this.db.get('SELECT * FROM Mesa WHERE Id = ?', [id])
+		return mesa
+	}
+	async findAll(): Promise<Mesa[]> {
+		const mesas = await this.db.all('SELECT * FROM Mesa')
+		return mesas.map((mesa) => {
+			if (isMesa(mesa)) {
+				return new Mesa(mesa)
+			}
+			throw new Error('Dados da mesa inválidos.')
+		})
+	}
 }
