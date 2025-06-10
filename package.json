@@ -3,7 +3,9 @@
 	"version": "1.0.0",
 	"main": "backend/build/server.js",
 	"scripts": {
+		"prebuild": "npm install",
 		"build": "tsup backend/src --out-dir backend/build",
+		"prestart": "npm run build",
 		"start": "node backend/build/server.js",
 		"dev": "tsx watch backend/src/server.ts",
 		"coverage": "vitest run --coverage",
