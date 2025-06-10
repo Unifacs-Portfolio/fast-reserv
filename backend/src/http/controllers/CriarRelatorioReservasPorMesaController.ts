@@ -9,13 +9,19 @@ const bodySchema = z.object({
 export const criarRelatorioReservasPorMesaController: RequestHandler = async (
 	req,
 	res,
+	next,
 ) => {
-	const { mesaId } = bodySchema.parse(req.params)
-	const criarRelatorioReservasPorMesaUseCase =
-		makeCriarRelatorioReservaPorMesaUseCase()
+	try {
+		const { mesaId } = bodySchema.parse(req.params)
+		const criarRelatorioReservasPorMesaUseCase =
+			makeCriarRelatorioReservaPorMesaUseCase()
 
-	const { reservas } = await criarRelatorioReservasPorMesaUseCase.execute({
-		mesaId,
-	})
-	res.status(200).json({ reservas, mesaId })
+		const { reservas } = await criarRelatorioReservasPorMesaUseCase.execute({
+			mesaId,
+		})
+		res.status(200).json({ reservas, mesaId })
+		return
+	} catch (error) {
+		next(error)
+	}
 }

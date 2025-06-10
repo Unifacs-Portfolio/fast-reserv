@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { buscarGarconsController } from './BuscarGarconsController'
+import { buscarGarconsController } from '../http/controllers/BuscarGarconsController'
 
 const router = Router()
 

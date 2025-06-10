@@ -1,6 +1,7 @@
 import { open, type Database } from 'sqlite'
 import sqlite3 from 'sqlite3'
 import { env } from '../env'
+import crypto from 'node:crypto'
 
 let db: Database
 async function initDb() {
@@ -61,7 +62,7 @@ export async function insertMesas() {
 	for (let id = 1; id <= 10; id++) {
 		await getConnection().run(
 			'INSERT OR IGNORE INTO Mesa (id, status) VALUES (?, ?)',
-			[id, 'Reservavel'],
+			[id, 'disponivel'],
 		)
 	}
 }
