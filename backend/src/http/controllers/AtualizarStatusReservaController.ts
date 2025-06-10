@@ -40,6 +40,10 @@ export const atualizarStatusReservaController: RequestHandler = async (
 			res.status(400).json({ error: error.message })
 			return
 		}
+		if (error instanceof AtualizarReservaError) {
+			res.status(400).json({ error: error.message })
+			return
+		}
 		next(error)
 	}
 }
