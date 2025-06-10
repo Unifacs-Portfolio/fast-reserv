@@ -1,11 +1,11 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
-import { makeCriarReservaUseCase } from '../../useCases/factories/makeCriarReservaUseCase'
 import { ReservaExistsError } from '../../useCases/erros/ReservaExistsError'
 import { validateDataError } from '../../useCases/erros/validateDataError'
-import { validateMesaError } from '../../useCases/erros/validateMesaError'
 import { validateHoraError } from '../../useCases/erros/validateHoraError'
+import { validateMesaError } from '../../useCases/erros/validateMesaError'
 import { validateNomeError } from '../../useCases/erros/validateNomeError'
+import { makeCriarReservaUseCase } from '../../useCases/factories/makeCriarReservaUseCase'
 
 const bodySchema = z.object({
 	nomeResponsavel: z.string().min(1),
