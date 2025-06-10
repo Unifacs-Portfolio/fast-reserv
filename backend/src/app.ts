@@ -4,10 +4,10 @@ import { ZodError } from 'zod'
 import { configuratedb } from './Datenbank/configdb'
 import { env } from './env'
 import path from 'node:path'
-import { reservasRouter } from './http/controllers/reservas.routes'
-import { gerenteRouter } from './http/controllers/gerente.routes'
-import { garconsRouter } from './http/controllers/garcons.routes'
-import { mesasRouter } from './http/controllers/mesas.routes'
+import { reservasRouter } from './routes/reservas.routes'
+import { gerenteRouter } from './routes/gerente.routes'
+import { garconsRouter } from './routes/garcons.routes'
+import { mesasRouter } from './routes/mesas.routes'
 
 const setup = async () => {
 	const app = express()

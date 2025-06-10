@@ -13,7 +13,7 @@ export class SqliteMesaRepository implements MesaRepository {
 	async updateConfirmar(id: number): Promise<void> {
 		const result = await this.db.run(
 			'UPDATE Mesa SET status = ? WHERE id = ?',
-			['Ocupada', id],
+			['ocupada', id],
 		)
 		if (result.changes === 0) {
 			throw new Error('Não foi possível atualizar o status da mesa.')
@@ -22,7 +22,7 @@ export class SqliteMesaRepository implements MesaRepository {
 	async updateDisponibilizar(id: number): Promise<void> {
 		const result = await this.db.run(
 			'UPDATE Mesa SET status = ? WHERE id = ?',
-			['Reservavel', id],
+			['disponivel', id],
 		)
 		if (result.changes === 0) {
 			throw new Error(

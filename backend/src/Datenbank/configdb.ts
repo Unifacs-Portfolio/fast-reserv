@@ -62,7 +62,7 @@ export async function insertMesas() {
 	for (let id = 1; id <= 10; id++) {
 		await getConnection().run(
 			'INSERT OR IGNORE INTO Mesa (id, status) VALUES (?, ?)',
-			[id, 'Reservavel'],
+			[id, 'disponivel'],
 		)
 	}
 }
