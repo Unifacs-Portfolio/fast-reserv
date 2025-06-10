@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { buscarMesasController } from './BuscarMesasController'
+import { buscarMesasController } from '../http/controllers/BuscarMesasController'
 
 const router = Router()
 

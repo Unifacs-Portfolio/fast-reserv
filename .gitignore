@@ -1,5 +1,4 @@
 node_modules/
 backend/build/
-.env
 coverage/
 backend/src/BasisData/teste*

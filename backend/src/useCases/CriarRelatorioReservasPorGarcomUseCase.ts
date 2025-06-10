@@ -1,5 +1,6 @@
 import type { Reserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
+import { BuscarGarcomError } from './erros/BuscarGarcomError'
 
 interface RelatorioReservasPorGarcomRequest {
 	garcomId: string
@@ -27,6 +28,9 @@ export class CriarRelatorioReservasPorGarcomUseCase {
 	async execute({
 		garcomId,
 	}: RelatorioReservasPorGarcomRequest): Promise<RelatorioReservasPorGarcomResponse> {
+		if (!garcomId) {
+			throw new BuscarGarcomError()
+		}
 		const reservas =
 			await this.reservaRepository.buscarReservasFeitasPorGarcom(garcomId)
 		return {

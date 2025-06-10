@@ -3,6 +3,7 @@ import { Reserva } from '../entities/Reserva'
 import type { StatusReserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
 import type { MesaRepository } from '../repositories/MesaRepository'
+import { ReservaExistsError } from './erros/ReservaExistsError'
 
 interface CriarReservaRequest {
 	mesaId: number
@@ -30,7 +31,10 @@ export class CriarReservaUseCase {
 	private reservaRepository: ReservaRepository
 	private mesaRepository: MesaRepository
 
-	constructor(reservaRepository: ReservaRepository, mesaRepository: MesaRepository) {
+	constructor(
+		reservaRepository: ReservaRepository,
+		mesaRepository: MesaRepository,
+	) {
 		this.reservaRepository = reservaRepository
 		this.mesaRepository = mesaRepository
 	}
@@ -45,10 +49,8 @@ export class CriarReservaUseCase {
 		verify_by,
 	}: CriarReservaRequest): Promise<CriarReservaResponse> {
 		const mesaExistente = await this.mesaRepository.findById(mesaId)
-
-		if(mesaExistente.status === 'Ocupada') {
-			throw new Error('A mesa não está disponível para reserva')
-
+		if (mesaExistente.status === 'ocupada') {
+			throw new ReservaExistsError()
 		}
 		const reservaCriada = await this.reservaRepository.create(
 			new Reserva({

@@ -5,6 +5,12 @@
  * (uma regra que garante integridade da entidade Reserva)
  */
 
+import { validateDataError } from '../useCases/erros/validateDataError'
+import { validateHoraError } from '../useCases/erros/validateHoraError'
+import { validateMesaError } from '../useCases/erros/validateMesaError'
+import { validateNomeError } from '../useCases/erros/validateNomeError'
+import { validateQuantidadePessoasError } from '../useCases/erros/validateQuantidadePessoasError'
+
 export type StatusReserva = 'aguardando' | 'confirmada' | 'cancelada'
 
 export interface ReservaRequest {
@@ -38,7 +44,7 @@ export class Reserva {
 		verify_by,
 	}: ReservaRequest) {
 		if (quantidadePessoas <= 0) {
-			throw new Error('Quantidade de pessoas deve ser maior que zero')
+			throw new validateQuantidadePessoasError()
 		}
 
 		if (status) {
@@ -62,12 +68,12 @@ export class Reserva {
 		if (mesaId > 0 && Number.isInteger(mesaId)) {
 			return mesaId
 		}
-		throw new Error('Numero de Mesa invalido!')
+		throw new validateMesaError()
 	}
 	private validateData(data: string): string {
 		const regex = /^\d{4}-\d{2}-\d{2}$/
 		if (!regex.test(data)) {
-			throw new Error('Data inválida. O formato deve ser AAAA-MM-DD')
+			throw new validateDataError()
 		}
 		return data
 	}
@@ -78,11 +84,11 @@ export class Reserva {
 		const horasNumber = horasString.map(Number)
 
 		if (horasNumber[0] > 23 || horasNumber[1] > 59) {
-			throw new Error('Hora inválida, o horário máximo é 23:59')
+			throw new validateHoraError()
 		}
 
 		if (!regex.test(hora)) {
-			throw new Error('Hora invalidada, o formato deve ser HH:MM')
+			throw new validateHoraError()
 		}
 
 		return hora
@@ -90,11 +96,11 @@ export class Reserva {
 
 	private validateQuantidadePessoas(quantidadePessoas: number): number {
 		if (quantidadePessoas <= 0) {
-			throw new Error('Quantidade de pessoas invalidas.')
+			throw new validateQuantidadePessoasError()
 		}
 
 		if (!Number.isInteger(quantidadePessoas)) {
-			throw new Error('Nao pode numeros decimais.')
+			throw new validateQuantidadePessoasError()
 		}
 		return quantidadePessoas
 	}
@@ -102,9 +108,7 @@ export class Reserva {
 	private validateNome(nomeResponsavel: string): string {
 		const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ'\-]+(?: [A-Za-zÀ-ÖØ-öø-ÿ'\-]+)*$/
 		if (!regex.test(nomeResponsavel)) {
-			throw new Error(
-				'Nao pode colocar numeros ou caracteres especiais em nomes.',
-			)
+			throw new validateNomeError()
 		}
 		return nomeResponsavel
 	}
