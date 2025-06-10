@@ -1,6 +1,7 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
 import { makeCriarRelatorioReservaPorPeriodoUseCase } from '../../useCases/factories/makeCriarRelatorioReservasPorPeriodoUseCase'
+import { RelatorioReservaPorPeriodoError } from '../../useCases/erros/RelatorioReservaPorPeriodoError'
 
 const bodySchema = z.object({
 	dataInicio: z.string().date(),
@@ -26,4 +27,5 @@ export const criarRelatorioReservaPorPeriodoController: RequestHandler = async (
 			res.status(400).json({ message: error.message })
 		}
 	}
+	return
 }

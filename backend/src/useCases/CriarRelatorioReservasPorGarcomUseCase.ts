@@ -1,5 +1,6 @@
 import type { Reserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
+import { RelatorioReservaPorGarcomError } from './erros/RelatorioReservaPorGarcomError'
 
 interface RelatorioReservasPorGarcomRequest {
 	garcomId: string

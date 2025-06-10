@@ -3,6 +3,8 @@ import { Reserva } from '../entities/Reserva'
 import type { StatusReserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
 import type { MesaRepository } from '../repositories/MesaRepository'
+import { ReservaExistsError } from './erros/ReservaExistsError'
+import { error } from 'node:console'
 
 interface CriarReservaRequest {
 	mesaId: number
@@ -50,7 +52,7 @@ export class CriarReservaUseCase {
 		try {
 			const mesaExistente = await this.mesaRepository.findById(mesaId)
 			if (mesaExistente.status === 'ocupada') {
-				throw new Error('A mesa não está disponível para reserva')
+				throw new Error('Mesa já está ocupada')
 			}
 			const reservaCriada = await this.reservaRepository.create(
 				new Reserva({

@@ -1,6 +1,7 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
 import { makeCriarReservaUseCase } from '../../useCases/factories/makeCriarReservaUseCase'
+import { ReservaExistsError } from '../../useCases/erros/ReservaExistsError'
 
 const bodySchema = z.object({
 	nomeResponsavel: z.string().min(1),
@@ -27,5 +28,6 @@ export const criarReservaController: RequestHandler = async (req, res) => {
 		if (error instanceof ReservaExistsError) {
 			res.status(400).json({ message: error.message })
 		}
+		return
 	}
 }

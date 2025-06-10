@@ -2,6 +2,8 @@ import { Reserva, type StatusReserva } from '../entities/Reserva'
 import type { GarconRepository } from '../repositories/GarconRepository'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
 import type { MesaRepository } from '../repositories/MesaRepository'
+import { BuscarGarcomError } from './erros/BuscarGarcomError'
+import { ReservaExistsError } from './erros/ReservaExistsError'
 
 interface AtualizarStatusReservaRequest {
 	id: string

@@ -1,6 +1,7 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
 import { makeAtualizarReservaUseCase } from '../../useCases/factories/makeAtulizarStatusReservaUseCase'
+import { AtualizarReservaError } from '../../useCases/erros/AtualizarReservaError'
 
 const bodySchema = z.object({
 	status: z.string(),
@@ -26,4 +27,5 @@ export const atualizarStatusReservaController: RequestHandler = async (
 			res.status(400).json({ message: error.message })
 		}
 	}
+	return
 }

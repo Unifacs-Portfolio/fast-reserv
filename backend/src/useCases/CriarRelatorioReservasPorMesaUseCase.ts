@@ -1,5 +1,6 @@
 import type { Reserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
+import { RelatorioReservaPorMesaError } from './erros/RelatorioReservaPorMesaError'
 
 interface RelatorioReservaPorMesaRequest {
 	mesaId: number

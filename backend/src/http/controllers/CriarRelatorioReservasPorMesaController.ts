@@ -1,6 +1,7 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
 import { makeCriarRelatorioReservaPorMesaUseCase } from '../../useCases/factories/makeCriarRelatorioReservasPorMesaUseCase'
+import { RelatorioReservaPorMesaError } from '../../useCases/erros/RelatorioReservaPorMesaError'
 
 const bodySchema = z.object({
 	mesaId: z.coerce.number(),
@@ -24,4 +25,5 @@ export const criarRelatorioReservasPorMesaController: RequestHandler = async (
 			res.status(400).json({ message: error.message })
 		}
 	}
+	return
 }

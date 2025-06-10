@@ -1,5 +1,6 @@
 import type { Mesa } from '../entities/Mesa'
 import type { MesaRepository } from '../repositories/MesaRepository'
+import { BuscarMesasError } from './erros/BuscarMesasError'
 interface BuscarMesasResponse {
 	mesas: {
 		id: Mesa['id']

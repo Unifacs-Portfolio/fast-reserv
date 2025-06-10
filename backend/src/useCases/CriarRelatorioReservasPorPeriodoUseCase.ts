@@ -1,6 +1,7 @@
 // LEMBRAR DE TROCAR DE NOME
 import type { Reserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
+import { RelatorioReservaPorPeriodoError } from './erros/RelatorioReservaPorPeriodoError'
 
 interface CriarRelatorioRequest {
 	dataInicio: string

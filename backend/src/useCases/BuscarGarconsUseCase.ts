@@ -1,5 +1,6 @@
 import type { Garcon } from '../entities/Garcon'
 import type { GarconRepository } from '../repositories/GarconRepository'
+import { BuscarGarcomError } from './erros/BuscarGarcomError'
 interface BuscarGarconsResponse {
 	garcons: {
 		id: Garcon['id']
