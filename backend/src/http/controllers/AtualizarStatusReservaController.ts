@@ -1,7 +1,6 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
 import { makeAtualizarReservaUseCase } from '../../useCases/factories/makeAtulizarStatusReservaUseCase'
-import { AtualizarReservaError } from '../../useCases/erros/AtualizarReservaError'
 import { ReservaExistsError } from '../../useCases/erros/ReservaExistsError'
 import { ReservaInexistenteError } from '../../useCases/erros/ReservaInexistenteError'
 import { BuscarGarcomError } from '../../useCases/erros/BuscarGarcomError'
@@ -37,10 +36,6 @@ export const atualizarStatusReservaController: RequestHandler = async (
 			return
 		}
 		if (error instanceof ReservaExistsError) {
-			res.status(400).json({ error: error.message })
-			return
-		}
-		if (error instanceof AtualizarReservaError) {
 			res.status(400).json({ error: error.message })
 			return
 		}
