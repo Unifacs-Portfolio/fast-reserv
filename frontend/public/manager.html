@@ -11,6 +11,9 @@
   <!-- Link para o CSS personalizado -->
   <link rel="stylesheet" href="../assets/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <!-- Scripts JavaScript -->
+  <script src="api.js" type="module"></script>
+  <script src="gerente.js" type="module"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -149,105 +152,6 @@
       <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
     </div>
   </footer>
-
-  <!-- Script para manipulação do Painel do Gerente -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-      // Função para obter as reservas armazenadas no localStorage
-      function getReservations() {
-        return JSON.parse(localStorage.getItem('reservations')) || [];
-      }
-
-      // Exibe ou oculta os campos conforme o tipo de relatório selecionado
-      document.getElementById('reportType').addEventListener('change', function () {
-        const type = this.value;
-        document.getElementById('commonFields').style.display = (type === 'periodo') ? 'block' : 'none';
-        document.getElementById('garcomFields').style.display = (type === 'garçom') ? 'block' : 'none';
-        document.getElementById('mesaFields').style.display = (type === 'mesa') ? 'block' : 'none';
-      });
-
-      // Manipula a submissão do formulário para geração do relatório
-      document.getElementById('reportForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const reportType = document.getElementById('reportType').value;
-        let filteredReservations = [];
-
-        if (reportType === 'periodo') {
-          const startDate = document.getElementById('startDate').value;
-          const endDate = document.getElementById('endDate').value;
-          if (!startDate || !endDate) {
-            exibeAlerta('Erro: Informe as datas inicial e final para o relatório por período.', 'danger');
-            return;
-          }
-          if (new Date(startDate) > new Date(endDate)) {
-            exibeAlerta('Erro: A data inicial deve ser anterior à data final.', 'danger');
-            return;
-          }
-          filteredReservations = getReservations().filter(r =>
-            new Date(r.date) >= new Date(startDate) &&
-            new Date(r.date) <= new Date(endDate)
-          );
-        } else if (reportType === 'garçom') {
-          const waiter = document.getElementById('garcom').value;
-          if (!waiter) {
-            exibeAlerta('Erro: Selecione o garçom para o relatório por garçom.', 'danger');
-            return;
-          }
-          filteredReservations = getReservations().filter(r => r.waiter === waiter);
-        } else if (reportType === 'mesa') {
-          const table = document.getElementById('mesa').value;
-          if (!table) {
-            exibeAlerta('Erro: Selecione a mesa para o relatório por mesa.', 'danger');
-            return;
-          }
-          filteredReservations = getReservations().filter(r =>
-            r.table.toLowerCase() === table.toLowerCase()
-          );
-        }
-
-        const tbody = document.querySelector('#reportTable tbody');
-        tbody.innerHTML = '';
-        if (filteredReservations.length === 0) {
-          exibeAlerta('Nenhum dado encontrado para os parâmetros informados.', 'warning');
-        } else {
-          // Para cada reserva filtrada, cria uma linha com seus detalhes.
-          filteredReservations.forEach(r => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td>${r.date}</td>
-              <td>${r.time}</td>
-              <td>${r.table}</td>
-              <td>${r.guests}</td>
-              <td>${r.name}</td>
-              <td>${r.status}</td>
-            `;
-            tbody.appendChild(tr);
-          });
-          // Linha de resumo: total de reservas
-          const summaryTr = document.createElement('tr');
-          summaryTr.innerHTML = `<td colspan="5"><strong>Total de Reservas</strong></td><td><strong>${filteredReservations.length}</strong></td>`;
-          tbody.appendChild(summaryTr);
-          exibeAlerta('Relatório gerado com sucesso!', 'success');
-        }
-      });
-
-      // Função para exibir alertas com timer (3 segundos para desaparecer)
-      function exibeAlerta(mensagem, tipo) {
-        const feedbackDiv = document.getElementById('reportFeedback');
-        const alerta = document.createElement('div');
-        alerta.className = `alert alert-${tipo}`;
-        alerta.setAttribute('role', 'alert');
-        alerta.textContent = mensagem;
-        feedbackDiv.innerHTML = '';
-        feedbackDiv.appendChild(alerta);
-        setTimeout(() => {
-          alerta.classList.add('fade-out');
-          setTimeout(() => alerta.remove(), 1000);
-        }, 3000);
-      }
-    });
-  </script>
 </body>
 
 </html>
