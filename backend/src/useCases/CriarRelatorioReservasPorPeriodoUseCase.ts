@@ -48,7 +48,16 @@ export class CriarRelatorioUseCase {
 				canceladas,
 				pendentes,
 				total: reservas.length,
-				reservas,
+				reservas: reservas.map((reserva) => ({
+					id: reserva.id,
+					mesaId: reserva.mesaId,
+					nomeResponsavel: reserva.nomeResponsavel,
+					data: reserva.data,
+					hora: reserva.hora,
+					quantidadePessoas: reserva.quantidadePessoas,
+					status: reserva.status,
+					verify_by: reserva.verify_by,
+				})),
 			},
 		}
 	}

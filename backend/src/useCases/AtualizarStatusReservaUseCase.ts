@@ -2,6 +2,9 @@ import { Reserva, type StatusReserva } from '../entities/Reserva'
 import type { GarconRepository } from '../repositories/GarconRepository'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
 import type { MesaRepository } from '../repositories/MesaRepository'
+import { BuscarGarcomError } from './erros/BuscarGarcomError'
+import { ReservaExistsError } from './erros/ReservaExistsError'
+import { ReservaInexistenteError } from './erros/ReservaInexistenteError'
 
 interface AtualizarStatusReservaRequest {
 	id: string
@@ -45,13 +48,13 @@ export class AtualizarStatusReservaUseCase {
 		const reservaEncontrada = await this.reservaRepository.findById(id)
 
 		if (!reservaEncontrada) {
-			throw new Error('Reserva não existe')
+			throw new ReservaInexistenteError()
 		}
 		if (
 			reservaEncontrada.status === 'cancelada' ||
 			reservaEncontrada.status === 'confirmada'
 		) {
-			throw new Error('Reserva Indisponivel para mudança de status')
+			throw new ReservaExistsError()
 		}
 
 		if (status === 'cancelada') {
@@ -80,16 +83,16 @@ export class AtualizarStatusReservaUseCase {
 			}
 		}
 		if (!garcomId) {
-			throw new Error('Garçom não informada')
+			throw new BuscarGarcomError()
 		}
 		if (status === 'confirmada' && !garcomId) {
-			throw new Error('Garçom é obrigatório para confirmar reserva')
+			throw new ReservaExistsError()
 		}
 
 		const garcomEncontrado = await this.garconRepository.findById(garcomId)
 
 		if (!garcomEncontrado) {
-			throw new Error('Garçom não existe na tabela')
+			throw new BuscarGarcomError()
 		}
 
 		if (status === 'confirmada') {
@@ -118,6 +121,6 @@ export class AtualizarStatusReservaUseCase {
 				},
 			}
 		}
-		throw new Error('Status inválido para atualização da reserva')
+		throw new ReservaExistsError()
 	}
 }

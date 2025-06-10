@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import { criarRelatorioReservaPorPeriodoController } from './CriarRelatorioReservasPorPeriodoController'
-import { criarRelatorioReservasPorMesaController } from './CriarRelatorioReservasPorMesaController'
-import { criarRelatorioReservasPorGarcomController } from './CriarRelatorioReservasPorGarcomController'
+import { criarRelatorioReservaPorPeriodoController } from '../http/controllers/CriarRelatorioReservasPorPeriodoController'
+import { criarRelatorioReservasPorMesaController } from '../http/controllers/CriarRelatorioReservasPorMesaController'
+import { criarRelatorioReservasPorGarcomController } from '../http/controllers/CriarRelatorioReservasPorGarcomController'
 
 const router = Router()
 router.get(

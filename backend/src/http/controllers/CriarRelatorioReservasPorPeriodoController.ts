@@ -10,14 +10,20 @@ const bodySchema = z.object({
 export const criarRelatorioReservaPorPeriodoController: RequestHandler = async (
 	req,
 	res,
+	next,
 ) => {
-	const { dataInicio, dataFim } = bodySchema.parse(req.query)
-	const criarRelatorioReservaPorPeriodoUseCase =
-		makeCriarRelatorioReservaPorPeriodoUseCase()
+	try {
+		const { dataInicio, dataFim } = bodySchema.parse(req.query)
+		const criarRelatorioReservaPorPeriodoUseCase =
+			makeCriarRelatorioReservaPorPeriodoUseCase()
 
-	const metricas = await criarRelatorioReservaPorPeriodoUseCase.execute({
-		dataInicio,
-		dataFim,
-	})
-	res.status(200).json(metricas)
+		const metricas = await criarRelatorioReservaPorPeriodoUseCase.execute({
+			dataInicio,
+			dataFim,
+		})
+		res.status(200).json(metricas)
+		return
+	} catch (error) {
+		next(error)
+	}
 }
