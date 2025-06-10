@@ -4,6 +4,7 @@ import type { ReservaRepository } from '../repositories/ReservaRepository'
 import type { MesaRepository } from '../repositories/MesaRepository'
 import { BuscarGarcomError } from './erros/BuscarGarcomError'
 import { ReservaExistsError } from './erros/ReservaExistsError'
+import { ReservaInexistenteError } from './erros/ReservaInexistenteError'
 
 interface AtualizarStatusReservaRequest {
 	id: string
@@ -47,7 +48,7 @@ export class AtualizarStatusReservaUseCase {
 		const reservaEncontrada = await this.reservaRepository.findById(id)
 
 		if (!reservaEncontrada) {
-			throw new ReservaExistsError()
+			throw new ReservaInexistenteError()
 		}
 		if (
 			reservaEncontrada.status === 'cancelada' ||
@@ -82,7 +83,7 @@ export class AtualizarStatusReservaUseCase {
 			}
 		}
 		if (!garcomId) {
-			throw new ReservaExistsError()
+			throw new BuscarGarcomError()
 		}
 		if (status === 'confirmada' && !garcomId) {
 			throw new ReservaExistsError()

@@ -10,18 +10,13 @@ interface BuscarMesasResponse {
 
 export class BuscarMesasUseCase {
 	constructor(private readonly mesaRepository: MesaRepository) {}
-
 	async execute(): Promise<BuscarMesasResponse> {
-		try {
-			const mesas = await this.mesaRepository.findAll()
-			return {
-				mesas: mesas.map((mesa) => ({
-					id: mesa.id,
-					status: mesa.status,
-				})),
-			}
-		} catch (error) {
-			throw new BuscarMesasError()
+		const mesas = await this.mesaRepository.findAll()
+		return {
+			mesas: mesas.map((mesa) => ({
+				id: mesa.id,
+				status: mesa.status,
+			})),
 		}
 	}
 }

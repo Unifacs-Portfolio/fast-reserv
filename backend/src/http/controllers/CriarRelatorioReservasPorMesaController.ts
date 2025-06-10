@@ -1,7 +1,6 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
 import { makeCriarRelatorioReservaPorMesaUseCase } from '../../useCases/factories/makeCriarRelatorioReservasPorMesaUseCase'
-import { RelatorioReservaPorMesaError } from '../../useCases/erros/RelatorioReservaPorMesaError'
 
 const bodySchema = z.object({
 	mesaId: z.coerce.number(),
@@ -10,6 +9,7 @@ const bodySchema = z.object({
 export const criarRelatorioReservasPorMesaController: RequestHandler = async (
 	req,
 	res,
+	next,
 ) => {
 	try {
 		const { mesaId } = bodySchema.parse(req.params)
@@ -20,10 +20,8 @@ export const criarRelatorioReservasPorMesaController: RequestHandler = async (
 			mesaId,
 		})
 		res.status(200).json({ reservas, mesaId })
+		return
 	} catch (error) {
-		if (error instanceof RelatorioReservaPorMesaError) {
-			res.status(400).json({ message: error.message })
-		}
+		next(error)
 	}
-	return
 }

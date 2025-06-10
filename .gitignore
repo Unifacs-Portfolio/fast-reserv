@@ -2,4 +2,3 @@ node_modules/
 backend/build/
 coverage/
 backend/src/BasisData/teste*
-BasisData/database.db

@@ -1,7 +1,6 @@
 // LEMBRAR DE TROCAR DE NOME
 import type { Reserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
-import { RelatorioReservaPorPeriodoError } from './erros/RelatorioReservaPorPeriodoError'
 
 interface CriarRelatorioRequest {
 	dataInicio: string
@@ -35,26 +34,22 @@ export class CriarRelatorioUseCase {
 		dataInicio,
 		dataFim,
 	}: CriarRelatorioRequest): Promise<{ metricas: CriarRelatorioResponse }> {
-		try {
-			const reservas = await this.reservaRepository.buscarReservasPorPeriodo(
-				dataInicio,
-				dataFim,
-			)
-			const atendidas = reservas.filter((r) => r.status === 'confirmada').length
-			const pendentes = reservas.filter((r) => r.status === 'aguardando').length
-			const canceladas = reservas.filter((r) => r.status === 'cancelada').length
+		const reservas = await this.reservaRepository.buscarReservasPorPeriodo(
+			dataInicio,
+			dataFim,
+		)
+		const atendidas = reservas.filter((r) => r.status === 'confirmada').length
+		const pendentes = reservas.filter((r) => r.status === 'aguardando').length
+		const canceladas = reservas.filter((r) => r.status === 'cancelada').length
 
-			return {
-				metricas: {
-					atendidas,
-					canceladas,
-					pendentes,
-					total: reservas.length,
-					reservas,
-				},
-			}
-		} catch (error) {
-			throw new RelatorioReservaPorPeriodoError()
+		return {
+			metricas: {
+				atendidas,
+				canceladas,
+				pendentes,
+				total: reservas.length,
+				reservas,
+			},
 		}
 	}
 }

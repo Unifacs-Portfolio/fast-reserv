@@ -1,7 +1,6 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
 import { makeCriarRelatorioReservasPorGarcomUseCase } from '../../useCases/factories/makeCriarRelatorioReservasPorGarcomUseCase'
-import { RelatorioReservaPorGarcomError } from '../../useCases/erros/RelatorioReservaPorGarcomError'
 
 const bodySchema = z.object({
 	garcomId: z.string(),
@@ -10,6 +9,7 @@ const bodySchema = z.object({
 export const criarRelatorioReservasPorGarcomController: RequestHandler = async (
 	req,
 	res,
+	next,
 ) => {
 	try {
 		const { garcomId } = bodySchema.parse(req.query)
@@ -20,10 +20,8 @@ export const criarRelatorioReservasPorGarcomController: RequestHandler = async (
 			garcomId,
 		})
 		res.status(200).json({ reservas, garcomId })
+		return
 	} catch (error) {
-		if (error instanceof RelatorioReservaPorGarcomError) {
-			res.status(400).json({ message: error.message })
-		}
+		next(error)
 	}
-	return
 }

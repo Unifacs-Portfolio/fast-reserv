@@ -4,7 +4,6 @@ import type { StatusReserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
 import type { MesaRepository } from '../repositories/MesaRepository'
 import { ReservaExistsError } from './erros/ReservaExistsError'
-import { error } from 'node:console'
 
 interface CriarReservaRequest {
 	mesaId: number
@@ -49,37 +48,33 @@ export class CriarReservaUseCase {
 		status,
 		verify_by,
 	}: CriarReservaRequest): Promise<CriarReservaResponse> {
-		try {
-			const mesaExistente = await this.mesaRepository.findById(mesaId)
-			if (mesaExistente.status === 'ocupada') {
-				throw new Error('Mesa já está ocupada')
-			}
-			const reservaCriada = await this.reservaRepository.create(
-				new Reserva({
-					id: randomUUID(),
-					mesaId,
-					nomeResponsavel,
-					data,
-					hora,
-					quantidadePessoas,
-					status,
-					verify_by,
-				}),
-			)
-			await this.mesaRepository.updateConfirmar(reservaCriada.mesaId)
-			return {
-				reserva: {
-					id: reservaCriada.id,
-					mesaId: reservaCriada.mesaId,
-					nomeResponsavel: reservaCriada.nomeResponsavel,
-					data: reservaCriada.data,
-					hora: reservaCriada.hora,
-					quantidadePessoas: reservaCriada.quantidadePessoas,
-					status: reservaCriada.status,
-				},
-			}
-		} catch (error) {
+		const mesaExistente = await this.mesaRepository.findById(mesaId)
+		if (mesaExistente.status === 'ocupada') {
 			throw new ReservaExistsError()
+		}
+		const reservaCriada = await this.reservaRepository.create(
+			new Reserva({
+				id: randomUUID(),
+				mesaId,
+				nomeResponsavel,
+				data,
+				hora,
+				quantidadePessoas,
+				status,
+				verify_by,
+			}),
+		)
+		await this.mesaRepository.updateConfirmar(reservaCriada.mesaId)
+		return {
+			reserva: {
+				id: reservaCriada.id,
+				mesaId: reservaCriada.mesaId,
+				nomeResponsavel: reservaCriada.nomeResponsavel,
+				data: reservaCriada.data,
+				hora: reservaCriada.hora,
+				quantidadePessoas: reservaCriada.quantidadePessoas,
+				status: reservaCriada.status,
+			},
 		}
 	}
 }

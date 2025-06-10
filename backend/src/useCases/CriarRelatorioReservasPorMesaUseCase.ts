@@ -1,6 +1,5 @@
 import type { Reserva } from '../entities/Reserva'
 import type { ReservaRepository } from '../repositories/ReservaRepository'
-import { RelatorioReservaPorMesaError } from './erros/RelatorioReservaPorMesaError'
 
 interface RelatorioReservaPorMesaRequest {
 	mesaId: number
@@ -28,23 +27,19 @@ export class CriarRelatorioDeReservaPorMesaUseCase {
 	async execute({
 		mesaId,
 	}: RelatorioReservaPorMesaRequest): Promise<RelatorioReservaPorMesaResponse> {
-		try {
-			const reservas =
-				await this.reservaRepository.buscarReservasFeitasPorMesa(mesaId)
-			return {
-				reservas: reservas.map((reserva) => ({
-					id: reserva.id,
-					mesaId: reserva.mesaId,
-					nomeResponsavel: reserva.nomeResponsavel,
-					data: reserva.data,
-					hora: reserva.hora,
-					quantidadePessoas: reserva.quantidadePessoas,
-					status: reserva.status,
-					verify_by: reserva.verify_by,
-				})),
-			}
-		} catch (error) {
-			throw new RelatorioReservaPorMesaError()
+		const reservas =
+			await this.reservaRepository.buscarReservasFeitasPorMesa(mesaId)
+		return {
+			reservas: reservas.map((reserva) => ({
+				id: reserva.id,
+				mesaId: reserva.mesaId,
+				nomeResponsavel: reserva.nomeResponsavel,
+				data: reserva.data,
+				hora: reserva.hora,
+				quantidadePessoas: reserva.quantidadePessoas,
+				status: reserva.status,
+				verify_by: reserva.verify_by,
+			})),
 		}
 	}
 }

@@ -27,6 +27,10 @@ const setup = async () => {
 				.json({ message: 'Validação falhou', issues: err.format() })
 			return
 		}
+		if (err instanceof SyntaxError) {
+			res.status(400).json({ message: 'Erro de sintaxe no JSON enviado' })
+			return
+		}
 		if (env.NODE_ENV !== 'production') {
 			console.error(err)
 		}

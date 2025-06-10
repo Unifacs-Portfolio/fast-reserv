@@ -1,7 +1,6 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
 import { makeCriarRelatorioReservaPorPeriodoUseCase } from '../../useCases/factories/makeCriarRelatorioReservasPorPeriodoUseCase'
-import { RelatorioReservaPorPeriodoError } from '../../useCases/erros/RelatorioReservaPorPeriodoError'
 
 const bodySchema = z.object({
 	dataInicio: z.string().date(),
@@ -11,6 +10,7 @@ const bodySchema = z.object({
 export const criarRelatorioReservaPorPeriodoController: RequestHandler = async (
 	req,
 	res,
+	next,
 ) => {
 	try {
 		const { dataInicio, dataFim } = bodySchema.parse(req.query)
@@ -22,10 +22,8 @@ export const criarRelatorioReservaPorPeriodoController: RequestHandler = async (
 			dataFim,
 		})
 		res.status(200).json(metricas)
+		return
 	} catch (error) {
-		if (error instanceof RelatorioReservaPorPeriodoError) {
-			res.status(400).json({ message: error.message })
-		}
+		next(error)
 	}
-	return
 }
