@@ -11,15 +11,21 @@ const bodySchema = z.object({
 })
 
 export const criarReservaController: RequestHandler = async (req, res) => {
-	const { nomeResponsavel, data, hora, quantidadePessoas, mesaId } =
-		bodySchema.parse(req.body)
-	const criarReservaUseCase = makeCriarReservaUseCase()
-	const reserva = await criarReservaUseCase.execute({
-		nomeResponsavel,
-		data,
-		hora,
-		quantidadePessoas,
-		mesaId,
-	})
-	res.status(201).json(reserva)
+	try {
+		const { nomeResponsavel, data, hora, quantidadePessoas, mesaId } =
+			bodySchema.parse(req.body)
+		const criarReservaUseCase = makeCriarReservaUseCase()
+		const reserva = await criarReservaUseCase.execute({
+			nomeResponsavel,
+			data,
+			hora,
+			quantidadePessoas,
+			mesaId,
+		})
+		res.status(201).json(reserva)
+	} catch (error) {
+		if (error instanceof ReservaExistsError) {
+			res.status(400).json({ message: error.message })
+		}
+	}
 }

@@ -11,13 +11,19 @@ export const criarRelatorioReservaPorPeriodoController: RequestHandler = async (
 	req,
 	res,
 ) => {
-	const { dataInicio, dataFim } = bodySchema.parse(req.query)
-	const criarRelatorioReservaPorPeriodoUseCase =
-		makeCriarRelatorioReservaPorPeriodoUseCase()
+	try {
+		const { dataInicio, dataFim } = bodySchema.parse(req.query)
+		const criarRelatorioReservaPorPeriodoUseCase =
+			makeCriarRelatorioReservaPorPeriodoUseCase()
 
-	const metricas = await criarRelatorioReservaPorPeriodoUseCase.execute({
-		dataInicio,
-		dataFim,
-	})
-	res.status(200).json(metricas)
+		const metricas = await criarRelatorioReservaPorPeriodoUseCase.execute({
+			dataInicio,
+			dataFim,
+		})
+		res.status(200).json(metricas)
+	} catch (error) {
+		if (error instanceof RelatorioReservaPorPeriodoError) {
+			res.status(400).json({ message: error.message })
+		}
+	}
 }

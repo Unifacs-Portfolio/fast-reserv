@@ -30,7 +30,10 @@ export class CriarReservaUseCase {
 	private reservaRepository: ReservaRepository
 	private mesaRepository: MesaRepository
 
-	constructor(reservaRepository: ReservaRepository, mesaRepository: MesaRepository) {
+	constructor(
+		reservaRepository: ReservaRepository,
+		mesaRepository: MesaRepository,
+	) {
 		this.reservaRepository = reservaRepository
 		this.mesaRepository = mesaRepository
 	}
@@ -44,35 +47,37 @@ export class CriarReservaUseCase {
 		status,
 		verify_by,
 	}: CriarReservaRequest): Promise<CriarReservaResponse> {
-		const mesaExistente = await this.mesaRepository.findById(mesaId)
-
-		if(mesaExistente.status === 'Ocupada') {
-			throw new Error('A mesa não está disponível para reserva')
-
-		}
-		const reservaCriada = await this.reservaRepository.create(
-			new Reserva({
-				id: randomUUID(),
-				mesaId,
-				nomeResponsavel,
-				data,
-				hora,
-				quantidadePessoas,
-				status,
-				verify_by,
-			}),
-		)
-		await this.mesaRepository.updateConfirmar(reservaCriada.mesaId)
-		return {
-			reserva: {
-				id: reservaCriada.id,
-				mesaId: reservaCriada.mesaId,
-				nomeResponsavel: reservaCriada.nomeResponsavel,
-				data: reservaCriada.data,
-				hora: reservaCriada.hora,
-				quantidadePessoas: reservaCriada.quantidadePessoas,
-				status: reservaCriada.status,
-			},
+		try {
+			const mesaExistente = await this.mesaRepository.findById(mesaId)
+			if (mesaExistente.status === 'ocupada') {
+				throw new Error('A mesa não está disponível para reserva')
+			}
+			const reservaCriada = await this.reservaRepository.create(
+				new Reserva({
+					id: randomUUID(),
+					mesaId,
+					nomeResponsavel,
+					data,
+					hora,
+					quantidadePessoas,
+					status,
+					verify_by,
+				}),
+			)
+			await this.mesaRepository.updateConfirmar(reservaCriada.mesaId)
+			return {
+				reserva: {
+					id: reservaCriada.id,
+					mesaId: reservaCriada.mesaId,
+					nomeResponsavel: reservaCriada.nomeResponsavel,
+					data: reservaCriada.data,
+					hora: reservaCriada.hora,
+					quantidadePessoas: reservaCriada.quantidadePessoas,
+					status: reservaCriada.status,
+				},
+			}
+		} catch (error) {
+			throw new ReservaExistsError()
 		}
 	}
 }

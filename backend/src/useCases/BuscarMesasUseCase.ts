@@ -11,12 +11,16 @@ export class BuscarMesasUseCase {
 	constructor(private readonly mesaRepository: MesaRepository) {}
 
 	async execute(): Promise<BuscarMesasResponse> {
-		const mesas = await this.mesaRepository.findAll()
-		return {
-			mesas: mesas.map((mesa) => ({
-				id: mesa.id,
-				status: mesa.status,
-			})),
+		try {
+			const mesas = await this.mesaRepository.findAll()
+			return {
+				mesas: mesas.map((mesa) => ({
+					id: mesa.id,
+					status: mesa.status,
+				})),
+			}
+		} catch (error) {
+			throw new BuscarMesasError()
 		}
 	}
 }

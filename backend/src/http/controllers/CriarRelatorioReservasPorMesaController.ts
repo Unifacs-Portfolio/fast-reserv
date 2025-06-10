@@ -10,12 +10,18 @@ export const criarRelatorioReservasPorMesaController: RequestHandler = async (
 	req,
 	res,
 ) => {
-	const { mesaId } = bodySchema.parse(req.params)
-	const criarRelatorioReservasPorMesaUseCase =
-		makeCriarRelatorioReservaPorMesaUseCase()
+	try {
+		const { mesaId } = bodySchema.parse(req.params)
+		const criarRelatorioReservasPorMesaUseCase =
+			makeCriarRelatorioReservaPorMesaUseCase()
 
-	const { reservas } = await criarRelatorioReservasPorMesaUseCase.execute({
-		mesaId,
-	})
-	res.status(200).json({ reservas, mesaId })
+		const { reservas } = await criarRelatorioReservasPorMesaUseCase.execute({
+			mesaId,
+		})
+		res.status(200).json({ reservas, mesaId })
+	} catch (error) {
+		if (error instanceof RelatorioReservaPorMesaError) {
+			res.status(400).json({ message: error.message })
+		}
+	}
 }

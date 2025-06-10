@@ -34,22 +34,26 @@ export class CriarRelatorioUseCase {
 		dataInicio,
 		dataFim,
 	}: CriarRelatorioRequest): Promise<{ metricas: CriarRelatorioResponse }> {
-		const reservas = await this.reservaRepository.buscarReservasPorPeriodo(
-			dataInicio,
-			dataFim,
-		)
-		const atendidas = reservas.filter((r) => r.status === 'confirmada').length
-		const pendentes = reservas.filter((r) => r.status === 'aguardando').length
-		const canceladas = reservas.filter((r) => r.status === 'cancelada').length
+		try {
+			const reservas = await this.reservaRepository.buscarReservasPorPeriodo(
+				dataInicio,
+				dataFim,
+			)
+			const atendidas = reservas.filter((r) => r.status === 'confirmada').length
+			const pendentes = reservas.filter((r) => r.status === 'aguardando').length
+			const canceladas = reservas.filter((r) => r.status === 'cancelada').length
 
-		return {
-			metricas: {
-				atendidas,
-				canceladas,
-				pendentes,
-				total: reservas.length,
-				reservas,
-			},
+			return {
+				metricas: {
+					atendidas,
+					canceladas,
+					pendentes,
+					total: reservas.length,
+					reservas,
+				},
+			}
+		} catch (error) {
+			throw new RelatorioReservaPorPeriodoError()
 		}
 	}
 }

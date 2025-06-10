@@ -1,6 +1,7 @@
 import { open, type Database } from 'sqlite'
 import sqlite3 from 'sqlite3'
 import { env } from '../env'
+import crypto from 'node:crypto'
 
 let db: Database
 async function initDb() {

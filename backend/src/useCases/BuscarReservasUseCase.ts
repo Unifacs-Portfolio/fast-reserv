@@ -17,18 +17,22 @@ interface BuscarReservasResponse {
 export class BuscarReservasUseCase {
 	constructor(private reservaRepository: ReservaRepository) {}
 	async execute(): Promise<BuscarReservasResponse> {
-		const reservas = await this.reservaRepository.findAll()
-		return {
-			reservas: reservas.map((reserva) => ({
-				id: reserva.id,
-				mesaId: reserva.mesaId,
-				nomeResponsavel: reserva.nomeResponsavel,
-				data: reserva.data,
-				hora: reserva.hora,
-				quantidadePessoas: reserva.quantidadePessoas,
-				status: reserva.status,
-				verify_by: reserva.verify_by,
-			})),
+		try {
+			const reservas = await this.reservaRepository.findAll()
+			return {
+				reservas: reservas.map((reserva) => ({
+					id: reserva.id,
+					mesaId: reserva.mesaId,
+					nomeResponsavel: reserva.nomeResponsavel,
+					data: reserva.data,
+					hora: reserva.hora,
+					quantidadePessoas: reserva.quantidadePessoas,
+					status: reserva.status,
+					verify_by: reserva.verify_by,
+				})),
+			}
+		} catch (error) {
+			throw new BuscarReservasError()
 		}
 	}
 }
