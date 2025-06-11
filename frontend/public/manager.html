@@ -1,49 +1,40 @@
 <!DOCTYPE html>
-<html lang="pt-BR"> <!-- Declaração do tipo de documento e idioma definido como português do Brasil -->
+<html lang="pt-BR">
 
 <head>
-  <title>Dashboard do Gerente</title> <!-- Título exibido na aba do navegador -->
-  <meta charset="UTF-8"> <!-- Configuração de codificação de caracteres UTF-8 -->
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Torna a página responsiva em dispositivos móveis -->
-
+  <title>Painel do Gerente</title>
+  <link rel="icon" href="assets/images/faviconcoffe.jpg" type="image/x-icon" />
   <!-- Bootstrap CDN: Estilos e scripts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Estilos Bootstrap -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Script Bootstrap -->
-
   <!-- Link para o CSS personalizado -->
   <link rel="stylesheet" href="../assets/css/styles.css">
-
-  <!-- Link para o JavaScript personalizado -->
-  <script src="../assets/js/main.js"></script>
-
-  <!-- Link para a API de relatórios -->
-  <script src="../assets/js/reportApi.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <!-- Scripts JavaScript -->
+  <script src="js/api.js" type="module"></script>
+  <script src="js/gerente.js" type="module"></script>
 </head>
 
-<body>
-  <!-- Navbar: Barra de navegação -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!-- Estilização da barra de navegação -->
+<body class="d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="index.html">Restaurante</a> <!-- Logo do restaurante -->
+      <a class="navbar-brand" href="index.html">Menu</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
-        <!-- Botão para dispositivos móveis -->
-        <span class="navbar-toggler-icon"></span> <!-- Ícone de alternância -->
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav"> <!-- Menu colapsável -->
-        <ul class="navbar-nav ms-auto"> <!-- Lista de links da barra de navegação -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="attendent.html">Atendente</a> <!-- Link para a página do atendente -->
+            <a class="nav-link" href="attendent.html">Atendente</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="waiter.html">Garçom</a> <!-- Link para a página do garçom -->
+            <a class="nav-link" href="waiter.html">Garçom</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria aria-current="page" href="manager.html">Gerente</a>
-            <!-- Link ativo para a página do gerente -->
+            <a class="nav-link active" aria-current="page" href="manager.html">Gerente</a>
           </li>
         </ul>
       </div>
@@ -51,111 +42,140 @@
   </nav>
 
   <!-- Conteúdo Principal -->
-  <main class="container mt-5"> <!-- Main com margem superior para espaçamento -->
-    <h1 class="mb-4">Dashboard do Gerente</h1> <!-- Título principal da página -->
+  <div id="content-wrap" class="flex-fill container py-4">
+    <main class="container mt-5">
+      <h1 class="mb-4">Painel do Gerente</h1>
 
-    <!-- Card para geração de relatórios -->
-    <div class="card mb-4 shadow-sm"> <!-- Card com sombra e margem inferior -->
-      <div class="card-header bg-primary text-white"> <!-- Cabeçalho com fundo azul -->
-        Gerar Relatório
+      <!-- Card para geração de relatórios -->
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-danger text-white">
+          Gerar Relatório
+        </div>
+        <div class="card-body">
+          <form id="reportForm">
+            <!-- Seleção do tipo de relatório -->
+            <div class="mb-3">
+              <label for="reportType" class="form-label">Tipo de Relatório</label>
+              <select class="form-select" id="reportType" name="reportType" required>
+                <option value="" disabled selected>Selecione o tipo de relatório</option>
+                <option value="periodo">Relatório por Período</option>
+                <option value="mesas-confirmadas-garcom">Mesas Confirmadas por Garçom</option>
+                <option value="mesa">Relatório por Mesa</option>
+              </select>
+            </div>
+
+            <!-- Campos para relatório de Período -->
+            <div id="commonFields" style="display:none;">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="startDate" class="form-label">Data Inicial</label>
+                  <input type="date" class="form-control" id="startDate" name="startDate">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="endDate" class="form-label">Data Final</label>
+                  <input type="date" class="form-control" id="endDate" name="endDate">
+                </div>
+              </div>
+            </div>
+
+            <!-- Campos para relatório de Mesas Confirmadas por Garçom -->
+            <div id="garcomFields" style="display:none;">
+              <div class="mb-3">
+                <label for="garcomRelatorio" class="form-label">Garçom</label>
+                <select class="form-select" id="garcomRelatorio" name="garcomRelatorio">
+                  <option value="" selected>Selecione o Garçom</option>
+                  <!-- Opções serão carregadas via JS -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Campo para relatório por Mesa -->
+            <div id="mesaFields" style="display:none;">
+              <div class="mb-3">
+                <label for="mesa" class="form-label">Mesa</label>
+                <select class="form-select" id="mesa" name="mesa">
+                  <option value="" disabled selected>Selecione a mesa</option>
+                  <option value="1">Mesa 1</option>
+                  <option value="2">Mesa 2</option>
+                  <option value="3">Mesa 3</option>
+                  <option value="4">Mesa 4</option>
+                  <option value="5">Mesa 5</option>
+                  <option value="6">Mesa 6</option>
+                  <option value="7">Mesa 7</option>
+                  <option value="8">Mesa 8</option>
+                  <option value="9">Mesa 9</option>
+                  <option value="10">Mesa 10</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <button type="submit" class="btn btn-success">Gerar</button>
+            </div>
+          </form>
+          <div id="reportFeedback" class="mt-3"></div>
+        </div>
       </div>
-      <div class="card-body">
-        <form id="reportForm"> <!-- Formulário para entrada de dados -->
-          <div class="row">
-            <div class="col-md-5 mb-3">
-              <label for="startDate" class="form-label">Data Inicial</label> <!-- Campo para seleção da data inicial -->
-              <input type="date" class="form-control" id="startDate" name="startDate" required>
-            </div>
-            <div class="col-md-5 mb-3">
-              <label for="endDate" class="form-label">Data Final</label> <!-- Campo para seleção da data final -->
-              <input type="date" class="form-control" id="endDate" name="endDate" required>
-            </div>
-            <div class="col-md-2 d-flex align-items-end mb-3">
-              <button type="submit" class="btn btn-success w-100">Gerar</button> <!-- Botão para gerar relatório -->
-            </div>
+
+      <!-- Card para exibir os registros do relatório -->
+      <div class="card shadow-sm" style="display:none;">
+        <div class="card-header bg-secondary text-white">
+          Registros do Relatório
+        </div>
+        <div class="card-body">
+          <!-- Tabela para exibir os detalhes de cada reserva e resumo final -->
+          <table class="table table-striped" id="reportTable">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Mesa</th>
+                <th>Nº de Pessoas</th>
+                <th>Nome do Responsável</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Linhas serão inseridas dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Card para exibir reservas de uma mesa específica -->
+      <div class="card shadow-sm mb-4" id="mesaReportCard" style="display:none;">
+        <div class="card-header bg-info text-white">
+          Relatório de Reservas da Mesa <span id="mesaReportNumber"></span>
+        </div>
+        <div class="card-body">
+          <div id="mesaReportFeedback"></div>
+          <div id="mesaReportTableWrapper" style="display:none;">
+            <table class="table table-bordered table-striped mt-3">
+              <thead class="table-light">
+                <tr>
+                  <th>Data</th>
+                  <th>Horário</th>
+                  <th>Nº de Pessoas</th>
+                  <th>Responsável</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="mesaReportTableBody">
+                <!-- Linhas dinâmicas -->
+              </tbody>
+            </table>
           </div>
-        </form>
-        <div id="reportFeedback" class="mt-3"></div> <!-- Div para exibição de mensagens de feedback -->
+        </div>
       </div>
-    </div>
-
-    <!-- Card para exibir os resultados do relatório -->
-    <div class="card shadow-sm"> <!-- Card estilizado para resultados -->
-      <div class="card-header bg-secondary text-white"> <!-- Cabeçalho com fundo cinza -->
-        Resultados do Relatório
-      </div>
-      <div class="card-body">
-        <table class="table table-striped" id="reportTable">
-          <!-- Tabela com estilo listrado para exibição de métricas -->
-          <thead>
-            <tr>
-              <th>Métrica</th> <!-- Coluna para nome das métricas -->
-              <th>Valor</th> <!-- Coluna para valores das métricas -->
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Dados do relatório serão inseridos dinamicamente -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
+    </main>
+  </div>
 
   <!-- Footer -->
-  <footer class="bg-dark text-white py-4 mt-5" id="footer"> <!-- Rodapé estilizado com fundo escuro -->
+  <footer class="bg-dark text-white py-4 mt-5" id="footer">
     <div class="container text-center">
       <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
-      <!-- Texto de direitos autorais -->
     </div>
   </footer>
-
-  <!-- Script para manipulação do Dashboard do Gerente -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Manipulação do formulário para geração de relatório
-      document.getElementById('reportForm').addEventListener('submit', function (e) {
-        e.preventDefault(); // Previne o comportamento padrão do formulário
-
-        const startDate = document.getElementById('startDate').value; // Obtem a data inicial
-        const endDate = document.getElementById('endDate').value; // Obtem a data final
-
-        // Validação simples do intervalo de datas
-        if (new Date(startDate) > new Date(endDate)) {
-          document.getElementById('reportFeedback').innerHTML =
-            '<div class="alert alert-danger" role="alert">A data inicial deve ser anterior à data final.</div>';
-          return;
-        }
-
-        // Chamaria uma função da reportApi para buscar dados reais. Aqui simulamos os dados.
-        generateReport(startDate, endDate);
-      });
-
-      function generateReport(start, end) {
-        // Simulação dos dados do relatório
-        const reportData = [
-          { metric: 'Total de Reservas', value: 120 },
-          { metric: 'Reservas Concluídas', value: 95 },
-          { metric: 'Mesas Mais Utilizadas', value: 'Mesa A1, Mesa B2' },
-          { metric: 'Reservas Canceladas', value: 5 }
-        ];
-
-        const tbody = document.querySelector('#reportTable tbody'); // Seleciona o corpo da tabela
-        tbody.innerHTML = ''; // Limpa o conteúdo existente
-
-        reportData.forEach(item => { // Adiciona cada métrica como uma linha na tabela
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${item.metric}</td>
-            <td>${item.value}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-
-        document.getElementById('reportFeedback').innerHTML =
-          '<div class="alert alert-success" role="alert">Relatório gerado com sucesso!</div>'; // Exibe feedback de sucesso
-      }
-    });
-  </script>
 </body>
 
 </html>

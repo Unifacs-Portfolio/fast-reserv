@@ -1,208 +1,128 @@
 <!DOCTYPE html>
-<html lang="pt-BR"> <!-- Declaração do tipo de documento e idioma padrão como português do Brasil -->
+<html lang="pt-BR">
 
 <head>
-    <title>Painel do Atendente</title> <!-- Título da página -->
-    <meta charset="UTF-8"> <!-- Configuração do conjunto de caracteres para UTF-8 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Responsividade para dispositivos móveis -->
-
-    <!-- Bootstrap CDN: Estilos e scripts para layout responsivo -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Link para o CSS personalizado -->
-    <link rel="stylesheet" href="../assets/css/styles.css">
-
-    <!-- Link para o JavaScript personalizado -->
-    <script src="../assets/js/main.js"></script>
-
-    <!-- Link para o script da API de reservas -->
-    <script src="../assets/js/reservationApi.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel do Atendente</title>
+  <link rel="icon" href="assets/images/faviconcoffe.jpg" type="image/x-icon" />
+  <!-- Bootstrap CDN: Estilos e scripts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Link para o CSS personalizado -->
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <!-- Scripts JavaScript -->
+  <script src="/js/api.js" type="module"></script>
+  <script src="/js/atendente.js" type="module"></script>
 </head>
 
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">Restaurante</a> <!-- Logo do restaurante -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
-                <span class="navbar-toggler-icon"></span> <!-- Ícone de alternância para dispositivos móveis -->
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto"> <!-- Lista de navegação alinhada à direita -->
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="attendent.html">Atendente</a>
-                        <!-- Link ativo -->
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="waiter.html">Garçom</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="manager.html">Gerente</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<body class="d-flex flex-column min-vh-100">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Menu</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Alterna navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="attendent.html">Atendente</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="waiter.html">Garçom</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="manager.html">Gerente</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Conteúdo Principal -->
+  <!-- Conteúdo Principal -->
+  <div id="content-wrap" class="flex-fill container py-4">
     <main class="container mt-5">
-        <h1 class="mb-4">Painel do Atendente</h1> <!-- Título principal -->
-        <div class="row">
-            <!-- Seção do Formulário para Criar Reserva -->
-            <div class="col-md-6">
-                <div class="card shadow-sm mb-4"> <!-- Card estilizado com sombra -->
-                    <div class="card-header bg-primary text-white"> <!-- Cabeçalho com fundo azul -->
-                        Criar Nova Reserva
-                    </div>
-                    <div class="card-body">
-                        <form id="reservationForm">
-                            <div class="mb-3">
-                                <label for="date" class="form-label">Data</label> <!-- Campo para selecionar data -->
-                                <input type="date" class="form-control" id="date" name="date" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="time" class="form-label">Horário</label>
-                                <!-- Campo para selecionar horário -->
-                                <input type="time" class="form-control" id="time" name="time" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="table" class="form-label">Mesa</label> <!-- Campo para informar a mesa -->
-                                <input type="text" class="form-control" id="table" name="table" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="guests" class="form-label">Número de Pessoas</label>
-                                <!-- Campo para número de pessoas -->
-                                <input type="number" class="form-control" id="guests" name="guests" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Criar Reserva</button> <!-- Botão de envio -->
-                        </form>
-                        <div id="reservationFeedback" class="mt-3"></div> <!-- Div para feedback do usuário -->
-                    </div>
-                </div>
+      <h1 class="mb-4">Painel do Atendente</h1>
+      <div class="row">
+        <!-- Seção do Formulário para Criar Reserva -->
+        <div class="col-md-6">
+          <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+              CRIAR NOVA RESERVA
             </div>
-
-            <!-- Seção da Tabela de Reservas -->
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-secondary text-white"> <!-- Cabeçalho com fundo cinza -->
-                        Reservas Existentes
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped" id="reservationsTable"> <!-- Tabela estilizada -->
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Data</th>
-                                    <th>Horário</th>
-                                    <th>Mesa</th>
-                                    <th>Número de Pessoas</th>
-                                    <th>Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Linhas dinâmicas serão inseridas aqui -->
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="card-body">
+              <form id="reservationForm">
+                <div class="mb-3">
+                  <label for="date" class="form-label">Data</label>
+                  <input type="date" class="form-control" id="date" name="date" required />
                 </div>
+                <div class="mb-3">
+                  <label for="time" class="form-label">Horário</label>
+                  <input type="time" class="form-control" id="time" name="time" required />
+                </div>
+                <div class="mb-3">
+                  <label for="table" class="form-label">Mesa</label>
+                  <select class="form-select" id="table" name="table" required>
+                    <option value="" disabled selected>Selecione a Mesa</option>
+                    <!-- As opções de mesa serão inseridas dinamicamente via JS -->
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="guests" class="form-label">Número de Pessoas</label>
+                  <input type="number" class="form-control" id="guests" name="guests" min="1" required />
+                </div>
+                <div class="mb-3">
+                  <label for="name" class="form-label">Nome do Responsável</label>
+                  <input type="text" class="form-control" id="name" name="name" required />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  Criar Reserva
+                </button>
+              </form>
+              <div id="reservationFeedback" class="mt-3"></div>
             </div>
+          </div>
         </div>
+
+        <!-- Seção da Tabela de Reservas Pendentes -->
+        <div class="col-md-6">
+          <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+              RESERVAS PENDENTES DE CONFIRMAÇÃO
+            </div>
+            <div class="card-body">
+              <div id="tableWrapper">
+                <table class="table table-striped" id="reservationsTable">
+                  <thead>
+                    <tr>
+                      <th>Data</th>
+                      <th>Horário</th>
+                      <th>Mesa</th>
+                      <th>Nº de Pessoas</th>
+                      <th>Nome do Responsável</th>
+                      <th>Ação</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Linhas serão inseridas dinamicamente -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5" id="footer">
-        <div class="container text-center">
-            <p class="mb-0">© 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.</p>
-        </div>
-    </footer>
-
-    <!-- Script para manipulação do Dashboard -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Função para carregar reservas existentes
-            loadReservations();
-
-            function loadReservations() {
-                // Dados fictícios de reservas (simulação)
-                const reservations = [
-                    { id: 1, date: '2025-05-01', time: '19:00', table: 'A1', guests: 4 },
-                    { id: 2, date: '2025-05-02', time: '20:00', table: 'B2', guests: 2 }
-                ];
-
-                const tbody = document.querySelector('#reservationsTable tbody');
-                tbody.innerHTML = ''; // Limpa o conteúdo existente da tabela
-                reservations.forEach(reservation => {
-                    const tr = document.createElement('tr'); // Cria nova linha da tabela
-                    tr.innerHTML = `
-            <td>${reservation.id}</td>
-            <td>${reservation.date}</td>
-            <td>${reservation.time}</td>
-            <td>${reservation.table}</td>
-            <td>${reservation.guests}</td>
-            <td>
-              <button class="btn btn-danger btn-sm" data-id="${reservation.id}">
-                Excluir
-              </button>
-            </td>
-          `;
-                    tbody.appendChild(tr); // Adiciona a linha à tabela
-                });
-            }
-
-            // Manipula o envio do formulário para criar reservas
-            document.getElementById('reservationForm').addEventListener('submit', function (e) {
-                e.preventDefault(); // Previne o recarregamento da página
-
-                const date = document.getElementById('date').value;
-                const time = document.getElementById('time').value;
-                const table = document.getElementById('table').value;
-                const guests = document.getElementById('guests').value;
-
-                // Cria objeto de reserva (simulação)
-                const newReservation = {
-                    id: Date.now(), // Gera um ID único
-                    date,
-                    time,
-                    table,
-                    guests: parseInt(guests)
-                };
-
-                const tbody = document.querySelector('#reservationsTable tbody');
-                const tr = document.createElement('tr'); // Adiciona a nova reserva à tabela
-                tr.innerHTML = `
-          <td>${newReservation.id}</td>
-          <td>${newReservation.date}</td>
-          <td>${newReservation.time}</td>
-          <td>${newReservation.table}</td>
-          <td>${newReservation.guests}</td>
-          <td>
-            <button class="btn btn-danger btn-sm" data-id="${newReservation.id}">
-              Excluir
-            </button>
-          </td>
-        `;
-                tbody.appendChild(tr);
-
-                const feedbackDiv = document.getElementById('reservationFeedback');
-                feedbackDiv.innerHTML = '<div class="alert alert-success" role="alert">Reserva criada com sucesso!</div>'; // Feedback positivo
-                e.target.reset(); // Reseta o formulário
-            });
-
-            // Lida com a exclusão de reservas
-            document.querySelector('#reservationsTable tbody').addEventListener('click', function (e) {
-                if (e.target.tagName === 'BUTTON') {
-                    const reservationId = e.target.getAttribute('data-id'); // Obtém o ID da reserva
-                    e.target.closest('tr').remove(); // Remove a linha correspondente
-
-                    const feedbackDiv = document.getElementById('reservationFeedback');
-                    feedbackDiv.innerHTML = '<div class="alert alert-warning" role="alert">Reserva excluída.</div>'; // Feedback de exclusão
-                }
-            });
-        });
-    </script>
+  </div>
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-auto" id="footer">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2025 Restaurante - 404 Café. Todos os direitos reservados para a equipe de A3.
+      </p>
+    </div>
+  </footer>
 </body>
 
 </html>
