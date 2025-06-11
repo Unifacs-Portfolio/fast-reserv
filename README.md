@@ -23,7 +23,7 @@
 * Instale o Node.js
 * Instale o Git globalmente
 * Abra o terminal
-* Clone este repositório com `https://github.com/Unifacs-Portfolio/fast-reserv.git`
+* Clone este repositório com `git clone https://github.com/Unifacs-Portfolio/fast-reserv.git`
 * Entre na pasta com `cd fast-reserv`
 * Escreva no terminal: `npm run start` (chama automaticamente npm install, npm run build e npm run start)
 * Logo então você estará permitido a entrar no site pelo navegador com: `http://localhost/`
