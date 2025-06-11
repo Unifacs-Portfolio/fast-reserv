@@ -5,26 +5,26 @@ Front-End/
 ├── public/
 │    ├── assets/
 │    |    ├── css/
-│    |    │   └── styles.css          // Estilos gerais e customizados
+│    |    │   └── styles.css          # Estilos gerais e customizados
 |    |    └── images/
-│    |        ├── icons               // favicon utilizado 
-│    |        └── banners             // Banner utilizado
+│    |        ├── icons               # favicon utilizado 
+│    |        └── banners             # Banner utilizado
 |    | 
 │    ├── js/              
-|    |    ├── api.js                  // Scripts com as chamadas à API
-│    │    ├── attendant.js            // Funcionalidades e tratamento de erros para o atendente
-│    │    ├── waiter.js               // Funcionalidades e tratamento de erros para o garçom
-│    │    └── manager.js              // Funcionalidades e tratamento de erros para o gerente
+|    |    ├── api.js                  # Scripts com as chamadas à API
+│    │    ├── atendente.js            # Funcionalidades e tratamento de erros para o atendente
+│    │    ├── garcom.js               # Funcionalidades e tratamento de erros para o garçom
+│    │    ├── gerente.js              # Funcionalidades e tratamento de erros para o gerente
+|    |    └── utils.js                # Arquivo util
 |    |
-|    |
-│    ├── index.html                   // Hub principal da aplicação (responsável por orquestrar a navegação)
-│    ├── attendant.html               // Interface do painel do atendente
-│    ├── waiter.html                  // Interface do painel do garçom
-│    └── manager.html                 // Interface do painel do gerente
+│    ├── index.html                   # Hub principal da aplicação (responsável por orquestrar a navegação)
+│    ├── attendant.html               # Interface do painel do atendente
+│    ├── waiter.html                  # Interface do painel do garçom
+│    └── manager.html                 # Interface do painel do gerente
 |
-├── README.md                         // Documentação completa do projeto
+├── README.md                         # Documentação completa do projeto
 ├── node_modules                        
-└── package.json                      // Gerenciamento de dependências e scripts
+└── package.json                      # Gerenciamento de dependências e scripts
  
 ========================================================================================================================
 
@@ -52,7 +52,7 @@ Imagine o seguinte fluxo de trabalho em um restaurante:
    - O gerente pode gerar relatórios por período, por garçom ou por mesa para analisar os atendimentos e as reservas realizadas.
    - Os relatórios ajudam a identificar o desempenho e a eficiência operacional do restaurante.
 
-A aplicação será iniciada no servidor local (geralmente em http://localhost:3000) e o hub (index.html) permitirá navegar entre os diferentes painéis.
+A aplicação será iniciada no servidor local (geralmente em http://localhost:80) e o hub (index.html) permitirá navegar entre os diferentes painéis.
 
 
 ## Tecnologias Utilizadas
@@ -61,4 +61,3 @@ A aplicação será iniciada no servidor local (geralmente em http://localhost:3
 - **JavaScript (ES6+)**: Manipulação do DOM, validações e comunicação com a API.
 - **Bootstrap 5.1.3**: Responsividade e componentes visuais.
 - **LocalStorage**: Simulação de persistência de dados para ambiente de prototipagem.
-
