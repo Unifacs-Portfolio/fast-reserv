@@ -1,6 +1,5 @@
-========================================================================================================================
 # Bem-vindo ao Sistema de Reservas - 404 Café!
-
+```
 Front-End/
 ├── public/
 │    ├── assets/
@@ -25,7 +24,7 @@ Front-End/
 ├── README.md                         # Documentação completa do projeto
 ├── node_modules                        
 └── package.json                      # Gerenciamento de dependências e scripts
- 
+```
 ========================================================================================================================
 
 ## Descrição do Projeto
