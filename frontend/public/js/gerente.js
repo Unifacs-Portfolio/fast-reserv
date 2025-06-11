@@ -147,7 +147,7 @@ function atualizarTabelaRelatorio(reservas, metricas = null) {
 					<div class="card bg-warning mb-2"><div class="card-body"><strong class="text-warning-emphasis" style="font-size:1.2em;">Pendentes:</strong> <span class="fw-bold text-warning" style="font-size:1.3em;">${metricas.pendentes}</span></div></div>
 				</div>
 				<div class="col">
-					<div class="card bg-dark mb-2"><div class="card-body"><strong class="text-dark" style="font-size:1.2em; color: #ffc107;">Total:</strong> <span class="fw-bold" style="font-size:1.3em; color: #ffc107;">${metricas.total}</span></div></div>
+					<div class="card bg-dark mb-2"><div class="card-body"><strong class="text-dark" style="font-size:1.2em; color: #ffc107;">Total:</strong> <span class="fw-bold" style="font-size:1.3em; color:rgb(33,37,41);">${metricas.total}</span></div></div>
 				</div>
 			</div>
 		`
