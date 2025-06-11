@@ -54,7 +54,7 @@ export class AtualizarStatusReservaUseCase {
 			reservaEncontrada.status === 'cancelada' ||
 			reservaEncontrada.status === 'confirmada'
 		) {
-			throw new ReservaExistsError()
+			throw new ReservaInexistenteError()
 		}
 
 		if (status === 'cancelada') {
@@ -84,9 +84,6 @@ export class AtualizarStatusReservaUseCase {
 		}
 		if (!garcomId) {
 			throw new BuscarGarcomError()
-		}
-		if (status === 'confirmada' && !garcomId) {
-			throw new ReservaExistsError()
 		}
 
 		const garcomEncontrado = await this.garconRepository.findById(garcomId)

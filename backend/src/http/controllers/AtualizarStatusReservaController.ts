@@ -1,7 +1,6 @@
 import type { RequestHandler } from 'express'
 import { z } from 'zod'
 import { makeAtualizarReservaUseCase } from '../../useCases/factories/makeAtulizarStatusReservaUseCase'
-import { AtualizarReservaError } from '../../useCases/erros/AtualizarReservaError'
 import { ReservaExistsError } from '../../useCases/erros/ReservaExistsError'
 import { ReservaInexistenteError } from '../../useCases/erros/ReservaInexistenteError'
 import { BuscarGarcomError } from '../../useCases/erros/BuscarGarcomError'
