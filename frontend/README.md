@@ -1,23 +1,42 @@
 ========================================================================================================================
+# Bem-vindo ao Sistema de Reservas - 404 Café!
 
 Front-End/
 ├── public/
-│   ├── index.html           // Página principal (hub da aplicação)
-│   ├── attendant.html       // Página do atendente: criação e cancelamento de reservas 
-│   ├── waiter.html          // Página do garçom: confirmação de reservas
-│   ├── manager.html         // Página do gerente: geração de relatórios 
-│   └── assets/
-│       ├── css/
-│       │   └── styles.css   // CSS customizado para ajustes e sobreposições
-│       ├── js/
-│       │   ├── main.js            // JavaScript para funcionalidades gerais e manipulação do DOM      (?)
-│       │   ├── reservationApi.js  // Funções para comunicação com o back-end relativas às reservas    (?)
-│       │   └── reportApi.js       // Funções para requisição de relatórios                            (?)
-│       └── images/                // Imagens e ícones  (ex.: cafezinhobanner.gif, faviconcoffe.jpg)
-├── README.md                // Documentação e instruções do projeto
-└── package.json             // Gerenciamento de dependências e scripts
-
+│    ├── assets/
+│    |    ├── css/
+│    |    │   └── styles.css          // Estilos gerais e customizados
+|    |    └── images/
+│    |        ├── icons               // favicon utilizado 
+│    |        └── banners             // Banner utilizado
+|    | 
+│    ├── js/              
+|    |    ├── api.js                  // Scripts com as chamadas à API
+│    │    ├── attendant.js            // Funcionalidades e tratamento de erros para o atendente
+│    │    ├── waiter.js               // Funcionalidades e tratamento de erros para o garçom
+│    │    └── manager.js              // Funcionalidades e tratamento de erros para o gerente
+|    |
+|    |
+│    ├── index.html                   // Hub principal da aplicação (responsável por orquestrar a navegação)
+│    ├── attendant.html               // Interface do painel do atendente
+│    ├── waiter.html                  // Interface do painel do garçom
+│    └── manager.html                 // Interface do painel do gerente
+|
+├── README.md                         // Documentação completa do projeto
+├── node_modules                        
+└── package.json                      // Gerenciamento de dependências e scripts
+ 
 ========================================================================================================================
+
+## Descrição do Projeto
+
+O Sistema de Reservas - 404 Café é uma aplicação web voltada para o gerenciamento de reservas e atendimento em restaurantes.  
+O sistema possui:
+- **Atendente:** Responsável pelo cadastro e cancelamento de reservas.
+- **Garçom:** Atua na confirmação de reservas pendentes.
+- **Gerente:** Gera relatórios que auxiliam na análise de desempenho e na eficiência operacional (Por período, garçom e mesa).
+- Integração com API para comunicação e persistência dos dados.
+
 
 ## Fluxo de Trabalho
 Imagine o seguinte fluxo de trabalho em um restaurante:
@@ -33,9 +52,13 @@ Imagine o seguinte fluxo de trabalho em um restaurante:
    - O gerente pode gerar relatórios por período, por garçom ou por mesa para analisar os atendimentos e as reservas realizadas.
    - Os relatórios ajudam a identificar o desempenho e a eficiência operacional do restaurante.
 
+A aplicação será iniciada no servidor local (geralmente em http://localhost:3000) e o hub (index.html) permitirá navegar entre os diferentes painéis.
+
+
 ## Tecnologias Utilizadas
 
 - **HTML5** e **CSS3**: Estrutura e estilização da interface.
 - **JavaScript (ES6+)**: Manipulação do DOM, validações e comunicação com a API.
 - **Bootstrap 5.1.3**: Responsividade e componentes visuais.
-- **LocalStorage**: Simulação de persistência para ambiente de prototipagem.
+- **LocalStorage**: Simulação de persistência de dados para ambiente de prototipagem.
+
