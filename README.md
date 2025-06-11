@@ -21,10 +21,12 @@
 ## Passo a Passo
 * Baixe a versão LTS do Node.js
 * Instale o Node.js
-* Clone este repositório
-*   Escreva no terminal: `npm run start` (chama automaticamente npm install, npm run build e npm run start)
-  
-* Logo então você estará permitido a entrar no Site através: `http://localhost/`
+* Instale o Git globalmente
+* Abra o terminal
+* Clone este repositório com `https://github.com/Unifacs-Portfolio/fast-reserv.git`
+* Entre na pasta com `cd fast-reserv`
+* Escreva no terminal: `npm run start` (chama automaticamente npm install, npm run build e npm run start)
+* Logo então você estará permitido a entrar no site pelo navegador com: `http://localhost/`
 
 ## Justificativa para a abordagem de comunicação
 Escolhemos API REST por causa de suas vantagens em relação ao problema a ser resolvido, como por exemplo a sua padronização com HTTP,  utilizandos os métodos HTTP(GET,POST,PUT,DELETE) , facilitando o entendimento e a integração, principalmente por estar sendo usado em uma aplicação considerada simples e bem integrada com o website, que foi a nossa escolha de contato com o usuário. Ela introduz muito bem o conceito de recursos bem definidos, o que ajuda na manutenção e documentação.
