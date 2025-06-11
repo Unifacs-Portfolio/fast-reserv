@@ -12,8 +12,8 @@
   <link rel="stylesheet" href="../assets/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
   <!-- Scripts JavaScript -->
-  <script src="api.js" type="module"></script>
-  <script src="gerente.js" type="module"></script>
+  <script src="js/api.js" type="module"></script>
+  <script src="js/gerente.js" type="module"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -45,7 +45,7 @@
   <div id="content-wrap" class="flex-fill container py-4">
     <main class="container mt-5">
       <h1 class="mb-4">Painel do Gerente</h1>
-      
+
       <!-- Card para geração de relatórios -->
       <div class="card mb-4 shadow-sm">
         <div class="card-header bg-danger text-white">
@@ -59,13 +59,13 @@
               <select class="form-select" id="reportType" name="reportType" required>
                 <option value="" disabled selected>Selecione o tipo de relatório</option>
                 <option value="periodo">Relatório por Período</option>
-                <option value="garçom">Relatório por Garçom</option>
+                <option value="mesas-confirmadas-garcom">Mesas Confirmadas por Garçom</option>
                 <option value="mesa">Relatório por Mesa</option>
               </select>
             </div>
 
             <!-- Campos para relatório de Período -->
-            <div id="commonFields">
+            <div id="commonFields" style="display:none;">
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="startDate" class="form-label">Data Inicial</label>
@@ -78,21 +78,19 @@
               </div>
             </div>
 
-            <!-- Campos para relatório por Garçom -->
-            <div id="garcomFields">
+            <!-- Campos para relatório de Mesas Confirmadas por Garçom -->
+            <div id="garcomFields" style="display:none;">
               <div class="mb-3">
-                <label for="garcom" class="form-label">Garçom</label>
-                <select class="form-select" id="garcom" name="garcom">
-                  <option value="" disabled selected>Selecione o Garçom</option>
-                  <option value="Marcilio">Marcilio</option>
-                  <option value="Roan">Roan</option>
-                  <option value="Marcus">Marcus</option>
+                <label for="garcomRelatorio" class="form-label">Garçom</label>
+                <select class="form-select" id="garcomRelatorio" name="garcomRelatorio">
+                  <option value="" selected>Selecione o Garçom</option>
+                  <!-- Opções serão carregadas via JS -->
                 </select>
               </div>
             </div>
 
             <!-- Campo para relatório por Mesa -->
-            <div id="mesaFields" >
+            <div id="mesaFields" style="display:none;">
               <div class="mb-3">
                 <label for="mesa" class="form-label">Mesa</label>
                 <select class="form-select" id="mesa" name="mesa">
@@ -120,7 +118,7 @@
       </div>
 
       <!-- Card para exibir os registros do relatório -->
-      <div class="card shadow-sm">
+      <div class="card shadow-sm" style="display:none;">
         <div class="card-header bg-secondary text-white">
           Registros do Relatório
         </div>
@@ -141,6 +139,32 @@
               <!-- Linhas serão inseridas dinamicamente -->
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- Card para exibir reservas de uma mesa específica -->
+      <div class="card shadow-sm mb-4" id="mesaReportCard" style="display:none;">
+        <div class="card-header bg-info text-white">
+          Relatório de Reservas da Mesa <span id="mesaReportNumber"></span>
+        </div>
+        <div class="card-body">
+          <div id="mesaReportFeedback"></div>
+          <div id="mesaReportTableWrapper" style="display:none;">
+            <table class="table table-bordered table-striped mt-3">
+              <thead class="table-light">
+                <tr>
+                  <th>Data</th>
+                  <th>Horário</th>
+                  <th>Nº de Pessoas</th>
+                  <th>Responsável</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="mesaReportTableBody">
+                <!-- Linhas dinâmicas -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
