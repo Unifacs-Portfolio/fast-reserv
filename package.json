@@ -1,0 +1,32 @@
+{
+	"name": "404cafe",
+	"version": "1.0.0",
+	"main": "backend/build/server.js",
+	"scripts": {
+		"prebuild": "npm install",
+		"build": "tsup backend/src --out-dir backend/build",
+		"prestart": "npm run build",
+		"start": "node backend/build/server.js",
+		"dev": "tsx watch backend/src/server.ts",
+		"coverage": "vitest run --coverage",
+		"test:unit": "vitest run --config vitest.units.ts",
+		"test:e2e": "vitest run --config vitest.e2e.ts"
+	},
+	"license": "ISC",
+	"description": "Sistema para reservas de um restaurante",
+	"dependencies": {
+		"dotenv": "16.5.0",
+		"express": "^5.1.0",
+		"sqlite": "^5.1.1",
+		"sqlite3": "^5.1.7",
+		"zod": "3.24.4"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@types/express": "5.0.1",
+		"@types/node": "24.0.0",
+		"tsup": "8.4.0",
+		"tsx": "4.19.4",
+		"typescript": "^5.8.3"
+	}
+}
