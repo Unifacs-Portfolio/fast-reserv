@@ -15,7 +15,7 @@
 	"license": "ISC",
 	"description": "Sistema para reservas de um restaurante",
 	"dependencies": {
-		"dotenv": "16.5.0",
+		"dotenv": "16.6.1",
 		"express": "^5.1.0",
 		"sqlite": "^5.1.1",
 		"sqlite3": "^5.1.7",
